@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import java.sql.*;
+
 
 /**
  * A login screen that offers login via email/password.
@@ -88,9 +90,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View view) {
                 attemptLogin();
-                Intent i = new Intent(LoginActivity.this, MainActivity.class); //creates intent that launches main menu
+
+            }
+        });
+
+        TextView RegisterButton = (TextView) findViewById(R.id.regeister_button);
+        RegisterButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(LoginActivity.this, RegisterActivity.class); //creates intent that launches main menu
                 startActivity(i);
-                finish();
+
             }
         });
 
@@ -318,7 +328,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             } catch (InterruptedException e) {
                 return false;
             }
-
+            // WE WILL EDIT THIS TO CHECK IF EMAIL IS IN THE DATABASE. WE WILL ALSO CHECK WHETHER OR NOT THE PASSWORD MATCH USERNAME
+            connectToDB(mEmail, mPassword);
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
@@ -328,7 +339,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
 
             // TODO: register the new account here.
-            return true;
+            return false;
         }
 
         @Override
@@ -337,6 +348,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
+
+                Intent i = new Intent(LoginActivity.this, MainActivity.class); //creates intent that launches main menu
+                startActivity(i);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -348,6 +362,41 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
+        }
+
+        public void connectToDB(String mEmail, String mPassword){
+            LICS loginConnectionString = new LICS();
+            String connectionUrl = loginConnectionString.LoginConnectionString();
+
+            // Declare the JDBC objects.
+            Connection con = null;
+            Statement stmt = null;
+            ResultSet rs = null;
+            try {
+                // Establish the connection.
+                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                con = DriverManager.getConnection(connectionUrl);
+
+                // Create and execute an SQL statement that returns some data.
+                String SQL = "SELECT * WHERE Email = " + mEmail +" and Password = " + mPassword + "FROM dbo.LOGIN";
+                stmt = con.createStatement();
+                rs = stmt.executeQuery(SQL);
+
+                // Iterate through the data in the result set and display it.
+                while (rs.next()) {
+                    System.out.println(rs.getString(4) + " " + rs.getString(6));
+                }
+            }
+
+            // Handle any errors that may have occurred.
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            finally {
+                if (rs != null) try { rs.close(); } catch(Exception e) {}
+                if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+                if (con != null) try { con.close(); } catch(Exception e) {}
+            }
         }
     }
 }
