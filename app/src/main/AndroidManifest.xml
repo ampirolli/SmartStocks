@@ -34,7 +34,6 @@
         <activity android:name=".TradingActivity"></activity>
         <activity android:name=".ToolsActivity"></activity>
         <activity android:name=".PersonalInfoActivity"></activity>
-        <activity android:name=".RegisterActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/> // Added for db connection

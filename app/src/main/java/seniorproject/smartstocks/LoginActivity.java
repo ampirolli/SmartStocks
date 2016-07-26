@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         RegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this, RegisterActivity.class); //creates intent that launches main menu
+                Intent i = new Intent(LoginActivity.this, RegistrationActivity.class); //creates intent that launches main menu
                 startActivity(i);
 
             }
