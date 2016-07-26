@@ -54,8 +54,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
+
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
+     *
      */
     private UserLoginTask mAuthTask = null;
 
@@ -328,18 +331,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             } catch (InterruptedException e) {
                 return false;
             }
-            // WE WILL EDIT THIS TO CHECK IF EMAIL IS IN THE DATABASE. WE WILL ALSO CHECK WHETHER OR NOT THE PASSWORD MATCH USERNAME
-            connectToDB(mEmail, mPassword);
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
+
 
             // TODO: register the new account here.
-            return false;
+            return  connectToDB(mEmail, mPassword);
         }
 
         @Override
@@ -364,27 +359,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
         }
 
-        public void connectToDB(String mEmail, String mPassword){
+        public boolean connectToDB(String mEmail, String mPassword){
             LICS loginConnectionString = new LICS();
             String connectionUrl = loginConnectionString.LoginConnectionString();
 
             // Declare the JDBC objects.
-            Connection con = null;
+            Connection conn = null;
             Statement stmt = null;
-            ResultSet rs = null;
+            ResultSet result = null;
+            //Declare email+password
+            String email = null;
+            String password = null;
             try {
                 // Establish the connection.
-                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                con = DriverManager.getConnection(connectionUrl);
+                Class.forName("net.sourceforge.jtds.jdbc.Driver");
+                conn = DriverManager.getConnection(connectionUrl);
 
                 // Create and execute an SQL statement that returns some data.
-                String SQL = "SELECT * WHERE Email = " + mEmail +" and Password = " + mPassword + "FROM dbo.LOGIN";
-                stmt = con.createStatement();
-                rs = stmt.executeQuery(SQL);
+                //String SQL = "SELECT * WHERE Email = " + mEmail +" and Password = " + mPassword + "FROM dbo.LOGIN";
+                String SQL = "SELECT * FROM [SE414_Group3].[dbo].[Login] WHERE email_address = '"+ mEmail.toLowerCase() +"' and password = '" + mPassword.toLowerCase() +"';";
+                stmt = conn.createStatement();
+                result = stmt.executeQuery(SQL);
 
                 // Iterate through the data in the result set and display it.
-                while (rs.next()) {
-                    System.out.println(rs.getString(4) + " " + rs.getString(6));
+                while (result.next()) {
+                    email = result.getString("email_address");
+                    password = result.getString("password");
                 }
             }
 
@@ -393,9 +393,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 e.printStackTrace();
             }
             finally {
-                if (rs != null) try { rs.close(); } catch(Exception e) {}
+                if (result != null) try { result.close(); } catch(Exception e) {}
                 if (stmt != null) try { stmt.close(); } catch(Exception e) {}
-                if (con != null) try { con.close(); } catch(Exception e) {}
+                if (conn != null) try { conn.close(); } catch(Exception e) {}
+                if(mEmail.equals(email) && mPassword.equals(password)){ return true; } else{ return false; }
             }
         }
     }
