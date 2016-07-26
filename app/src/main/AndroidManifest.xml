@@ -36,7 +36,8 @@
         <activity android:name=".PersonalInfoActivity"></activity>
         <activity android:name=".RegisterActivity"></activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.INTERNET"/> // Added for db connection
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> // Added for db connection
 
 </manifest>
