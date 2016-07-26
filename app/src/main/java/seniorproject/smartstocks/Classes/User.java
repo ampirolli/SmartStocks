@@ -58,6 +58,7 @@ public class User {
         setPhone(phone);
         setBirthDate(birthDate);
     }
+    //execute sp_user_registration 'Owner', 'Anthony', 'Pirolli', 'ampirolli831@gmail.com', '4015555555', '08-31-1995', 'password', NULL
 
 
 }
