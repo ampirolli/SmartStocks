@@ -6,7 +6,10 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    // Added for db connection
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    // Added for db connection
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -25,18 +28,16 @@
         <activity
             android:name=".MainActivity"
             android:label="SmartStocks"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".RegistrationActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".RegistrationActivity" />
         <activity
             android:name=".AccountsActivity"
             android:label="@string/title_activity_accounts"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".TradingActivity"></activity>
-        <activity android:name=".ToolsActivity"></activity>
-        <activity android:name=".PersonalInfoActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".TradingActivity" />
+        <activity android:name=".ToolsActivity" />
+        <activity android:name=".PersonalInfoActivity" />
+        <activity android:name=".RegistrationPersonalInfoActivity"></activity>
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET"/> // Added for db connection
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> // Added for db connection
 
 </manifest>
