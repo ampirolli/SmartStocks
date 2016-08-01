@@ -22,6 +22,14 @@ public class RegistrationActivity extends AppCompatActivity {
         txtPassword = (EditText) findViewById(R.id.txtPassword);
         txtPasswordMatch = (EditText) findViewById(R.id.txtPasswordMatch);
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                
+
+
+            }
+        });
 
 
     }
