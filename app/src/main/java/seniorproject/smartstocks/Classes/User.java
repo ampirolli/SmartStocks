@@ -73,7 +73,7 @@ public class User {
             // Establish the connection.
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
             conn = DriverManager.getConnection(connectionUrl);
-
+//woah
             // Create and execute an SQL statement that returns some data.
             //String SQL = "SELECT * WHERE Email = " + mEmail +" and Password = " + mPassword + "FROM dbo.LOGIN";
             String SQL = "SELECT * FROM [SE414_Group3].[dbo].[User] WHERE email_address = '"+ email.toLowerCase() + ";";

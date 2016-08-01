@@ -28,14 +28,14 @@ public class RegistrationActivity extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = txtEmail.toString().toLowerCase();
-                String pass = txtPassword.toString();
+                String email = txtEmail.getText().toString().toLowerCase();
+                String pass = txtPassword.getText().toString();
 
 
                 User newUser =  new User();
                 if (newUser.isEmailTaken(email) == false){
 
-                    if(pass.equals(txtPasswordMatch.toString())){
+                    if(pass.equals(txtPasswordMatch.getText().toString())){
 
                         if(pass.length() > 7){
                             Intent i = new Intent(RegistrationActivity.this, RegistrationPersonalInfoActivity.class); //creates intent that launches personal info page
