@@ -13,7 +13,7 @@ import seniorproject.smartstocks.LICS;
 public class Login {
 
     private String Email;
-    private String HashedPassword;
+    private String HashedPassword; //password does not need to be set to lowercase. case sensitive
 
     public String getEmail() {
         return Email;
@@ -32,8 +32,8 @@ public class Login {
     }
 
     public Login(String email, String Password) {
-        setEmail(email);
-        setHashedPassword(Password);
+        setEmail(email.toLowerCase());
+        setHashedPassword(Password); //password does not need to be set to lowercase. case sensitive
     }
 
     public Login() {
@@ -58,14 +58,21 @@ public class Login {
             conn = DriverManager.getConnection(connectionUrl);
 
             // Create and execute an SQL statement that returns some data.
-            //String SQL = "SELECT * WHERE Email = " + mEmail +" and Password = " + mPassword + "FROM dbo.LOGIN";
-            String SQL = "SELECT * FROM [SE414_Group3].[dbo].[Login] WHERE email_address = '"+ getEmail().toLowerCase() +"' and password = '" + getHashedPassword().toLowerCase() +"';";
+            String SQL = "execute sp_login '" + getEmail() +"', '" + getHashedPassword() +  "',NULL ;";
             stmt = conn.createStatement();
             result = stmt.executeQuery(SQL);
 
             // Iterate through the data in the result set and display it.
             while (result.next()) {
-                dbEmail = result.getString("email_address");
+                String dbUserID = result.getString("user_id");
+                String SQL1 = "SELECT email_address FROM DBO.[USER] WHERE user_id = '"+ dbUserID.toLowerCase() + "'; ";
+                Statement stmt1 = conn.createStatement();
+                ResultSet result1 = stmt1.executeQuery(SQL1);
+                while (result1.next()) {
+                    dbEmail = result1.getString("email_address");
+                }
+
+
                 dbPassword = result.getString("password");
             }
         }

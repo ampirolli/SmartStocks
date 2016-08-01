@@ -57,15 +57,6 @@ public class User {
         BirthDate = birthDate;
     }
 
-    public User(String firstName, String lastName, String email, String phone, String birthDate) {
-
-        setFirstName(firstName);
-        setLastName(lastName);
-        setEmail(email);
-        setPhone(phone);
-        setBirthDate(birthDate);
-    }
-
     public boolean isEmailTaken(String email){
 
         LICS loginConnectionString = new LICS();
@@ -85,7 +76,7 @@ public class User {
 
             // Create and execute an SQL statement that returns some data.
             //String SQL = "SELECT * WHERE Email = " + mEmail +" and Password = " + mPassword + "FROM dbo.LOGIN";
-            String SQL = "SELECT * FROM [SE414_Group3].[dbo].[User] WHERE email_address = '"+ email + ";";
+            String SQL = "SELECT * FROM [SE414_Group3].[dbo].[User] WHERE email_address = '"+ email.toLowerCase() + ";";
             stmt = conn.createStatement();
             result = stmt.executeQuery(SQL);
 
