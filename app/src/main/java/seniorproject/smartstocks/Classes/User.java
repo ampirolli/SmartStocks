@@ -59,7 +59,7 @@ public class User  {
         BirthDate = birthDate;
     }
 
-    public boolean isEmailTaken(String email){
+    public boolean isEmailAvailable(String email){
 
         LICS loginConnectionString = new LICS();
         String connectionUrl = loginConnectionString.LoginConnectionString();
@@ -77,7 +77,7 @@ public class User  {
             conn = DriverManager.getConnection(connectionUrl);
             // Create and execute an SQL statement that returns some data.
             //String SQL = "SELECT * WHERE Email = " + mEmail +" and Password = " + mPassword + "FROM dbo.LOGIN";
-            String SQL = "SELECT * FROM [SE414_Group3].[dbo].[User] WHERE email_address = '"+ email.toLowerCase() + ";";
+            String SQL = "SELECT * FROM [SE414_Group3].[dbo].[User] WHERE email_address = '"+ email.toLowerCase() + "';";
             stmt = conn.createStatement();
             result = stmt.executeQuery(SQL);
 
@@ -95,7 +95,7 @@ public class User  {
             if (result != null) try { result.close(); } catch(Exception e) {}
             if (stmt != null) try { stmt.close(); } catch(Exception e) {}
             if (conn != null) try { conn.close(); } catch(Exception e) {}
-            if(email.equals(dbEmail)){ return true; } else{ return false; }
+            if(email.equals(dbEmail)){ return false; } else{ return true; }
         }
 
     }

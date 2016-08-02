@@ -56,7 +56,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            return null;
+
+            User newUser = new User();
+
+            return newUser.isEmailAvailable(Email);
         }
 
         @Override
@@ -68,34 +71,29 @@ public class RegistrationActivity extends AppCompatActivity {
 
             if (success) {
 
+                if (Password.equals(txtPasswordMatch.getText().toString())) {
 
-                User newUser = new User();
-                if (!newUser.isEmailTaken(Email)) {
+                    if (Password.length() > 7) {
+                        Intent i = new Intent(RegistrationActivity.this, RegistrationPersonalInfoActivity.class); //creates intent that launches personal info page
+                        startActivity(i);
 
-                    if (Password.equals(txtPasswordMatch.getText().toString())) {
-
-                        if (Password.length() > 7) {
-                            Intent i = new Intent(RegistrationActivity.this, RegistrationPersonalInfoActivity.class); //creates intent that launches personal info page
-                            startActivity(i);
-
-
-                        } else {
-                            txtPassword.setError("Password length is too short. ");
-                            txtPassword.requestFocus();
-                            //password length is too short!
-                        }
 
                     } else {
-                        txtPassword.setError("Passwords do not match. ");
+                        txtPassword.setError("Password length is too short. ");
                         txtPassword.requestFocus();
+                        //password length is too short!
                     }
 
-
                 } else {
-
-                    txtEmail.setError("This Email is already taken.");//THIS EMAIL IS TAKEN!
-                    txtEmail.requestFocus();
+                    txtPassword.setError("Passwords do not match. ");
+                    txtPassword.requestFocus();
                 }
+
+
+            } else {
+
+                txtEmail.setError("This Email is already taken.");//THIS EMAIL IS TAKEN!
+                txtEmail.requestFocus();
             }
         }
 
