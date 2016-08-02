@@ -12,7 +12,7 @@ import seniorproject.smartstocks.LICS;
 /**
  * Created by Ampirollli on 7/25/2016.
  */
-public class User {
+public class User  {
     private String FirstName;
     private String LastName;
     private String Email;
