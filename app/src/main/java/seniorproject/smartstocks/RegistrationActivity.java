@@ -31,6 +31,7 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
                 String email = txtEmail.getText().toString().toLowerCase();
                 String password = txtPassword.getText().toString();
 
@@ -74,7 +75,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (Password.equals(txtPasswordMatch.getText().toString())) {
 
                     if (Password.length() > 7) {
-                        Intent i = new Intent(RegistrationActivity.this, RegistrationPersonalInfoActivity.class); //creates intent that launches personal info page
+                        Intent i = new Intent(RegistrationActivity.this, RegistrationPersonalInfoActivity.class).putExtra(Email, Password); //creates intent that launches personal info page
                         startActivity(i);
 
 
