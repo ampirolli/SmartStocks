@@ -1,5 +1,6 @@
 package seniorproject.smartstocks;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -84,7 +85,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_accounts) {
-            // Handle the camera action
+            Intent i = new Intent(MainActivity.this, AccountsActivity.class); //creates intent that launches main menu
+            startActivity(i);
         } else if (id == R.id.nav_trading) {
 
         } else if (id == R.id.nav_manage) {

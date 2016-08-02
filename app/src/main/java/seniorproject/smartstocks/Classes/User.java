@@ -13,6 +13,7 @@ import seniorproject.smartstocks.LICS;
  * Created by Ampirollli on 7/25/2016.
  */
 public class User  {
+
     private String FirstName;
     private String LastName;
     private String Email;
@@ -56,6 +57,16 @@ public class User  {
     }
 
     public void setBirthDate(String birthDate) {
+        BirthDate = birthDate;
+    }
+
+    public User() {  }
+
+    public User(String firstName, String lastName, String email, String phone, String birthDate) {
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        Phone = phone;
         BirthDate = birthDate;
     }
 
