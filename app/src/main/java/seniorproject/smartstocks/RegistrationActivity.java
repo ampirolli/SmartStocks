@@ -33,7 +33,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
                 User newUser =  new User();
-                if (newUser.isEmailTaken(email) == false){
+                if (!newUser.isEmailTaken(email)){
 
                     if(pass.equals(txtPasswordMatch.getText().toString())){
 

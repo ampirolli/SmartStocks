@@ -37,7 +37,12 @@
         <activity android:name=".TradingActivity" />
         <activity android:name=".ToolsActivity" />
         <activity android:name=".PersonalInfoActivity" />
-        <activity android:name=".RegistrationPersonalInfoActivity"></activity>
+        <activity android:name=".RegistrationPersonalInfoActivity" />
+        <activity android:name=".AccountsOpenAccountActivity" />
+        <activity android:name=".AccountsPortfolioActivity" />
+        <activity android:name=".AccountsBalancesActivity" />
+        <activity android:name=".AccountsOrdersActivity" />
+        <activity android:name=".AccountsTransactionsActivity"></activity>
     </application>
 
 </manifest>
