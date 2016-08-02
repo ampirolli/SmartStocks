@@ -10,4 +10,5 @@ public class AccountsBalancesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accounts_balances);
     }
+
 }
