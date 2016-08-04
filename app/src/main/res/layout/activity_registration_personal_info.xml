@@ -126,8 +126,8 @@
             <Button
                 android:layout_width="150dp"
                 android:layout_height="fill_parent"
-                android:text="Submit"
-                android:id="@+id/button"
+                android:text="Register"
+                android:id="@+id/btnRegister"
                 android:layout_gravity="center_horizontal" />
         </LinearLayout>
     </LinearLayout>
