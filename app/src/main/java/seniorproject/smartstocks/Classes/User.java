@@ -19,6 +19,7 @@ public class User  {
     private String Email;
     private String Phone;
     private String BirthDate;
+    private String AccountType;
 
     public String getFirstName() {
         return FirstName;
@@ -60,14 +61,24 @@ public class User  {
         BirthDate = birthDate;
     }
 
+    public String getAccountType() {
+        return AccountType;
+    }
+
+    public void setAccountType(String accountType) {
+        AccountType = accountType;
+    }
+
+
     public User() {  }
 
-    public User(String firstName, String lastName, String email, String phone, String birthDate) {
+    public User(String firstName, String lastName, String email, String phone, String birthDate, String accountType) {
         FirstName = firstName;
         LastName = lastName;
         Email = email;
         Phone = phone;
         BirthDate = birthDate;
+        AccountType = accountType;
     }
 
     public boolean isEmailAvailable(String email){
@@ -79,7 +90,7 @@ public class User  {
         Connection conn = null;
         Statement stmt = null;
         ResultSet result = null;
-        //Declare email+password
+        //Declare email
         String dbEmail = null;
 
         try {
@@ -111,7 +122,43 @@ public class User  {
 
     }
 
-    //execute sp_user_registration 'Owner', 'Anthony', 'Pirolli', 'ampirolli831@gmail.com', '4015555555', '08-31-1995', 'password', NULL
+    public boolean attemptRegister(User user, String password){
+
+        LICS loginConnectionString = new LICS();
+        String connectionUrl = loginConnectionString.LoginConnectionString();
+
+        // Declare the JDBC objects.
+        Connection conn = null;
+        Statement stmt = null;
+
+        try {
+            // Establish the connection.
+            Class.forName("net.sourceforge.jtds.jdbc.Driver");
+            conn = DriverManager.getConnection(connectionUrl);
+            // Create and execute an SQL statement that returns some data.
+            //execute sp_user_registration 'Owner', 'Anthony', 'PieRoll', 'ampieroll1@gmail.com', '4015555555', '08-08-1700', 'password', NULL
+            String SQL = "execute sp_user_registration '" + user.getAccountType() + "', '" + user.getFirstName() + "', '" + user.getLastName() + "', '" + user.getEmail() + "', '" + user.getPhone() + "', '" + user.getBirthDate() + "', '" + password + "', NULL ;";
+            stmt = conn.createStatement();
+            stmt.executeUpdate(SQL);
+            return true;
+
+        }
+
+        // Handle any errors that may have occurred.
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        finally {
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (conn != null) try { conn.close(); } catch(Exception e) {}
+        }
+
+    }
+
+
+
+
 
 
 }

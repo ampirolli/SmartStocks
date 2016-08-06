@@ -149,8 +149,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
             if (success) {
 
-                        Intent i = new Intent(RegistrationActivity.this, RegistrationPersonalInfoActivity.class).putExtra(Email, Password); //creates intent that launches personal info page
-                        startActivity(i);
+                        Intent i = new Intent(RegistrationActivity.this, RegistrationPersonalInfoActivity.class);//creates intent that launches personal info page
+                i.putExtra("Email", Email);
+                i.putExtra("Password", Password);
+                startActivity(i);
 
             } else {
 

@@ -1,14 +1,22 @@
 package seniorproject.smartstocks;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import seniorproject.smartstocks.Classes.User;
 
@@ -16,10 +24,13 @@ public class RegistrationPersonalInfoActivity extends AppCompatActivity {
 
     EditText txtFistName;
     EditText txtLastName;
-    Spinner txtAccountType;
+    Spinner spAccountType;
     EditText txtPhone;
-    EditText txtDOB;
+    DatePicker dpDOB;
     Button btnRegister;
+    String email;
+    String password;
+
     private UserRegistrationSubmit AuthTask = null;
 
     @Override
@@ -30,9 +41,21 @@ public class RegistrationPersonalInfoActivity extends AppCompatActivity {
 
         txtFistName = (EditText) findViewById(R.id.txtFirstName);
         txtLastName = (EditText) findViewById(R.id.txtLastName);
-        txtAccountType = (Spinner) findViewById(R.id.ddAccountType);
+        spAccountType = (Spinner) findViewById(R.id.spAccountType);
+        String[] arraySpinner = new String[] {
+                "Personal", "Business"
+        };
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, arraySpinner);
+        spAccountType.setAdapter(adapter); // sets items in spinner
+
         txtPhone = (EditText) findViewById(R.id.txtPhone);
-        txtDOB = (EditText) findViewById(R.id.txtDOB);
+        dpDOB = (DatePicker) findViewById(R.id.dpDOB);
+        dpDOB.setMaxDate(System.currentTimeMillis()); //sets maximum birthday dat
+
+        Intent previousIntent = getIntent();
+        email = previousIntent.getStringExtra("Email");
+        password = previousIntent.getStringExtra("Password"); //will eventually hash
 
         btnRegister = (Button) findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -51,15 +74,13 @@ public class RegistrationPersonalInfoActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        Intent previousIntent = getIntent();
-        String email = previousIntent.getStringExtra("Email");
-        String password = previousIntent.getStringExtra("Password");
+
 
         String firstname = txtFistName.getText().toString();                //Stores values at registration attempt
         String lastname = txtLastName.getText().toString();
-       // String accountType = txtAccountType.getSelectedItem().toString();
-        //String phone = txtPhone.getText().toString();
-       // String dateOfBirth = txtDOB.getText().toString();
+        String accountType = spAccountType.getSelectedItem().toString();
+        String phone = txtPhone.getText().toString();
+        String dateOfBirth = dpDOB.getMonth() + "/" + dpDOB.getDayOfMonth() + "/" + dpDOB.getYear();
 
         if (TextUtils.isEmpty(firstname)) {
             txtFistName.setError(getString(R.string.error_field_required));
@@ -81,20 +102,36 @@ public class RegistrationPersonalInfoActivity extends AppCompatActivity {
             cancel = true;
         }
 
+        if (TextUtils.isEmpty(phone)) {
+            txtPhone.setError(getString(R.string.error_field_required));
+            focusView = txtPhone;
+            cancel = true;
+        } else if (!isPhoneValid(phone)) {
+            txtPhone.setError("Invalid phone number");
+            focusView = txtPhone;
+            cancel = true;
+        }
+
 
 
         if(cancel){
             //will not execute registration
+            focusView.requestFocus();
         }else {
-            User user = new User();
-            AuthTask = new UserRegistrationSubmit(user);
+            User user = new User(firstname, lastname, email, phone, dateOfBirth,accountType);
+            AuthTask = new UserRegistrationSubmit(user, password);
             AuthTask.execute((Void) null);
         }
     }
 
     private boolean isNameValid(String name) {
         //TODO: Replace this with your own logic
-        return (!name.contains("\\d+") || !name.contains("\\W+"));
+        return (!name.matches("\\d+") && !name.matches("\\W+")); // if name contains numbers or special characters, return false
+    }
+
+    private boolean isPhoneValid(String phone) {
+        //TODO: Replace this with your own logic
+        return (phone.matches("[0-9]+") && (phone.length() == 10) ); //if phone number is numeric and 10 characters long, return true
     }
 
 
@@ -103,19 +140,37 @@ public class RegistrationPersonalInfoActivity extends AppCompatActivity {
     public class UserRegistrationSubmit extends AsyncTask<Void, Void, Boolean>{
 
         User newUser;
-        public UserRegistrationSubmit(User user){
+        String password;
+        public UserRegistrationSubmit(User user, String password){
             newUser = user;
+            this.password = password;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            return true;
+
+            return newUser.attemptRegister(newUser, password);
+
         }
 
         protected void onPostExecute(final Boolean success) {
 
             if(success){
+                Context context = getApplicationContext();
+                CharSequence text = "Registration Successful!";
+                int duration = Toast.LENGTH_SHORT;
 
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                finish();
+            }
+            else{
+                Context context = getApplicationContext();
+                CharSequence text = "Registration Failed!";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
             }
 
         }

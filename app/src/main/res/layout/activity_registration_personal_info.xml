@@ -12,7 +12,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:weightSum="1">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -92,24 +93,25 @@
                 <Spinner
                     android:layout_width="fill_parent"
                     android:layout_height="48dp"
-                    android:id="@+id/ddAccountType"
-                    android:gravity="center" />
+                    android:id="@+id/spAccountType"
+                    android:gravity="center"
+                    android:spinnerMode="dropdown" />
 
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="48dp"
-                    android:inputType="textEmailAddress"
+                    android:inputType="text|phone"
                     android:ems="10"
                     android:id="@+id/txtPhone"
                     android:gravity="center" />
 
-                <EditText
-                    android:layout_width="fill_parent"
-                    android:layout_height="48dp"
-                    android:inputType="date"
-                    android:ems="10"
-                    android:id="@+id/txtDOB"
-                    android:gravity="center" />
+                <DatePicker
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/dpDOB"
+                    android:layout_gravity="center_horizontal"
+                    android:datePickerMode="spinner"
+                    android:calendarViewShown="false"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -130,5 +132,6 @@
                 android:id="@+id/btnRegister"
                 android:layout_gravity="center_horizontal" />
         </LinearLayout>
+
     </LinearLayout>
 </RelativeLayout>
