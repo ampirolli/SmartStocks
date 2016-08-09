@@ -130,6 +130,48 @@ public class Login {
 
     }
 
+    public String getUserID(){
+
+        LICS loginConnectionString = new LICS();
+        String connectionUrl = loginConnectionString.LoginConnectionString();
+
+        // Declare the JDBC objects.
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet result = null;
+
+        try {
+            // Establish the connection.
+            Class.forName("net.sourceforge.jtds.jdbc.Driver");
+            conn = DriverManager.getConnection(connectionUrl);
+            // Create and execute an SQL statement that returns some data.
+
+            String SQL = "execute sp_get_user_id '" +this.getEmail() + "';";
+            stmt = conn.createStatement();
+            result = stmt.executeQuery(SQL);
+            String user_id = null;
+            while (result.next()) {
+                user_id = result.getString("user_id");
+            }
+
+            return  user_id;
+
+        }
+
+        // Handle any errors that may have occurred.
+        catch (Exception e) {
+            e.printStackTrace();
+            return "null";
+        }
+        finally {
+            if (result != null) try { result.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (conn != null) try { conn.close(); } catch(Exception e) {}
+        }
+
+    }
+
+
 
 
 }

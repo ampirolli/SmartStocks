@@ -11,4 +11,5 @@ public class AccountsBalancesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_accounts_balances);
     }
 
+
 }

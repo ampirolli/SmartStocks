@@ -12,19 +12,31 @@
     tools:context=".AccountsActivity"
     tools:showIn="@layout/activity_account">
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/lvAccountPages"
-        android:layout_below="@+id/spAccount"
-        android:layout_alignParentStart="true" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spAccount"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:spinnerMode="dropdown" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Account:"
+            android:id="@+id/textView18" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spAccount"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:spinnerMode="dropdown" />
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lvAccountPages"
+            android:layout_below="@+id/spAccount"
+            android:layout_alignParentStart="true" />
+    </LinearLayout>
 
 </RelativeLayout>

@@ -320,10 +320,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
+        private String mUserID;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
+
+
         }
 
         @Override
@@ -341,6 +344,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             login.setEmail(mEmail);
             login.setHashedPassword(mPassword);
+            mUserID = login.getUserID();
+
             return  login.attemptLogin();//Connects to database in order to attempt login
         }
 
@@ -352,6 +357,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
 
                 Intent i = new Intent(LoginActivity.this, MainActivity.class); //creates intent that launches main menu
+                i.putExtra("USER_ID",mUserID );
                 startActivity(i);
                 finish();
             } else {
