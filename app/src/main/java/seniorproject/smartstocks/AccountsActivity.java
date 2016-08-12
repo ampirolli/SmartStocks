@@ -22,9 +22,12 @@ import seniorproject.smartstocks.Classes.Session;
 public class AccountsActivity extends AppCompatActivity {
 
     Session currentSession;
+    ArrayList<Account> accountsList = new  ArrayList<Account>() ;
+
     ListView AccountActivitiesList;
     Spinner spAccounts;
-    ArrayList<Account> accountsList;
+
+
 
     private getAccountsTask AuthTask = null;
 
@@ -36,28 +39,14 @@ public class AccountsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent previousIntent = getIntent();
-        currentSession = (Session) previousIntent.getParcelableExtra("Session");
+        currentSession = Session.getInstance(previousIntent.getStringExtra("Session"));  //loads current session into intent
         currentSession.getUser_id();
+
 
         AccountActivitiesList = (ListView) findViewById(R.id.lvAccountPages);
         spAccounts = (Spinner) findViewById(R.id.spAccount);
 
-        AuthTask = new getAccountsTask(currentSession.getUser_id());
-        AuthTask.execute((Void) null);
-
-        //load the spinner with a list of accounts
-        List<String> accountsNickname= new ArrayList<String>();
-        for (Account account: accountsList) {
-            accountsNickname.add(account.getNickname());
-        }
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_list_item_1,
-                accountsNickname);
-
-        spAccounts.setAdapter(arrayAdapter);
-
+        executeAuthTask();
 
         // Instanciating an array list (you don't need to do this,
         // you already have yours).
@@ -83,16 +72,24 @@ public class AccountsActivity extends AppCompatActivity {
                                     long id) {
 
                 if(id == 0){
-                    Intent i = new Intent(AccountsActivity.this, AccountsBalancesActivity.class); //creates intent that launches main menu
+                    Intent i = new Intent(AccountsActivity.this, AccountsBalancesActivity.class); //creates intent that launches Balances
+                    i.putExtra("Session", currentSession.getUser_id());
+                    i.putParcelableArrayListExtra("AccountsList", accountsList);
                     startActivity(i);
                 }else if(id == 1){
-                    Intent i = new Intent(AccountsActivity.this, AccountsOrdersActivity.class); //creates intent that launches main menu
+                    Intent i = new Intent(AccountsActivity.this, AccountsOrdersActivity.class); //creates intent that launches Orders
+                    i.putExtra("Session", currentSession.getUser_id());
+                    i.putParcelableArrayListExtra("AccountsList", accountsList);
                     startActivity(i);
                 }else if(id == 2){
-                    Intent i = new Intent(AccountsActivity.this, AccountsPortfolioActivity.class); //creates intent that launches main menu
+                    Intent i = new Intent(AccountsActivity.this, AccountsPortfolioActivity.class); //creates intent that launches Portfolio
+                    i.putExtra("Session", currentSession.getUser_id());
+                    i.putParcelableArrayListExtra("AccountsList", accountsList);
                     startActivity(i);
                 }else if(id == 3){
-                    Intent i = new Intent(AccountsActivity.this, AccountsTransactionsActivity.class); //creates intent that launches main menu
+                    Intent i = new Intent(AccountsActivity.this, AccountsTransactionsActivity.class); //creates intent that Transactions
+                    i.putExtra("Session", currentSession.getUser_id());
+                    i.putParcelableArrayListExtra("AccountsList", accountsList);
                     startActivity(i);
                 }
 
@@ -112,7 +109,10 @@ public class AccountsActivity extends AppCompatActivity {
         });
     }
 
-
+    public void executeAuthTask(){
+        AuthTask = new getAccountsTask(currentSession.getUser_id());
+        AuthTask.execute((Void) null);
+    }
 
     public class getAccountsTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -124,15 +124,36 @@ public class AccountsActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            Account account = new Account();
+            accountsList = account.getAccounts(user_id);
+            accountsList.isEmpty();
             return true;
         }
         @Override
         protected void onPostExecute(final Boolean success) {
+
+            AuthTask = null;
+
             if(success){
-                Account account = new Account();
-                accountsList = account.getAccounts(user_id);
+                //load the spinner with a list of accounts
+                List<String> accountsNickname= new ArrayList<String>();
+                for (Account account: accountsList) {
+                    if(account.getNickname().equals(""))
+                        accountsNickname.add(account.getAccountNumber());
+                    else
+                        accountsNickname.add(account.getNickname() + "-" + account.getAccountNumber());
+                }
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(AccountsActivity.this, android.R.layout.simple_spinner_item, accountsNickname);
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spAccounts.setAdapter(arrayAdapter);
 
             }
+        }
+
+        @Override
+        protected void onCancelled() {
+            AuthTask = null;
+
         }
 
 

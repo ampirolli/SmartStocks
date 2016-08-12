@@ -24,7 +24,7 @@
             android:id="@+id/textView18" />
 
         <Spinner
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/spAccount"
             android:layout_alignParentTop="true"

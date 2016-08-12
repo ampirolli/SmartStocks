@@ -1,5 +1,8 @@
 package seniorproject.smartstocks.Classes;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,12 +15,30 @@ import seniorproject.smartstocks.LICS;
 /**
  * Created by Ampirollli on 8/8/2016.
  */
-public class Account {
+public class Account implements Parcelable {
 
     BigDecimal Balance;
     String AccountNumber;
     String Type;
     String Nickname;
+
+    protected Account(Parcel in) {
+        AccountNumber = in.readString();
+        Type = in.readString();
+        Nickname = in.readString();
+    }
+
+    public static final Creator<Account> CREATOR = new Creator<Account>() {
+        @Override
+        public Account createFromParcel(Parcel in) {
+            return new Account(in);
+        }
+
+        @Override
+        public Account[] newArray(int size) {
+            return new Account[size];
+        }
+    };
 
     public BigDecimal getBalance() {
         return Balance;
@@ -72,7 +93,7 @@ public class Account {
             conn = DriverManager.getConnection(connectionUrl);
             // Create and execute an SQL statement that returns some data.
 
-            String SQL = "sp_get_transaction '" + user_id + "';";
+            String SQL = "sp_get_accounts '" + user_id + "';";
             stmt = conn.createStatement();
             result = stmt.executeQuery(SQL);
             int counter = 0;
@@ -85,7 +106,7 @@ public class Account {
                 accountList.add(account);
             }
 
-            return  accountList;
+
 
         }
 
@@ -98,10 +119,21 @@ public class Account {
             if (result != null) try { result.close(); } catch(Exception e) {}
             if (stmt != null) try { stmt.close(); } catch(Exception e) {}
             if (conn != null) try { conn.close(); } catch(Exception e) {}
+            return  accountList;
         }
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(AccountNumber);
+        dest.writeString(Type);
+        dest.writeString(Nickname);
+    }
 
 
     //EXECUTE sp_get_transaction 6

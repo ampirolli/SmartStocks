@@ -10,4 +10,5 @@ public class AccountsOpenAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accounts_open_account);
     }
+
 }
