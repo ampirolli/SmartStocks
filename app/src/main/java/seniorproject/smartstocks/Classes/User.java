@@ -67,7 +67,7 @@ public class User {
             while (result.next()) {
                 Account account = new Account();
                 account.setAccountNumber(result.getString("account_number"));
-                account.setBalance(result.getBigDecimal("account_balance"));
+                account.setBalance(result.getString("account_balance"));
                 account.setType(result.getString("account_type"));
                 account.setNickname(result.getString("account_nickname"));
                 accountList.add(account);

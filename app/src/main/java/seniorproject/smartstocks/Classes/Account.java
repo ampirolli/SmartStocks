@@ -19,7 +19,7 @@ public class Account implements Parcelable {
 
     String AccountNumber;
     String Type;
-    BigDecimal Balance;
+    String Balance;
     ArrayList<Order> Orders = new ArrayList<Order>();
     ArrayList<Transaction> Transcations = new ArrayList<Transaction>();
 
@@ -29,6 +29,7 @@ public class Account implements Parcelable {
     protected Account(Parcel in) {
         AccountNumber = in.readString();
         Type = in.readString();
+        Balance = in.readString();
         Nickname = in.readString();
     }
 
@@ -43,7 +44,6 @@ public class Account implements Parcelable {
             return new Account[size];
         }
     };
-
 
     public String getAccountNumber() {
         return AccountNumber;
@@ -61,11 +61,11 @@ public class Account implements Parcelable {
         Type = type;
     }
 
-    public BigDecimal getBalance() {
+    public String getBalance() {
         return Balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+    public void setBalance(String balance) {
         Balance = balance;
     }
 
@@ -148,7 +148,10 @@ public class Account implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(AccountNumber);
+        dest.writeString(Type);
+        dest.writeString(Balance);
+        dest.writeString(Nickname);
     }
 
 

@@ -23,17 +23,17 @@ public class AccountsBalancesActivity extends AppCompatActivity {
     ArrayList<String> accountsNumberList = new  ArrayList<String>() ; //list to save the selected accounts account number
     String accountSelectionValue = new String(); //String to resolve which account was selected
     Integer accountSelectionIndex = new Integer(0); // String to resolve the index oof the selected account
-    ArrayList<BigDecimal> balances = new ArrayList<BigDecimal>(); // array to get balance of selected account
+    ArrayList<String> balances = new ArrayList<String>(); // array to get balance of selected account
 
 
     Spinner spAccounts;
     TextView txtAccountValue;
+    TextView txtNetValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accounts_balances);
-
 
         Intent previousIntent = getIntent();
         currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0)); //loads current session into intent
@@ -45,7 +45,7 @@ public class AccountsBalancesActivity extends AppCompatActivity {
 
         spAccounts = (Spinner) findViewById(R.id.spAccount);
         txtAccountValue = (TextView) findViewById(R.id.txtAccountValue);
-
+        txtNetValue = (TextView) findViewById(R.id.txtNetAsset);
 
 
 
@@ -65,6 +65,8 @@ public class AccountsBalancesActivity extends AppCompatActivity {
         spAccounts.setAdapter(arrayAdapter);
         spAccounts.setSelection(accountSelectionIndex);
         txtAccountValue.setText(balances.get(accountSelectionIndex).toString());
+
+
 
         spAccounts.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
