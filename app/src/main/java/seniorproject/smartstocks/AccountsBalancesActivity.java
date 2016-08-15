@@ -47,8 +47,6 @@ public class AccountsBalancesActivity extends AppCompatActivity {
         txtAccountValue = (TextView) findViewById(R.id.txtAccountValue);
         txtNetValue = (TextView) findViewById(R.id.txtNetAsset);
 
-
-
         //load the spinner with a list of accounts
         List<String> accountsNickname= new ArrayList<String>();
         for (Account account: accountsList) {
@@ -66,6 +64,13 @@ public class AccountsBalancesActivity extends AppCompatActivity {
         spAccounts.setSelection(accountSelectionIndex);
         txtAccountValue.setText(balances.get(accountSelectionIndex).toString());
 
+        BigDecimal netBalance = new BigDecimal(0);
+        for(String balance: balances){
+           netBalance = netBalance.add(new BigDecimal(balance.toString()));
+
+        }
+
+        txtNetValue.setText(netBalance.toString());
 
 
         spAccounts.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
