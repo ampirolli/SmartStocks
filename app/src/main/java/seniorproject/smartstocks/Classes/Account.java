@@ -17,10 +17,14 @@ import seniorproject.smartstocks.LICS;
  */
 public class Account implements Parcelable {
 
-    BigDecimal Balance;
     String AccountNumber;
     String Type;
+    BigDecimal Balance;
+    ArrayList<Order> Orders = new ArrayList<Order>();
+    ArrayList<Transaction> Transcations = new ArrayList<Transaction>();
+
     String Nickname;
+
 
     protected Account(Parcel in) {
         AccountNumber = in.readString();
@@ -40,13 +44,6 @@ public class Account implements Parcelable {
         }
     };
 
-    public BigDecimal getBalance() {
-        return Balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        Balance = balance;
-    }
 
     public String getAccountNumber() {
         return AccountNumber;
@@ -64,6 +61,74 @@ public class Account implements Parcelable {
         Type = type;
     }
 
+    public BigDecimal getBalance() {
+        return Balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        Balance = balance;
+    }
+
+    public ArrayList<Transaction> getTranscations(Integer AccountID, String StartDate, String EndDate) {
+        LICS loginConnectionString = new LICS();
+        String connectionUrl = loginConnectionString.LoginConnectionString();
+
+        // Declare the JDBC objects.
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet result = null;
+        //Declare TransactionList
+        ArrayList<Transaction> transactionList = new ArrayList<>();
+
+        try {
+            // Establish the connection.
+            Class.forName("net.sourceforge.jtds.jdbc.Driver");
+            conn = DriverManager.getConnection(connectionUrl);
+            // Create and execute an SQL statement that returns some data.
+
+            String SQL = "sp_get_transaction '" + AccountID +", " + StartDate + ", " + EndDate + "';";
+            stmt = conn.createStatement();
+            result = stmt.executeQuery(SQL);
+            int counter = 0;
+            while (result.next()) {
+
+
+
+
+                Transaction transaction = new Transaction();
+                transaction.setPricePaid(result.getBigDecimal("transaction_ammount"));
+                transaction.setTransactionType(result.getString("transaction_type"));
+                transaction.setTransactionDate(result.getDate("transaction_time"));
+                transaction.setStockSymbol(result.getString("stock_symbol"));
+                transaction.setStockQuantity(result.getInt("stock_quantity"));
+                transactionList.add(transaction);
+            }
+
+
+
+        }
+
+        // Handle any errors that may have occurred.
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            if (result != null) try { result.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (conn != null) try { conn.close(); } catch(Exception e) {}
+            return transactionList;
+        }
+    }
+
+    public ArrayList<Order> getOrders() {
+        return Orders;
+    }
+
+    public void setOrders(ArrayList<Order> orders) {
+        Orders = orders;
+    }
+
     public String getNickname() {
         return Nickname;
     }
@@ -75,6 +140,7 @@ public class Account implements Parcelable {
     public Account(){
 
     }
+
 
     @Override
     public int describeContents() {

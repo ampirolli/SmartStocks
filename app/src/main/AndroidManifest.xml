@@ -38,11 +38,13 @@
         <activity android:name=".AccountsPortfolioActivity" />
         <activity android:name=".AccountsBalancesActivity" />
         <activity android:name=".AccountsOrdersActivity" />
-        <activity android:name=".AccountsTransactionsActivity"></activity>
+        <activity android:name=".AccountsTransactionsActivity" />
         <activity
             android:name=".AccountsActivity"
             android:label="@string/title_activity_account"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".CreateAccountActivity" />
+        <activity android:name=".ConnectAccountActivity"></activity>
     </application>
 
 </manifest>
