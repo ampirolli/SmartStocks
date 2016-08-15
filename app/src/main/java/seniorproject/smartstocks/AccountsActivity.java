@@ -139,7 +139,9 @@ public class AccountsActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             User user = new User(user_id);
+            user.setAccounts();
             accountsList = user.getAccounts();
+
             return true;
         }
         @Override

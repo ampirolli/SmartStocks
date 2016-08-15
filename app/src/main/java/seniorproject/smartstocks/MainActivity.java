@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected Boolean doInBackground(Void... params) {
             User user = new User(user_id);
-            favoritesList = user.getFavorites();
+            favoritesList = user.setFavorites();
             return true;
         }
 

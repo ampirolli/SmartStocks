@@ -20,6 +20,7 @@ public class User {
     ArrayList<Account> Accounts = new ArrayList<Account>();
     ArrayList<StockAnalyzer> Analyzer = new ArrayList<StockAnalyzer>();
     ArrayList<StockAutoTrade> AutoTrades = new ArrayList<StockAutoTrade>();
+
     ArrayList<String> Favorites = new ArrayList<String>();
 
     public ArrayList<StockAnalyzer> getAnalyzer() {
@@ -42,7 +43,7 @@ public class User {
         return Accounts;
     }
 
-    private void setAccounts(){
+    public void setAccounts(){
         LICS loginConnectionString = new LICS();
         String connectionUrl = loginConnectionString.LoginConnectionString();
 
@@ -93,6 +94,10 @@ public class User {
     }
 
     public ArrayList<String> getFavorites() {
+        return Favorites;
+    }
+
+    public ArrayList<String> setFavorites() {
         LICS loginConnectionString = new LICS();
         String connectionUrl = loginConnectionString.LoginConnectionString();
 
@@ -139,8 +144,6 @@ public class User {
     public User(Integer ID){
 
         UserID = ID;
-
-        setAccounts();
 
     }
 

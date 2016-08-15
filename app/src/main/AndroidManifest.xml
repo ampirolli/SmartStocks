@@ -45,7 +45,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".CreateAccountActivity" />
         <activity android:name=".ConnectAccountActivity" />
-        <activity android:name=".StockInformationActivity"></activity>
+        <activity android:name=".StockInformationActivity" />
+        <activity android:name=".PinLoginActivity"></activity>
     </application>
 
 </manifest>

@@ -7,7 +7,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +23,11 @@ public class AccountsBalancesActivity extends AppCompatActivity {
     ArrayList<String> accountsNumberList = new  ArrayList<String>() ; //list to save the selected accounts account number
     String accountSelectionValue = new String(); //String to resolve which account was selected
     Integer accountSelectionIndex = new Integer(0); // String to resolve the index oof the selected account
+    ArrayList<BigDecimal> balances = new ArrayList<BigDecimal>(); // array to get balance of selected account
+
 
     Spinner spAccounts;
+    TextView txtAccountValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +42,10 @@ public class AccountsBalancesActivity extends AppCompatActivity {
         accountSelectionValue = previousIntent.getStringExtra("SelectedAccount"); // pulls selected account from previous intent
         accountSelectionIndex = previousIntent.getIntExtra("SelectedIndex",0); //pull selected accounts index from previous intent
 
-
-
         spAccounts = (Spinner) findViewById(R.id.spAccount);
+        txtAccountValue = (TextView) findViewById(R.id.txtAccountValue);
+
+
 
 
         //load the spinner with a list of accounts
@@ -50,18 +56,23 @@ public class AccountsBalancesActivity extends AppCompatActivity {
             else
                 accountsNickname.add(account.getNickname() + "-" + account.getAccountNumber());
             accountsNumberList.add(account.getAccountNumber());
+            balances.add(account.getBalance());
 
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, accountsNickname);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spAccounts.setAdapter(arrayAdapter);
         spAccounts.setSelection(accountSelectionIndex);
+        txtAccountValue.setText(balances.get(accountSelectionIndex).toString());
 
         spAccounts.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 accountSelectionValue = accountsNumberList.get(i);
                 accountSelectionIndex = i;
+                txtAccountValue.setText(balances.get(accountSelectionIndex).toString());
+
+
             }
 
             @Override
@@ -69,6 +80,8 @@ public class AccountsBalancesActivity extends AppCompatActivity {
                 // do nothing
             }
         });
+
+
 
     }
 
