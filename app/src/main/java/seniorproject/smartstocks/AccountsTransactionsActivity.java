@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import seniorproject.smartstocks.Classes.Account;
@@ -77,13 +78,28 @@ public class AccountsTransactionsActivity extends AppCompatActivity {
     public class getTransactionsTask extends AsyncTask<Void, Void, Boolean> {
 
         User User;
-        public getTransactionsTask(User user){
+        String StartDate;
+        String EndDate;
+
+        public getTransactionsTask(User user, Date startDate, Date endDate){
             User = user;
+            StartDate = startDate.toString();
+            EndDate = endDate.toString();
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            AuthTask = null;
+
+            if (success) {
+                Account account = User.getAccounts().get(accountSelectionIndex);
+                account.getTranscations(Integer.valueOf(account.getAccountNumber()), StartDate, EndDate);
+            }
         }
 
         @Override
