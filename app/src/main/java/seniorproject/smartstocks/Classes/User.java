@@ -93,7 +93,47 @@ public class User {
     }
 
     public ArrayList<String> getFavorites() {
-        return Favorites;
+        LICS loginConnectionString = new LICS();
+        String connectionUrl = loginConnectionString.LoginConnectionString();
+
+        // Declare the JDBC objects.
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet result = null;
+        //Declare email+password
+        ArrayList<String> favorites = new ArrayList<>();
+
+        try {
+            // Establish the connection.
+            Class.forName("net.sourceforge.jtds.jdbc.Driver");
+            conn = DriverManager.getConnection(connectionUrl);
+            // Create and execute an SQL statement that returns some data.
+
+            String SQL = "sp_get_favorites '" + this.UserID + "';";
+            stmt = conn.createStatement();
+            result = stmt.executeQuery(SQL);
+            int counter = 0;
+            while (result.next()) {
+                String favorite = new String();
+                favorite = (result.getString("stock_symbol"));
+                favorites.add(favorite);
+            }
+
+
+
+        }
+
+        // Handle any errors that may have occurred.
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            if (result != null) try { result.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (conn != null) try { conn.close(); } catch(Exception e) {}
+             return favorites;
+        }
     }
 
     public User(Integer ID){

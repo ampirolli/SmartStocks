@@ -31,17 +31,36 @@
             android:id="@+id/spAccount"
             android:spinnerMode="dropdown" />
 
-        <TextView
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Status:"
-            android:id="@+id/textView19" />
+            android:layout_gravity="left|center_horizontal"
+            android:layout_alignParentRight="true">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/txtStatus" />
+            <DatePicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:id="@+id/spStart"
+                android:layout_gravity="center_horizontal"
+                android:datePickerMode="spinner"
+                android:calendarViewShown="false"
+                android:scaleY="0.65"
+                android:scaleX="0.65"
+                />
+
+            <DatePicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:id="@+id/dpEnd"
+                android:layout_gravity="center_horizontal"
+                android:datePickerMode="spinner"
+                android:calendarViewShown="false"
+                android:scaleY="0.65"
+                android:scaleX="0.65"/>
+        </LinearLayout>
 
         <TextView
             android:layout_width="227dp"
