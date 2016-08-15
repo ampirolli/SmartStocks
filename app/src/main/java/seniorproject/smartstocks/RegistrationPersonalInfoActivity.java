@@ -11,20 +11,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.Calendar;
-import java.util.Date;
-
-import seniorproject.smartstocks.Classes.User;
+import seniorproject.smartstocks.Classes.Registration;
 
 public class RegistrationPersonalInfoActivity extends AppCompatActivity {
 
     EditText txtFistName;
     EditText txtLastName;
-    Spinner spAccountType;
+    Spinner spUserType;
     EditText txtPhone;
     DatePicker dpDOB;
     Button btnRegister;
@@ -41,13 +37,13 @@ public class RegistrationPersonalInfoActivity extends AppCompatActivity {
 
         txtFistName = (EditText) findViewById(R.id.txtFirstName);
         txtLastName = (EditText) findViewById(R.id.txtLastName);
-        spAccountType = (Spinner) findViewById(R.id.spAccountType);
+        spUserType = (Spinner) findViewById(R.id.spUserType);
         String[] arraySpinner = new String[] {
                 "Personal", "Business"
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, arraySpinner);
-        spAccountType.setAdapter(adapter); // sets items in spinner
+        spUserType.setAdapter(adapter); // sets items in spinner
 
         txtPhone = (EditText) findViewById(R.id.txtPhone);
         dpDOB = (DatePicker) findViewById(R.id.dpDOB);
@@ -78,7 +74,7 @@ public class RegistrationPersonalInfoActivity extends AppCompatActivity {
 
         String firstname = txtFistName.getText().toString();                //Stores values at registration attempt
         String lastname = txtLastName.getText().toString();
-        String accountType = spAccountType.getSelectedItem().toString();
+        String accountType = spUserType.getSelectedItem().toString();
         String phone = txtPhone.getText().toString();
         String dateOfBirth = dpDOB.getMonth() + "/" + dpDOB.getDayOfMonth() + "/" + dpDOB.getYear();
 
@@ -118,8 +114,8 @@ public class RegistrationPersonalInfoActivity extends AppCompatActivity {
             //will not execute registration
             focusView.requestFocus();
         }else {
-            User user = new User(firstname, lastname, email, phone, dateOfBirth,accountType);
-            AuthTask = new UserRegistrationSubmit(user, password);
+            Registration registration = new Registration(firstname, lastname, email, phone, dateOfBirth,accountType);
+            AuthTask = new UserRegistrationSubmit(registration, password);
             AuthTask.execute((Void) null);
         }
     }
@@ -139,17 +135,17 @@ public class RegistrationPersonalInfoActivity extends AppCompatActivity {
 
     public class UserRegistrationSubmit extends AsyncTask<Void, Void, Boolean>{
 
-        User newUser;
+        Registration newRegistration;
         String password;
-        public UserRegistrationSubmit(User user, String password){
-            newUser = user;
+        public UserRegistrationSubmit(Registration registration, String password){
+            newRegistration = registration;
             this.password = password;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            return newUser.attemptRegister(newUser, password);
+            return newRegistration.attemptRegister(newRegistration, password);
 
         }
 

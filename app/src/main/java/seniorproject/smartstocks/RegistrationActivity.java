@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import seniorproject.smartstocks.Classes.User;
+import seniorproject.smartstocks.Classes.Registration;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -135,9 +135,9 @@ public class RegistrationActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            User newUser = new User();
+            Registration newRegistration = new Registration();
 
-            return newUser.isEmailAvailable(Email);
+            return newRegistration.isEmailAvailable(Email);
         }
 
         @Override

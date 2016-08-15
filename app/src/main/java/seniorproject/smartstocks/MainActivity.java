@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity
 
 
         Intent previousIntent = getIntent();
-        currentSession = Session.getInstance(previousIntent.getStringExtra("USER_ID"));
+        currentSession = Session.getInstance(previousIntent.getIntExtra("USER_ID", 0));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

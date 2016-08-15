@@ -5,19 +5,19 @@ package seniorproject.smartstocks.Classes;
  */
 public class Session {
 
-    final String user_id;
+    final Integer user_id;
     private static Session uniqueInstance;
-    private Session(String user_id) {
+    private Session(Integer user_id) {
         this.user_id = user_id;
     }
-    public static Session getInstance(String user_id){
+    public static Session getInstance(Integer user_id){
         if(uniqueInstance == null){
             uniqueInstance = new Session(user_id);
         }
         return uniqueInstance;
     }
 
-    public String getUser_id() {
+    public Integer getUser_id() {
         return user_id;
     }
 

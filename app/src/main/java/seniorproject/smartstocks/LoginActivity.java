@@ -320,7 +320,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
-        private String mUserID;
+        private Integer mUserID;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -361,7 +361,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(i);
                 finish();
             } else {
-                mPasswordView.setError("Incorrect Password or Email Does Not Exist");
+                mPasswordView.setError("Incorrect password or email does not exist");
                 mPasswordView.requestFocus();
             }
         }

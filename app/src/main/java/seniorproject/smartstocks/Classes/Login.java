@@ -107,7 +107,7 @@ public class Login {
             conn = DriverManager.getConnection(connectionUrl);
             // Create and execute an SQL statement that returns some data.
             //String SQL = "SELECT * WHERE Email = " + mEmail +" and Password = " + mPassword + "FROM dbo.LOGIN";
-            String SQL = "SELECT * FROM [SE414_Group3].[dbo].[User] WHERE email_address = '"+ email.toLowerCase() + ";";
+            String SQL = "SELECT * FROM [SE414_Group3].[dbo].[USER] WHERE email_address = '"+ email.toLowerCase() + ";";
             stmt = conn.createStatement();
             result = stmt.executeQuery(SQL);
 
@@ -130,7 +130,7 @@ public class Login {
 
     }
 
-    public String getUserID(){
+    public Integer getUserID(){
 
         LICS loginConnectionString = new LICS();
         String connectionUrl = loginConnectionString.LoginConnectionString();
@@ -149,9 +149,9 @@ public class Login {
             String SQL = "execute sp_get_user_id '" +this.getEmail() + "';";
             stmt = conn.createStatement();
             result = stmt.executeQuery(SQL);
-            String user_id = null;
+            Integer user_id = null;
             while (result.next()) {
-                user_id = result.getString("user_id");
+                user_id = result.getInt("user_id");
             }
 
             return  user_id;
@@ -161,7 +161,7 @@ public class Login {
         // Handle any errors that may have occurred.
         catch (Exception e) {
             e.printStackTrace();
-            return "null";
+            return null;
         }
         finally {
             if (result != null) try { result.close(); } catch(Exception e) {}

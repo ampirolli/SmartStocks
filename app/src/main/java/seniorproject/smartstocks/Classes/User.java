@@ -1,88 +1,48 @@
 package seniorproject.smartstocks.Classes;
 
-import android.os.AsyncTask;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import seniorproject.smartstocks.LICS;
 
 /**
- * Created by Ampirollli on 7/25/2016.
+ * Created by Ampirollli on 8/14/2016.
  */
-public class User  {
+public class User {
 
-    private String FirstName;
-    private String LastName;
-    private String Email;
-    private String Phone;
-    private String BirthDate;
-    private String AccountType;
+    Integer UserID;
 
-    public String getFirstName() {
-        return FirstName;
+    String Username;
+    String UserType;
+    ArrayList<Account> Accounts = new ArrayList<Account>();
+    ArrayList<StockAnalyzer> Analyzer = new ArrayList<StockAnalyzer>();
+    ArrayList<StockAutoTrade> AutoTrades = new ArrayList<StockAutoTrade>();
+    ArrayList<String> Favorites = new ArrayList<String>();
+
+    public ArrayList<StockAnalyzer> getAnalyzer() {
+        return Analyzer;
     }
 
-    public void setFirstName(String firstName) {
-        FirstName = firstName;
+    public Integer getUserID() {
+        return UserID;
     }
 
-    public String getLastName() {
-        return LastName;
+    public String getUsername() {
+        return Username;
     }
 
-    public void setLastName(String lastName) {
-        LastName = lastName;
+    public String getUserType() {
+        return UserType;
     }
 
-    public String getEmail() {
-        return Email;
+    public ArrayList<Account> getAccounts() {
+        return Accounts;
     }
 
-    public void setEmail(String email) {
-        Email = email;
-    }
-
-    public String getPhone() {
-        return Phone;
-    }
-
-    public void setPhone(String phone) {
-        Phone = phone;
-    }
-
-    public String getBirthDate() {
-        return BirthDate;
-    }
-
-    public void setBirthDate(String birthDate) {
-        BirthDate = birthDate;
-    }
-
-    public String getAccountType() {
-        return AccountType;
-    }
-
-    public void setAccountType(String accountType) {
-        AccountType = accountType;
-    }
-
-
-    public User() {  }
-
-    public User(String firstName, String lastName, String email, String phone, String birthDate, String accountType) {
-        FirstName = firstName;
-        LastName = lastName;
-        Email = email;
-        Phone = phone;
-        BirthDate = birthDate;
-        AccountType = accountType;
-    }
-
-    public boolean isEmailAvailable(String email){
-
+    private void setAccounts(){
         LICS loginConnectionString = new LICS();
         String connectionUrl = loginConnectionString.LoginConnectionString();
 
@@ -90,23 +50,30 @@ public class User  {
         Connection conn = null;
         Statement stmt = null;
         ResultSet result = null;
-        //Declare email
-        String dbEmail = null;
+        //Declare email+password
+        ArrayList<Account> accountList = new ArrayList<>();
 
         try {
             // Establish the connection.
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
             conn = DriverManager.getConnection(connectionUrl);
             // Create and execute an SQL statement that returns some data.
-            //String SQL = "SELECT * WHERE Email = " + mEmail +" and Password = " + mPassword + "FROM dbo.LOGIN";
-            String SQL = "SELECT * FROM [SE414_Group3].[dbo].[User] WHERE email_address = '"+ email.toLowerCase() + "';";
+
+            String SQL = "sp_get_accounts '" + this.UserID + "';";
             stmt = conn.createStatement();
             result = stmt.executeQuery(SQL);
-
-            // Iterate through the data in the result set and display it.
+            int counter = 0;
             while (result.next()) {
-                dbEmail = result.getString("email_address");
+                Account account = new Account();
+                account.setAccountNumber(result.getString("account_number"));
+                account.setBalance(result.getBigDecimal("account_balance"));
+                account.setType(result.getString("account_type"));
+                account.setNickname(result.getString("account_nickname"));
+                accountList.add(account);
             }
+
+
+
         }
 
         // Handle any errors that may have occurred.
@@ -117,50 +84,25 @@ public class User  {
             if (result != null) try { result.close(); } catch(Exception e) {}
             if (stmt != null) try { stmt.close(); } catch(Exception e) {}
             if (conn != null) try { conn.close(); } catch(Exception e) {}
-            if(email.equals(dbEmail)){ return false; } else{ return true; }
+            this.Accounts = accountList;
         }
-
     }
 
-    public boolean attemptRegister(User user, String password){
-
-        LICS loginConnectionString = new LICS();
-        String connectionUrl = loginConnectionString.LoginConnectionString();
-
-        // Declare the JDBC objects.
-        Connection conn = null;
-        Statement stmt = null;
-
-        try {
-            // Establish the connection.
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            conn = DriverManager.getConnection(connectionUrl);
-            // Create and execute an SQL statement that returns some data.
-            //execute sp_user_registration 'Owner', 'Anthony', 'PieRoll', 'ampieroll1@gmail.com', '4015555555', '08-08-1700', 'password', NULL
-            String SQL = "execute sp_user_registration '" + user.getAccountType() + "', '" + user.getFirstName() + "', '" + user.getLastName() + "', '" + user.getEmail() + "', '" + user.getPhone() + "', '" + user.getBirthDate() + "', '" + password + "', NULL ;";
-            stmt = conn.createStatement();
-            stmt.executeUpdate(SQL);
-            return true;
-
-        }
-
-        // Handle any errors that may have occurred.
-        catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        finally {
-            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
-            if (conn != null) try { conn.close(); } catch(Exception e) {}
-        }
-
+    public ArrayList<StockAutoTrade> getAutoTrades() {
+        return AutoTrades;
     }
 
+    public ArrayList<String> getFavorites() {
+        return Favorites;
+    }
 
+    public User(Integer ID){
 
+        UserID = ID;
 
+        setAccounts();
 
-
+    }
 
 
 }
