@@ -138,6 +138,16 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
+        protected void onPostExecute(final Boolean success) {
+
+            AuthTask = null;
+
+            if (success) {
+                
+            }
+        }
+
+        @Override
         protected void onCancelled() {
             AuthTask = null;
 
