@@ -140,7 +140,6 @@ public class AccountsActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             User user = new User(user_id);
             accountsList = user.getAccounts();
-            accountsList.isEmpty();
             return true;
         }
         @Override
