@@ -66,19 +66,8 @@ public class PersonalInfoActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            return true;
-        }
-        @Override
-        protected void onPostExecute(final Boolean success) {
-
-            AuthTask = null;
-
-            if(success){
-
             getPersonalInformation(user_id);
-
-
-            }
+            return true;
         }
 
         @Override
