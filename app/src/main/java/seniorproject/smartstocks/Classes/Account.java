@@ -141,7 +141,6 @@ public class Account implements Parcelable {
 
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -149,10 +148,7 @@ public class Account implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(AccountNumber);
-        dest.writeString(Type);
-        dest.writeString(Nickname);
-        dest.writeString(Balance.toString());
+
     }
 
 
