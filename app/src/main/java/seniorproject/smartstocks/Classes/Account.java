@@ -152,6 +152,7 @@ public class Account implements Parcelable {
         dest.writeString(AccountNumber);
         dest.writeString(Type);
         dest.writeString(Nickname);
+        dest.writeString(Balance.toString());
     }
 
 
