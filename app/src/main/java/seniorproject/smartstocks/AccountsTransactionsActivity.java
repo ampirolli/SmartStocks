@@ -89,17 +89,10 @@ public class AccountsTransactionsActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
+
+            Account account = User.getAccounts().get(accountSelectionIndex);
+            account.getTranscations(Integer.valueOf(account.getAccountNumber()), StartDate, EndDate);
             return null;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            AuthTask = null;
-
-            if (success) {
-                Account account = User.getAccounts().get(accountSelectionIndex);
-                account.getTranscations(Integer.valueOf(account.getAccountNumber()), StartDate, EndDate);
-            }
         }
 
         @Override

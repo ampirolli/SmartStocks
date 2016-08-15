@@ -108,7 +108,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
             while (result.next()) {
                 txtEmailAddress.setText(result.getString("email_address"));
                 txtFistName.setText((result.getString("first_name")));
-                txtLastName.setText((result.getString("account_type")));
+                txtLastName.setText((result.getString("last_name")));
                 txtPhone.setText((result.getString("phone_number")));
                 txtDOB.setText((result.getString("date_of_birth")));
 
