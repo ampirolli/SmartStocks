@@ -15,17 +15,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
+import seniorproject.smartstocks.Classes.Account;
 import seniorproject.smartstocks.Classes.Session;
+import seniorproject.smartstocks.Classes.User;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Session currentSession;
-    ListView Favorites;
+    ListView lvFavorites;
     private getFavoritesTask AuthTask = null;
 
     @Override
@@ -34,10 +40,14 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Favorites =(ListView) findViewById(R.id.lvFavorites);
+        lvFavorites =(ListView) findViewById(R.id.lvFavorites);
 
         Intent previousIntent = getIntent();
         currentSession = Session.getInstance(previousIntent.getIntExtra("USER_ID", 0));
+
+        AuthTask = new getFavoritesTask(currentSession.getUser_id());
+        AuthTask.execute();
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -125,15 +135,15 @@ public class MainActivity extends AppCompatActivity
     public class getFavoritesTask extends AsyncTask<Void, Void, Boolean> {
 
         Integer user_id;
-
+        ArrayList<String>favoritesList = new ArrayList<>();
         public getFavoritesTask(Integer user_id) {
             this.user_id = user_id;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-
-            getPersonalInformation(user_id);
+            User user = new User(user_id);
+            user.getFavorites();
             return true;
         }
 
@@ -143,7 +153,12 @@ public class MainActivity extends AppCompatActivity
             AuthTask = null;
 
             if (success) {
-                
+                //load the spinner with a list of accounts
+                List<String> favoriteSymbols= new ArrayList<String>();
+                favoriteSymbols = favoritesList;
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, favoriteSymbols);
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                lvFavorites.setAdapter(arrayAdapter);
             }
         }
 
