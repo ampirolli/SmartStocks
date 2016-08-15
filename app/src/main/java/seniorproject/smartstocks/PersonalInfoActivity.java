@@ -27,7 +27,7 @@ import seniorproject.smartstocks.Classes.User;
 public class PersonalInfoActivity extends AppCompatActivity {
 
     Session currentSession;
-
+    String test;
     TextView txtEmailAddress;
     TextView txtFistName;
     TextView txtLastName;
