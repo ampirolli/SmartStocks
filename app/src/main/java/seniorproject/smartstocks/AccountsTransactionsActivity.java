@@ -14,6 +14,7 @@ import java.util.List;
 
 import seniorproject.smartstocks.Classes.Account;
 import seniorproject.smartstocks.Classes.Session;
+import seniorproject.smartstocks.Classes.User;
 
 public class AccountsTransactionsActivity extends AppCompatActivity {
 
@@ -74,6 +75,11 @@ public class AccountsTransactionsActivity extends AppCompatActivity {
     }
 
     public class getTransactionsTask extends AsyncTask<Void, Void, Boolean> {
+
+        User User;
+        public getTransactionsTask(User user){
+            User = user;
+        }
 
         @Override
         protected Boolean doInBackground(Void... params) {

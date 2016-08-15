@@ -69,11 +69,7 @@ public class Account implements Parcelable {
         Balance = balance;
     }
 
-    public ArrayList<Transaction> getTranscations() {
-        return Transcations;
-    }
-
-    private void setTranscations(Integer AccountID) {
+    public ArrayList<Transaction> getTranscations(Integer AccountID, String StartDate, String EndDate) {
         LICS loginConnectionString = new LICS();
         String connectionUrl = loginConnectionString.LoginConnectionString();
 
@@ -90,7 +86,7 @@ public class Account implements Parcelable {
             conn = DriverManager.getConnection(connectionUrl);
             // Create and execute an SQL statement that returns some data.
 
-            String SQL = "sp_get_transaction '" + AccountID + "';";
+            String SQL = "sp_get_transaction '" + AccountID +", " + StartDate + ", " + EndDate + "';";
             stmt = conn.createStatement();
             result = stmt.executeQuery(SQL);
             int counter = 0;
@@ -115,12 +111,13 @@ public class Account implements Parcelable {
         // Handle any errors that may have occurred.
         catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
         finally {
             if (result != null) try { result.close(); } catch(Exception e) {}
             if (stmt != null) try { stmt.close(); } catch(Exception e) {}
             if (conn != null) try { conn.close(); } catch(Exception e) {}
-            this.Transcations = transactionList;
+            return transactionList;
         }
     }
 
