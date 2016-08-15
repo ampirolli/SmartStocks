@@ -121,8 +121,56 @@ public class Account implements Parcelable {
         }
     }
 
-    public ArrayList<Order> getOrders() {
-        return Orders;
+    public ArrayList<Order> getOrders(Integer AccountID, String StartDate, String EndDate) {
+        LICS loginConnectionString = new LICS();
+        String connectionUrl = loginConnectionString.LoginConnectionString();
+
+        // Declare the JDBC objects.
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet result = null;
+        //Declare TransactionList
+        ArrayList<Order> orderList = new ArrayList<>();
+
+        try {
+            // Establish the connection.
+            Class.forName("net.sourceforge.jtds.jdbc.Driver");
+            conn = DriverManager.getConnection(connectionUrl);
+            // Create and execute an SQL statement that returns some data.
+
+            String SQL = "sp_get_order '" + AccountID +", " + StartDate + ", " + EndDate + "';";
+            stmt = conn.createStatement();
+            result = stmt.executeQuery(SQL);
+            int counter = 0;
+            while (result.next()) {
+
+
+
+
+                Order order = new Order();
+                order.setPricePaid(result.getBigDecimal("transaction_ammount"));
+                order.setOrderType(result.getString("transaction_type"));
+                order.setOrderDate(result.getDate("transaction_time"));
+                order.setStockSymbol(result.getString("stock_symbol"));
+                order.setStockQuantity(result.getInt("stock_quantity"));
+                orderList.add(order);
+            }
+
+
+
+        }
+
+        // Handle any errors that may have occurred.
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            if (result != null) try { result.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (conn != null) try { conn.close(); } catch(Exception e) {}
+            return orderList;
+        }
     }
 
     public void setOrders(ArrayList<Order> orders) {
