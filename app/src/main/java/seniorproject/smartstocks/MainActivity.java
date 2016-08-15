@@ -104,6 +104,10 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_personal) {
 
+            Intent i = new Intent(MainActivity.this, PersonalInfoActivity.class); //creates intent that launches main menu
+            i.putExtra("Session", currentSession.getUser_id());
+            startActivity(i);
+
         } else if (id == R.id.nav_logout) {
 
         }
