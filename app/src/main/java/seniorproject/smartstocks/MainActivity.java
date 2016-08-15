@@ -1,6 +1,7 @@
 package seniorproject.smartstocks;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import java.io.Serializable;
 
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Session currentSession;
+    ListView Favorites;
+    private getFavoritesTask AuthTask = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +34,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        Favorites =(ListView) findViewById(R.id.lvFavorites);
 
         Intent previousIntent = getIntent();
         currentSession = Session.getInstance(previousIntent.getIntExtra("USER_ID", 0));
@@ -88,6 +92,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -115,5 +120,29 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public class getFavoritesTask extends AsyncTask<Void, Void, Boolean> {
+
+        Integer user_id;
+
+        public getFavoritesTask(Integer user_id) {
+            this.user_id = user_id;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            getPersonalInformation(user_id);
+            return true;
+        }
+
+        @Override
+        protected void onCancelled() {
+            AuthTask = null;
+
+        }
+
+
     }
 }
