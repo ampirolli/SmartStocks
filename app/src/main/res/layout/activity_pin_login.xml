@@ -27,6 +27,9 @@
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"></GridLayout>
+            android:layout_gravity="center_horizontal"
+            android:numColumns="3"
+
+            ></GridLayout>
     </LinearLayout>
 </RelativeLayout>
