@@ -48,8 +48,9 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/editText2"
-            android:layout_gravity="center_horizontal" />
+            android:id="@+id/txtAccountBalance"
+            android:layout_gravity="center_horizontal"
+            android:maxLength="5" />
 
         <Button
             android:layout_width="match_parent"

@@ -20,10 +20,10 @@ public class Account implements Parcelable {
     String AccountNumber;
     String Type;
     String Balance;
+    String Nickname;
     ArrayList<Order> Orders = new ArrayList<Order>();
     ArrayList<Transaction> Transcations = new ArrayList<Transaction>();
-
-    String Nickname;
+    ArrayList<Stock> Holdings = new ArrayList<Stock>();
 
 
     protected Account(Parcel in) {
@@ -67,6 +67,14 @@ public class Account implements Parcelable {
 
     public void setBalance(String balance) {
         Balance = balance;
+    }
+
+    public String getNickname() {
+        return Nickname;
+    }
+
+    public void setNickname(String nickname) {
+        Nickname = nickname;
     }
 
     public ArrayList<Transaction> getTranscations() {
@@ -173,13 +181,14 @@ public class Account implements Parcelable {
         }
     }
 
-    public String getNickname() {
-        return Nickname;
+    public ArrayList<Stock> getHoldings() {
+        return Holdings;
     }
 
-    public void setNickname(String nickname) {
-        Nickname = nickname;
+    public void setHoldings(ArrayList<Stock> holdings) {
+        Holdings = holdings;
     }
+
 
     public Account(){
 
