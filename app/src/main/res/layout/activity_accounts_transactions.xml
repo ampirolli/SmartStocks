@@ -31,39 +31,30 @@
             android:id="@+id/spAccount"
             android:spinnerMode="dropdown" />
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_horizontal"
-            android:layout_alignParentRight="true">
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="StartDate"
+            android:id="@+id/textView35" />
 
-            <DatePicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:id="@+id/spStart"
-                android:layout_gravity="center_horizontal"
-                android:datePickerMode="spinner"
-                android:calendarViewShown="false"
-                android:scaleY="0.65"
-                android:scaleX="0.65"
-                />
+        <DatePicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dpStart"
+            android:layout_gravity="center_horizontal"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"/>
 
-            <DatePicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:id="@+id/dpEnd"
-                android:layout_gravity="center_horizontal"
-                android:datePickerMode="spinner"
-                android:calendarViewShown="false"
-                android:scaleY="0.65"
-                android:scaleX="0.65"/>
-        </LinearLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:id="@+id/btnSearch"
+            android:layout_gravity="center_horizontal" />
 
         <TextView
-            android:layout_width="227dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Your recent Transactions:"
             android:id="@+id/textView20" />
@@ -71,8 +62,8 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="291dp"
-            android:id="@+id/txtOrderTransactions"
-            android:layout_weight="1.23" />
+            android:id="@+id/lvTransactions"
+            android:layout_weight=".07" />
 
     </LinearLayout>
 </RelativeLayout>

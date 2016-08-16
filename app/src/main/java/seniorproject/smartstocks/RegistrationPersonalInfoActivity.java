@@ -47,7 +47,7 @@ public class RegistrationPersonalInfoActivity extends AppCompatActivity {
 
         txtPhone = (EditText) findViewById(R.id.txtPhone);
         dpDOB = (DatePicker) findViewById(R.id.dpDOB);
-        dpDOB.setMaxDate(System.currentTimeMillis()); //sets maximum birthday dat
+        dpDOB.setMaxDate(System.currentTimeMillis()); //sets maximum date to today
 
         Intent previousIntent = getIntent();
         email = previousIntent.getStringExtra("Email");
@@ -76,7 +76,7 @@ public class RegistrationPersonalInfoActivity extends AppCompatActivity {
         String lastname = txtLastName.getText().toString();
         String accountType = spUserType.getSelectedItem().toString();
         String phone = txtPhone.getText().toString();
-        String dateOfBirth = dpDOB.getMonth() + "/" + dpDOB.getDayOfMonth() + "/" + dpDOB.getYear();
+        String dateOfBirth = dpDOB.getYear() + "-" + dpDOB.getMonth() + "-" + dpDOB.getDayOfMonth();
 
         if (TextUtils.isEmpty(firstname)) {
             txtFistName.setError(getString(R.string.error_field_required));
