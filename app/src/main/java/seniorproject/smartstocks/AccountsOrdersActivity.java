@@ -1,18 +1,23 @@
 package seniorproject.smartstocks;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import seniorproject.smartstocks.Classes.Account;
+import seniorproject.smartstocks.Classes.Order;
 import seniorproject.smartstocks.Classes.Session;
+import seniorproject.smartstocks.Classes.Transaction;
+import seniorproject.smartstocks.Classes.User;
 
 public class AccountsOrdersActivity extends AppCompatActivity {
 
@@ -23,6 +28,10 @@ public class AccountsOrdersActivity extends AppCompatActivity {
     Integer accountSelectionIndex = new Integer(0); // String to resolve the index oof the selected account
 
     Spinner spAccounts;
+    ListView lvOrders;
+
+    private getOrdersTask AuthTask = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +48,10 @@ public class AccountsOrdersActivity extends AppCompatActivity {
 
 
         spAccounts = (Spinner) findViewById(R.id.spAccount);
+        lvOrders = (ListView) findViewById(R.id.lvOrders);
+
+        AuthTask = new getOrdersTask(currentSession.getUser_id());
+        AuthTask.execute();
 
 
         //load the spinner with a list of accounts
@@ -69,6 +82,46 @@ public class AccountsOrdersActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public class getOrdersTask extends AsyncTask<Void, Void, Boolean> {
+
+        Integer User_ID;
+        ArrayList<String> ordersList = new ArrayList<String>();
+
+        public getOrdersTask(Integer user_id) {
+            User_ID = user_id;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            User user = new User(User_ID);
+            user.setAccounts();
+            Account account = user.getAccounts().get(accountSelectionIndex);
+            account.setOrders(Integer.valueOf(account.getAccountNumber()));
+            ordersList.add("");
+            for (Order order : account.getOrders()) {
+                ordersList.add(order.getOrderType() + "   " + order.getStockSymbol() + "-" + order.getStockQuantity() + " | " + order.getPricePaid());
+            }
+
+            return true;
+        }
+
+        protected void onPostExecute(final Boolean success) {
+
+            AuthTask = null;
+
+            if (success) {
+                //load the spinner with a list of accounts
+                List<String> transactionList = ordersList;
+
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(AccountsOrdersActivity.this, android.R.layout.simple_spinner_item, ordersList);
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                lvOrders.setAdapter(arrayAdapter);
+
+            }
+        }
     }
 
     @Override

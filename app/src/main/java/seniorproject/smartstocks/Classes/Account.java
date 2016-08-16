@@ -69,7 +69,11 @@ public class Account implements Parcelable {
         Balance = balance;
     }
 
-    public ArrayList<Transaction> getTranscations(Integer AccountID, String StartDate, String EndDate) {
+    public ArrayList<Transaction> getTranscations() {
+        return Transcations;
+    }
+
+    public void setTranscations(Integer AccountID, String StartDate) {
         LICS loginConnectionString = new LICS();
         String connectionUrl = loginConnectionString.LoginConnectionString();
 
@@ -86,17 +90,14 @@ public class Account implements Parcelable {
             conn = DriverManager.getConnection(connectionUrl);
             // Create and execute an SQL statement that returns some data.
 
-            String SQL = "sp_get_transaction '" + AccountID +", " + StartDate + ", " + EndDate + "';";
+            String SQL = "sp_get_transaction '" + AccountID +"', '" + StartDate  + "';";
             stmt = conn.createStatement();
             result = stmt.executeQuery(SQL);
             int counter = 0;
             while (result.next()) {
 
-
-
-
                 Transaction transaction = new Transaction();
-                transaction.setPricePaid(result.getBigDecimal("transaction_ammount"));
+                transaction.setPricePaid(result.getBigDecimal("transaction_amount"));
                 transaction.setTransactionType(result.getString("transaction_type"));
                 transaction.setTransactionDate(result.getDate("transaction_time"));
                 transaction.setStockSymbol(result.getString("stock_symbol"));
@@ -111,17 +112,20 @@ public class Account implements Parcelable {
         // Handle any errors that may have occurred.
         catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
         finally {
             if (result != null) try { result.close(); } catch(Exception e) {}
             if (stmt != null) try { stmt.close(); } catch(Exception e) {}
             if (conn != null) try { conn.close(); } catch(Exception e) {}
-            return transactionList;
+            this.Transcations = transactionList;
         }
     }
 
-    public ArrayList<Order> getOrders(Integer AccountID, String StartDate, String EndDate) {
+    public ArrayList<Order> getOrders() {
+        return Orders;
+    }
+
+    public void setOrders(Integer AccountID) {
         LICS loginConnectionString = new LICS();
         String connectionUrl = loginConnectionString.LoginConnectionString();
 
@@ -138,17 +142,14 @@ public class Account implements Parcelable {
             conn = DriverManager.getConnection(connectionUrl);
             // Create and execute an SQL statement that returns some data.
 
-            String SQL = "sp_get_order '" + AccountID +", " + StartDate + ", " + EndDate + "';";
+            String SQL = "sp_get_orders '" + AccountID  + "';";
             stmt = conn.createStatement();
             result = stmt.executeQuery(SQL);
             int counter = 0;
             while (result.next()) {
 
-
-
-
                 Order order = new Order();
-                order.setPricePaid(result.getBigDecimal("transaction_ammount"));
+                order.setPricePaid(result.getBigDecimal("transaction_amount"));
                 order.setOrderType(result.getString("transaction_type"));
                 order.setOrderDate(result.getDate("transaction_time"));
                 order.setStockSymbol(result.getString("stock_symbol"));
@@ -163,18 +164,13 @@ public class Account implements Parcelable {
         // Handle any errors that may have occurred.
         catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
         finally {
             if (result != null) try { result.close(); } catch(Exception e) {}
             if (stmt != null) try { stmt.close(); } catch(Exception e) {}
             if (conn != null) try { conn.close(); } catch(Exception e) {}
-            return orderList;
+            this.Orders = orderList;
         }
-    }
-
-    public void setOrders(ArrayList<Order> orders) {
-        Orders = orders;
     }
 
     public String getNickname() {

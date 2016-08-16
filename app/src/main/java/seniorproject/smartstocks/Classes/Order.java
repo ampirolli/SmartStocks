@@ -46,8 +46,8 @@ public class Order {
         OrderDate = orderDate;
     }
 
-    public Stock getStockSymbol() {
-        return StockSymbol;
+    public String getStockSymbol() {
+        return StockSymbol.getSymbol();
     }
 
     public void setStockSymbol(String stockSymbol) {
