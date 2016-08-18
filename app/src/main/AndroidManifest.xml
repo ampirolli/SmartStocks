@@ -47,7 +47,8 @@
         <activity android:name=".ConnectAccountActivity" />
         <activity android:name=".StockInformationActivity" />
         <activity android:name=".PinLoginActivity" />
-        <activity android:name=".OpenExternalAccountActivity"></activity>
+        <activity android:name=".OpenExternalAccountActivity" />
+        <activity android:name=".SearchActivity"></activity>
     </application>
 
 </manifest>

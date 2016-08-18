@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         lvFavorites =(ListView) findViewById(R.id.lvFavorites);
 
         Intent previousIntent = getIntent();
@@ -47,6 +49,14 @@ public class MainActivity extends AppCompatActivity
 
         AuthTask = new getFavoritesTask(currentSession.getUser_id());
         AuthTask.execute();
+
+        SearchView search = (SearchView) findViewById(R.id.search);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -69,6 +79,7 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+
 
     @Override
     public void onBackPressed() {
@@ -95,8 +106,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.search) {
+            Intent i = new Intent(MainActivity.this, SearchActivity.class);
+            i.putExtra("Session", currentSession.getUser_id());
         }
 
         return super.onOptionsItemSelected(item);
@@ -115,7 +127,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(i);
         } else if (id == R.id.nav_trading) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_tools) {
 
         } else if (id == R.id.nav_personal) {
 
@@ -124,7 +136,12 @@ public class MainActivity extends AppCompatActivity
             startActivity(i);
 
         } else if (id == R.id.nav_logout) {
+            Intent i = new Intent(MainActivity.this, LoginActivity.class);
+            this.finish();
 
+        } else if (id == R.id.nav_search){
+            Intent i = new Intent(MainActivity.this, SearchActivity.class);
+            i.putExtra("Session", currentSession.getUser_id());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

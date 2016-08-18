@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class StockInformationActivity extends AppCompatActivity {
+
     TextView Symbol;
     TextView Company;
     TextView Price;
@@ -16,6 +17,7 @@ public class StockInformationActivity extends AppCompatActivity {
     TextView Low;
     TextView WeekHigh;
     TextView WeekLow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
