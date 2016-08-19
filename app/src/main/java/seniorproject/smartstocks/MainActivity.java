@@ -50,14 +50,6 @@ public class MainActivity extends AppCompatActivity
         AuthTask = new getFavoritesTask(currentSession.getUser_id());
         AuthTask.execute();
 
-        SearchView search = (SearchView) findViewById(R.id.search);
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
