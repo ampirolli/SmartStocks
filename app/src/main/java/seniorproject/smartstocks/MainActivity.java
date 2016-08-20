@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.search) {
             Intent i = new Intent(MainActivity.this, SearchActivity.class);
             i.putExtra("Session", currentSession.getUser_id());
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
@@ -134,6 +135,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_search){
             Intent i = new Intent(MainActivity.this, SearchActivity.class);
             i.putExtra("Session", currentSession.getUser_id());
+            startActivity(i);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
