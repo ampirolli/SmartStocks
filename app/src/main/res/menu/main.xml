@@ -8,5 +8,5 @@
         app:showAsAction="collapseActionView|ifRoom"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        app:actionViewClass="android.support.v7.widget.SearchView" />
+       />
 </menu>

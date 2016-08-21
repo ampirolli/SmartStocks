@@ -1,6 +1,7 @@
 package seniorproject.smartstocks;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -41,7 +44,26 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        Intent previousIntent = getIntent();
+        currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0));  //loads current session into intent
+        currentSession.getUser_id();
+
         lvResults = (ListView) findViewById(R.id.lvResults);
+        lvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String selectedFromList = (String) lvResults.getItemAtPosition(position);
+                String[] selectedStock = selectedFromList.split("-");
+                String symbol = selectedStock[0];
+                Intent i = new Intent(SearchActivity.this, StockInformationActivity.class); //creates intent that launches Balances
+                i.putExtra("Session", currentSession.getUser_id());
+                i.putExtra("Symbol", symbol);
+
+            }
+
+        });
 
 
     }
@@ -95,8 +117,6 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                 URLConnection con = url.openConnection();
                 InputStream is = con.getInputStream();
                 BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-
 
                 String line = null;
                 String regex1 = "\\(";
@@ -153,6 +173,20 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(SearchActivity.this, android.R.layout.simple_spinner_item, listItems);
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 lvResults.setAdapter(arrayAdapter);
+                lvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        String selectedItem = lvResults.getItemAtPosition(position).toString();
+                        String[] selectedItemSplit = selectedItem.split("-");
+                        String selectedSymbol = selectedItemSplit[0];
+                        Intent i = new Intent(SearchActivity.this, StockInformationActivity.class); //creates intent that launches Balances
+                        i.putExtra("Session", currentSession.getUser_id());
+                        i.putExtra("Symbol", selectedSymbol);
+                        finish();
+
+                    }
+                });
             }
         }
 
@@ -163,6 +197,12 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         }
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
     }
 
 

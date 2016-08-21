@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -130,6 +131,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_logout) {
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(i);
             this.finish();
 
         } else if (id == R.id.nav_search){
@@ -170,6 +172,7 @@ public class MainActivity extends AppCompatActivity
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, favoriteSymbols);
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 lvFavorites.setAdapter(arrayAdapter);
+
             }
         }
 
