@@ -28,13 +28,16 @@ import java.util.List;
 import seniorproject.smartstocks.Classes.Account;
 import seniorproject.smartstocks.Classes.Session;
 import seniorproject.smartstocks.Classes.User;
+import seniorproject.smartstocks.Classes.UserStock;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Session currentSession;
     ListView lvFavorites;
+    ListView lvHoldings;
     private getFavoritesTask AuthTask = null;
+    private getPortfolioTask AuthTask2 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +47,15 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         lvFavorites =(ListView) findViewById(R.id.lvFavorites);
+        lvHoldings =(ListView) findViewById(R.id.lvHoldings);
 
         Intent previousIntent = getIntent();
         currentSession = Session.getInstance(previousIntent.getIntExtra("USER_ID", 0));
 
         AuthTask = new getFavoritesTask(currentSession.getUser_id());
         AuthTask.execute();
+        AuthTask2 = new getPortfolioTask(currentSession.getUser_id());
+        AuthTask2.execute();
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -183,5 +189,54 @@ public class MainActivity extends AppCompatActivity
         }
 
 
+    }
+    public class getPortfolioTask extends AsyncTask<Void, Void, Boolean> {
+
+        Integer User_ID;
+        ArrayList<String> holdingsList = new ArrayList<String>();
+
+        public getPortfolioTask(Integer user_id){
+            User_ID = user_id;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            User user = new User(User_ID);
+            user.setAccounts();
+            for(Account account : user.getAccounts()){
+                account.setHoldings(Integer.valueOf(account.getAccountNumber()));
+
+                holdingsList.add("");
+                for(UserStock userStock: account.getHoldings()){
+                    holdingsList.add(userStock.getStockSymbol());
+                }
+            }
+
+            return true;
+        }
+
+        protected void onPostExecute(final Boolean success) {
+
+            AuthTask = null;
+
+            if(success){
+                //load the spinner with a list of accounts
+                List<String> holdingList = holdingsList;
+
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, holdingList);
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                lvHoldings.setAdapter(arrayAdapter);
+
+
+            }
+        }
+
+
+        @Override
+        protected void onCancelled() {
+            AuthTask = null;
+
+        }
     }
 }
