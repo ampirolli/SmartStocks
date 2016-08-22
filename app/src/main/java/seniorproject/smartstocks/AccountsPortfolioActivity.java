@@ -99,7 +99,7 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
 
             holdingsList.add("");
             for(UserStock userStock: account.getHoldings()){
-                holdingsList.add(userStock.getStockSymbol().getSymbol());
+                holdingsList.add(userStock.getStockSymbol());
             }
 
 
