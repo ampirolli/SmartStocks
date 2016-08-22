@@ -21,6 +21,8 @@ public class User {
     ArrayList<StockAnalyzer> Analyzer = new ArrayList<StockAnalyzer>();
     ArrayList<StockAutoTrade> AutoTrades = new ArrayList<StockAutoTrade>();
 
+
+    ArrayList<UserStock> Holdings = new ArrayList<UserStock>();
     ArrayList<String> Favorites = new ArrayList<String>();
 
     public ArrayList<StockAnalyzer> getAnalyzer() {
@@ -140,6 +142,7 @@ public class User {
              return favorites;
         }
     }
+
 
     public User(Integer ID){
 

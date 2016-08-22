@@ -11,7 +11,7 @@ public class Order {
     BigDecimal PricePaid;
     String OrderType;
     Date OrderDate;
-    Stock StockSymbol;
+    UserStock StockSymbol;
     Integer StockQuantity;
 
     public BigDecimal getProfit() {
@@ -47,11 +47,12 @@ public class Order {
     }
 
     public String getStockSymbol() {
-        return StockSymbol.getSymbol();
+        return StockSymbol.getStockSymbol();
     }
 
     public void setStockSymbol(String stockSymbol) {
-        StockSymbol = new Stock(stockSymbol);
+        StockSymbol = new UserStock();
+        StockSymbol.setStock(stockSymbol);
     }
 
     public Integer getStockQuantity() {

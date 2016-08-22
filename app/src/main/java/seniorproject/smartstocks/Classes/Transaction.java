@@ -2,7 +2,6 @@ package seniorproject.smartstocks.Classes;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.text.DateFormat;
 
 /**
  * Created by Ampirollli on 8/8/2016.
@@ -13,7 +12,7 @@ public class Transaction {
     BigDecimal PricePaid;
     String TransactionType;
     Date TransactionDate;
-    Stock StockSymbol;
+    UserStock StockSymbol;
     Integer StockQuantity;
 
     public BigDecimal getProfit() {
@@ -49,11 +48,12 @@ public class Transaction {
     }
 
     public String getStockSymbol() {
-        return StockSymbol.getSymbol();
+        return StockSymbol.getStockSymbol();
     }
 
     public void setStockSymbol(String stockSymbol) {
-        StockSymbol = new Stock(stockSymbol);
+        StockSymbol = new UserStock();
+        StockSymbol.setStock(stockSymbol);
     }
 
     public Integer getStockQuantity() {

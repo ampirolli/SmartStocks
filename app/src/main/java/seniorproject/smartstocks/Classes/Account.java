@@ -3,7 +3,6 @@ package seniorproject.smartstocks.Classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -23,7 +22,7 @@ public class Account implements Parcelable {
     String Nickname;
     ArrayList<Order> Orders = new ArrayList<Order>();
     ArrayList<Transaction> Transcations = new ArrayList<Transaction>();
-    ArrayList<Stock> Holdings = new ArrayList<Stock>();
+    ArrayList<UserStock> Holdings = new ArrayList<UserStock>();
 
 
     protected Account(Parcel in) {
@@ -181,12 +180,55 @@ public class Account implements Parcelable {
         }
     }
 
-    public ArrayList<Stock> getHoldings() {
+    public ArrayList<UserStock> getHoldings() {
         return Holdings;
     }
 
-    public void setHoldings(ArrayList<Stock> holdings) {
-        Holdings = holdings;
+    public void setHoldings(Integer AccountID) {
+        LICS loginConnectionString = new LICS();
+        String connectionUrl = loginConnectionString.LoginConnectionString();
+
+        // Declare the JDBC objects.
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet result = null;
+        //Declare TransactionList
+        ArrayList<UserStock> holdingsList = new ArrayList<>();
+
+        try {
+            // Establish the connection.
+            Class.forName("net.sourceforge.jtds.jdbc.Driver");
+            conn = DriverManager.getConnection(connectionUrl);
+            // Create and execute an SQL statement that returns some data.
+
+            String SQL = "sp_get_portfolio_for_account '" + AccountID  + "';";
+            stmt = conn.createStatement();
+            result = stmt.executeQuery(SQL);
+            int counter = 0;
+            while (result.next()) {
+
+                UserStock userStock = new UserStock();
+                userStock.setStock(result.getString("stock_symbol"));
+                userStock.setQuantity(result.getInt("quantity"));
+                userStock.setPricePaid(result.getBigDecimal("price_paid"));
+                userStock.setTransactionID(result.getInt("transaction_id"));
+                holdingsList.add(userStock);
+            }
+
+
+
+        }
+
+        // Handle any errors that may have occurred.
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (result != null) try { result.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (conn != null) try { conn.close(); } catch(Exception e) {}
+            this.Holdings = holdingsList;
+        }
     }
 
 

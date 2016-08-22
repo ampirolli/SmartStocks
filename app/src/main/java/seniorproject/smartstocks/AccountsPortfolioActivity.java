@@ -1,11 +1,13 @@
 package seniorproject.smartstocks;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -13,6 +15,9 @@ import java.util.List;
 
 import seniorproject.smartstocks.Classes.Account;
 import seniorproject.smartstocks.Classes.Session;
+import seniorproject.smartstocks.Classes.Transaction;
+import seniorproject.smartstocks.Classes.User;
+import seniorproject.smartstocks.Classes.UserStock;
 
 public class AccountsPortfolioActivity extends AppCompatActivity {
 
@@ -22,7 +27,11 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
     String accountSelectionValue = new String(); //String to resolve which account was selected
     Integer accountSelectionIndex = new Integer(0); // String to resolve the index oof the selected account
 
+    ListView lvHoldings;
+
     Spinner spAccounts;
+    private getPortfolioTask AuthTask = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +47,7 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
         accountSelectionIndex = previousIntent.getIntExtra("SelectedIndex",0); //pull selected accounts index from previous intent
 
         spAccounts = (Spinner) findViewById(R.id.spAccount);
+        ListView lvHoldings = (ListView) findViewById(R.id.lvHoldings);
 
 
         //load the spinner with a list of accounts
@@ -68,6 +78,56 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public class getPortfolioTask extends AsyncTask<Void, Void, Boolean> {
+
+        Integer User_ID;
+        ArrayList<String> holdingsList = new ArrayList<String>();
+
+        public getPortfolioTask(Integer user_id){
+            User_ID = user_id;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            User user = new User(User_ID);
+            user.setAccounts();
+            Account account = user.getAccounts().get(accountSelectionIndex);
+            account.setHoldings(Integer.valueOf(account.getAccountNumber()));
+
+            holdingsList.add("");
+            for(UserStock userStock: account.getHoldings()){
+                holdingsList.add(userStock.getStockSymbol().getSymbol());
+            }
+
+
+            return true;
+        }
+
+        protected void onPostExecute(final Boolean success) {
+
+            AuthTask = null;
+
+            if(success){
+                //load the spinner with a list of accounts
+                List<String> holdingList = holdingsList;
+
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(AccountsPortfolioActivity.this, android.R.layout.simple_spinner_item, holdingList);
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                lvHoldings.setAdapter(arrayAdapter);
+
+
+            }
+        }
+
+
+        @Override
+        protected void onCancelled() {
+            AuthTask = null;
+
+        }
     }
 
     @Override
