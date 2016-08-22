@@ -36,8 +36,9 @@ public class MainActivity extends AppCompatActivity
     Session currentSession;
     ListView lvFavorites;
     ListView lvHoldings;
-    private getFavoritesTask AuthTask = null;
-    private getPortfolioTask AuthTask2 = null;
+    private getPortfolioTask AuthTask1 = null;
+    private getFavoritesTask AuthTask2 = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +53,9 @@ public class MainActivity extends AppCompatActivity
         Intent previousIntent = getIntent();
         currentSession = Session.getInstance(previousIntent.getIntExtra("USER_ID", 0));
 
-        AuthTask = new getFavoritesTask(currentSession.getUser_id());
-        AuthTask.execute();
-        AuthTask2 = new getPortfolioTask(currentSession.getUser_id());
+        AuthTask1 = new getPortfolioTask(currentSession.getUser_id());
+        AuthTask1.execute();
+        AuthTask2 = new getFavoritesTask(currentSession.getUser_id());
         AuthTask2.execute();
 
 
@@ -151,45 +152,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public class getFavoritesTask extends AsyncTask<Void, Void, Boolean> {
-
-        Integer user_id;
-        ArrayList<String>favoritesList = new ArrayList<>();
-        public getFavoritesTask(Integer user_id) {
-            this.user_id = user_id;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            User user = new User(user_id);
-            favoritesList = user.setFavorites();
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-
-            AuthTask = null;
-
-            if (success) {
-                //load the spinner with a list of accounts
-                List<String> favoriteSymbols= new ArrayList<String>();
-                favoriteSymbols = favoritesList;
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, favoriteSymbols);
-                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                lvFavorites.setAdapter(arrayAdapter);
-
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            AuthTask = null;
-
-        }
-
-
-    }
     public class getPortfolioTask extends AsyncTask<Void, Void, Boolean> {
 
         Integer User_ID;
@@ -218,7 +180,7 @@ public class MainActivity extends AppCompatActivity
 
         protected void onPostExecute(final Boolean success) {
 
-            AuthTask = null;
+            AuthTask1 = null;
 
             if(success){
                 //load the spinner with a list of accounts
@@ -235,8 +197,49 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onCancelled() {
-            AuthTask = null;
+            AuthTask1 = null;
 
         }
     }
+
+    public class getFavoritesTask extends AsyncTask<Void, Void, Boolean> {
+
+        Integer user_id;
+        ArrayList<String>favoritesList = new ArrayList<>();
+        public getFavoritesTask(Integer user_id) {
+            this.user_id = user_id;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            User user = new User(user_id);
+            favoritesList = user.setFavorites();
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+            AuthTask2 = null;
+
+            if (success) {
+                //load the spinner with a list of accounts
+                List<String> favoriteSymbols= new ArrayList<String>();
+                favoriteSymbols = favoritesList;
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, favoriteSymbols);
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                lvFavorites.setAdapter(arrayAdapter);
+
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            AuthTask2 = null;
+
+        }
+
+
+    }
+
 }
