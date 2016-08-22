@@ -47,8 +47,10 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
         accountSelectionIndex = previousIntent.getIntExtra("SelectedIndex",0); //pull selected accounts index from previous intent
 
         spAccounts = (Spinner) findViewById(R.id.spAccount);
-        ListView lvHoldings = (ListView) findViewById(R.id.lvHoldings);
+        lvHoldings = (ListView) findViewById(R.id.lvHoldings);
 
+        AuthTask = new getPortfolioTask( currentSession.getUser_id());
+        AuthTask.execute();
 
         //load the spinner with a list of accounts
         List<String> accountsNickname= new ArrayList<String>();
@@ -70,6 +72,8 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 accountSelectionValue = accountsNumberList.get(i);
                 accountSelectionIndex = i;
+                AuthTask = new getPortfolioTask( currentSession.getUser_id());
+                AuthTask.execute();
             }
 
             @Override
