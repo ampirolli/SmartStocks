@@ -1,8 +1,10 @@
 package seniorproject.smartstocks.Classes;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 
 import yahoofinance.Stock;
+import yahoofinance.YahooFinance;
 
 /**
  * Created by Ampirollli on 8/8/2016.
@@ -29,8 +31,8 @@ public class UserStock {
         return StockSymbol;
     }
 
-    public void setStock(String symbol) {
-        StockSymbol = new Stock(symbol);
+    public void setStock(String symbol) throws IOException {
+        StockSymbol = YahooFinance.get(symbol);
     }
 
     public Integer getQuantity() {

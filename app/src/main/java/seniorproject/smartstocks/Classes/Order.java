@@ -1,5 +1,6 @@
 package seniorproject.smartstocks.Classes;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
 
@@ -50,7 +51,7 @@ public class Order {
         return StockSymbol.getStockSymbol();
     }
 
-    public void setStockSymbol(String stockSymbol) {
+    public void setStockSymbol(String stockSymbol) throws IOException {
         StockSymbol = new UserStock();
         StockSymbol.setStock(stockSymbol);
     }

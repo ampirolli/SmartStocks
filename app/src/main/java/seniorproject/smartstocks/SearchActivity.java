@@ -57,9 +57,11 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                 String selectedFromList = (String) lvResults.getItemAtPosition(position);
                 String[] selectedStock = selectedFromList.split("-");
                 String symbol = selectedStock[0];
+                String company = selectedStock[1];
                 Intent i = new Intent(SearchActivity.this, StockInformationActivity.class); //creates intent that launches Balances
                 i.putExtra("Session", currentSession.getUser_id());
                 i.putExtra("Symbol", symbol);
+                i.putExtra("Company", company);
 
             }
 
@@ -140,7 +142,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                         String symbol = stocks.getString("symbol");
                         String company = stocks.getString("name");
 
-                        String result = symbol + "\n-" + company;
+                        String result = symbol + "-" + company;
                         stockResults.add(result);
                         //Iterate through the elements of the array i.
                         //Get thier value.
@@ -156,6 +158,10 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                 e.toString();
                 return false;
             } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
+            catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }
