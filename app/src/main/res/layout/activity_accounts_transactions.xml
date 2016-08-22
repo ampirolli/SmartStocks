@@ -22,6 +22,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Account:"
             android:id="@+id/textView18" />
 
@@ -34,8 +35,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="StartDate"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Start Date:"
             android:id="@+id/textView35" />
 
         <DatePicker
@@ -56,6 +57,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Your recent Transactions:"
             android:id="@+id/textView20" />
 

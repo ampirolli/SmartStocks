@@ -17,6 +17,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Email"
             android:id="@+id/textView23" />
 
@@ -30,6 +31,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="First Name"
             android:id="@+id/textView25" />
 
@@ -40,21 +42,11 @@
             android:id="@+id/txtFirstName"
             android:layout_gravity="center_horizontal" />
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Last Name"
-            android:id="@+id/textView26" />
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/txtLastName" />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Phone"
             android:id="@+id/textView27" />
 
@@ -67,6 +59,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Date Of Birth"
             android:id="@+id/textView28" />
 

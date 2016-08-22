@@ -29,6 +29,7 @@ public class AccountsBalancesActivity extends AppCompatActivity {
     Spinner spAccounts;
     TextView txtAccountValue;
     TextView txtNetValue;
+    TextView txtAccountCashPower;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class AccountsBalancesActivity extends AppCompatActivity {
         spAccounts = (Spinner) findViewById(R.id.spAccount);
         txtAccountValue = (TextView) findViewById(R.id.txtAccountValue);
         txtNetValue = (TextView) findViewById(R.id.txtNetAsset);
+        txtAccountCashPower = (TextView) findViewById(R.id.txtCash);
 
         //load the spinner with a list of accounts
         List<String> accountsNickname= new ArrayList<String>();
@@ -79,6 +81,8 @@ public class AccountsBalancesActivity extends AppCompatActivity {
                 accountSelectionValue = accountsNumberList.get(i);
                 accountSelectionIndex = i;
                 txtAccountValue.setText(balances.get(accountSelectionIndex).toString());
+
+
 
 
             }

@@ -19,6 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Account:"
             android:id="@+id/textView7" />
 
@@ -31,6 +32,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Today&apos;s Gain/Loss"
             android:id="@+id/textView9" />
 
@@ -44,6 +46,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Total Gain/Loss"
             android:id="@+id/textView14" />
 
@@ -57,6 +60,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Cash"
             android:id="@+id/textView17" />
 

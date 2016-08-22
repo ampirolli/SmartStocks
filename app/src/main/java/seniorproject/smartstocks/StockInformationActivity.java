@@ -75,7 +75,7 @@ public class StockInformationActivity extends AppCompatActivity {
         try {
             AuthTask = new getStockDataTask(symbol);
             AuthTask.execute();
-        } catch (IOException e) {
+        }catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -83,9 +83,9 @@ public class StockInformationActivity extends AppCompatActivity {
 
     public class getStockDataTask extends AsyncTask<Void, Void, Boolean> {
 
+        String Symbol;
         Stock Stock;
 
-        String Company;
         BigDecimal Price = new BigDecimal(0);
         BigDecimal GainAndLoss = new BigDecimal(0);;
         BigDecimal Open = new BigDecimal(0);;
@@ -97,37 +97,32 @@ public class StockInformationActivity extends AppCompatActivity {
 
         ArrayList<String> holdingsList = new ArrayList<String>();
 
-        public getStockDataTask(String symbol) throws IOException {
+        public getStockDataTask(String symbol) {
 
-            Stock = YahooFinance.get(symbol);
+            Symbol = symbol;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
+
             //load the Stock Data
             try{
 
-               // Price = new BigDecimal(String.valueOf(Stock.getQuote()));
-               // GainAndLoss =  new BigDecimal(Stock.toString());
-               //Open;
-               // Close;
-                //High;
-                //Low;
-                WeekHigh = (BigDecimal) this.Stock.getHistory(Interval.WEEKLY);
-                //WeekLow;
+                Stock = YahooFinance.get(Symbol);
+
+                Price = Stock.getQuote().getPrice();
+                GainAndLoss =  Stock.getQuote().getChange(); //Price.subtract(Stock.getQuote().getOpen());
+                Open = Stock.getQuote().getOpen();
+                Close = Stock.getQuote().getPreviousClose();
+                High = Stock.getQuote().getDayHigh();;
+                Low = Stock.getQuote().getDayLow();;
+                WeekHigh = Stock.getQuote().getYearHigh();
+                WeekLow = Stock.getQuote().getYearLow();
 
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }
-
-            java.util.Date todaysDate = Calendar.getInstance().getTime();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            String today = sdf.format(todaysDate);
-
-
-
-
 
             return true;
         }
@@ -138,7 +133,6 @@ public class StockInformationActivity extends AppCompatActivity {
 
             if(success){
 
-                txtCompany.setText(Company);
                 txtPrice.setText(Price.toString());
                 txtGainAndLoss.setText(GainAndLoss.toString());
                 txtOpen.setText(Open.toString());

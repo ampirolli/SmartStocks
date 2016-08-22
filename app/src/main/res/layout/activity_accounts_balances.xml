@@ -19,6 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Account:"
             android:id="@+id/textView2" />
 
@@ -32,6 +33,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Account Value"
             android:id="@+id/textView3" />
 
@@ -46,6 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cash Purchasing Power"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/textView4" />
 
         <TextView
