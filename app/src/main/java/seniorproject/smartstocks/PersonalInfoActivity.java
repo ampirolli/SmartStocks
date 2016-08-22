@@ -29,7 +29,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
     Session currentSession;
     String test;
     TextView txtEmailAddress;
-    TextView txtFistName;
+    TextView txtName;
     TextView txtPhone;
     TextView txtDOB;
 
@@ -41,7 +41,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_info);
         txtEmailAddress= (TextView)findViewById(R.id.txtEmailAddress);
-        txtFistName= (TextView)findViewById(R.id.txtFirstName);
+        txtName= (TextView)findViewById(R.id.txtName);
         txtPhone = (TextView)findViewById(R.id.txtPhoneNumber);
         txtDOB = (TextView)findViewById(R.id.txtDateOfBirth);
 
@@ -105,7 +105,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
             int counter = 0;
             while (result.next()) {
                 txtEmailAddress.setText(result.getString("email_address"));
-                txtFistName.setText((result.getString("first_name")) + " " + (result.getString("last_name")));
+                txtName.setText((result.getString("first_name")) + " " + (result.getString("last_name")));
                 txtPhone.setText((result.getString("phone_number")));
                 txtDOB.setText((result.getString("date_of_birth")));
 
