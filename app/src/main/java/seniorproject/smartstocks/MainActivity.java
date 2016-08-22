@@ -172,9 +172,9 @@ public class MainActivity extends AppCompatActivity
                 account.setHoldings(Integer.valueOf(account.getAccountNumber()));
 
                 for(UserStock userStock: account.getHoldings()){
-                    holdingsList.add(userStock.getStockSymbol());
+                    if(!userStock.getStockSymbol().isEmpty())
+                        holdingsList.add(userStock.getStockSymbol() + " - " + userStock.getAccountID());
                 }
-                holdingsList.add("");
             }
 
             return true;

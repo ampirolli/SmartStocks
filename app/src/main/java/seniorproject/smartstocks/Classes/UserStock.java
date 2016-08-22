@@ -13,15 +13,9 @@ public class UserStock {
 
     Stock StockSymbol;
     Integer Quantity;
+    BigDecimal PricePaid;
     Integer TransactionID;
-
-    public BigDecimal getPricePaid() {
-        return PricePaid;
-    }
-
-    public void setPricePaid(BigDecimal pricePaid) {
-        PricePaid = pricePaid;
-    }
+    Integer AccountID;
 
     public String getStockSymbol() {
         return StockSymbol.getSymbol();
@@ -43,6 +37,14 @@ public class UserStock {
         Quantity = quantity;
     }
 
+    public BigDecimal getPricePaid() {
+        return PricePaid;
+    }
+
+    public void setPricePaid(BigDecimal pricePaid) {
+        PricePaid = pricePaid;
+    }
+
     public Integer getTransactionID() {
         return TransactionID;
     }
@@ -51,7 +53,15 @@ public class UserStock {
         TransactionID = transactionID;
     }
 
-    BigDecimal PricePaid;
+    public Integer getAccountID() {
+        return AccountID;
+    }
+
+    public void setAccountID(Integer accountID) {
+        AccountID = accountID;
+    }
+
+
 
     public UserStock() {
 

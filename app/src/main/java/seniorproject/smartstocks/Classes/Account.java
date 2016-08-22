@@ -212,6 +212,7 @@ public class Account implements Parcelable {
                 userStock.setQuantity(result.getInt("quantity"));
                 userStock.setPricePaid(result.getBigDecimal("price_paid"));
                 userStock.setTransactionID(result.getInt("transaction_id"));
+                userStock.setAccountID(AccountID);
                 holdingsList.add(userStock);
             }
 
