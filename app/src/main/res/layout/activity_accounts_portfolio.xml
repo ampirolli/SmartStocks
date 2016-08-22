@@ -34,13 +34,12 @@
             android:text="Today&apos;s Gain/Loss"
             android:id="@+id/textView9" />
 
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="210dp"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:ems="10"
+            android:text="New Text"
             android:id="@+id/txtTodayGainLoss"
-            android:layout_gravity="right" />
+            android:layout_gravity="center_horizontal" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,11 +47,10 @@
             android:text="Total Gain/Loss"
             android:id="@+id/textView14" />
 
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="188dp"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:ems="10"
+            android:text="New Text"
             android:id="@+id/txtTotalGainLoss"
             android:layout_gravity="center_horizontal" />
 
@@ -62,11 +60,10 @@
             android:text="Cash"
             android:id="@+id/textView17" />
 
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="161dp"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:ems="10"
+            android:text="New Text"
             android:id="@+id/txtCash"
             android:layout_gravity="center_horizontal" />
 

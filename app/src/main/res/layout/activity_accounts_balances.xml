@@ -35,17 +35,12 @@
             android:text="Account Value"
             android:id="@+id/textView3" />
 
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:ems="10"
-
-
-
+            android:text="New Text"
             android:id="@+id/txtAccountValue"
-            android:layout_gravity="right"
-            android:editable="false" />
+            android:layout_gravity="center_horizontal" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -53,11 +48,10 @@
             android:text="Cash Purchasing Power"
             android:id="@+id/textView4" />
 
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="178dp"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:ems="10"
+            android:text="New Text"
             android:id="@+id/txtCashPurchasingPower"
             android:layout_gravity="center_horizontal" />
 
@@ -68,13 +62,11 @@
             android:text="Net Asset"
             android:id="@+id/textView6" />
 
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="278dp"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:ems="10"
-            android:id="@+id/txtNetAsset"
-            android:editable="false" />
+            android:text="New Text"
+            android:id="@+id/txtNetAsset" />
 
     </LinearLayout>
 </RelativeLayout>
