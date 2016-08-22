@@ -28,7 +28,7 @@ public class AccountsActivity extends AppCompatActivity {
     String accountSelectionValue = new String(); //String to resolve which account was selected
     Integer accountSelectionIndex = new Integer(0); // String to resolve the index oof the selected account
 
-    ListView AccountActivitiesList;
+    ListView lvAccountActivitiesList;
     Spinner spAccounts;
 
     private getAccountsTask AuthTask = null;
@@ -45,7 +45,7 @@ public class AccountsActivity extends AppCompatActivity {
         currentSession.getUser_id();
 
 
-        AccountActivitiesList = (ListView) findViewById(R.id.lvAccountPages);
+        lvAccountActivitiesList = (ListView) findViewById(R.id.lvAccountPages);
         spAccounts = (Spinner) findViewById(R.id.spAccount);
 
         executeAuthTask();
@@ -66,9 +66,9 @@ public class AccountsActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1,
                 accountActivities );
 
-        AccountActivitiesList.setAdapter(arrayAdapter1);
+        lvAccountActivitiesList.setAdapter(arrayAdapter1);
 
-        AccountActivitiesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvAccountActivitiesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {

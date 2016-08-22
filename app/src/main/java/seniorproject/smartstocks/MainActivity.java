@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -115,7 +114,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -129,6 +127,10 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_trading) {
 
         } else if (id == R.id.nav_tools) {
+
+            Intent i = new Intent(MainActivity.this, ToolsActivity.class); //creates intent that launches main menu
+            i.putExtra("Session", currentSession.getUser_id());
+            startActivity(i);
 
         } else if (id == R.id.nav_personal) {
 
