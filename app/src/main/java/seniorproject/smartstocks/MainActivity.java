@@ -171,10 +171,10 @@ public class MainActivity extends AppCompatActivity
             for(Account account : user.getAccounts()){
                 account.setHoldings(Integer.valueOf(account.getAccountNumber()));
 
-                holdingsList.add("");
                 for(UserStock userStock: account.getHoldings()){
                     holdingsList.add(userStock.getStockSymbol());
                 }
+                holdingsList.add("");
             }
 
             return true;
