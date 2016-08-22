@@ -52,6 +52,8 @@ public class StockInformationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_stock_information);
 
         Intent previousIntent = getIntent();
+        String symbol = previousIntent.getStringExtra("symbol");
+
         currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0));  //loads current session into intent
         currentSession.getUser_id();
 
@@ -65,6 +67,9 @@ public class StockInformationActivity extends AppCompatActivity {
         txtLow = (TextView)findViewById(R.id.txtDayLow);
         txtWeekHigh= (TextView)findViewById(R.id.txt52weekhigh);
         txtWeekLow = (TextView)findViewById(R.id.txt52WeekLow);
+
+        AuthTask = new getStockDataTask(symbol);
+        AuthTask.execute();
     }
 
     public class getStockDataTask extends AsyncTask<Void, Void, Boolean> {
