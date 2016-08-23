@@ -134,6 +134,7 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
