@@ -171,7 +171,6 @@ public class AccountsBalancesActivity extends AppCompatActivity {
         Intent returnIntent = new Intent();
         returnIntent.putExtra("result",accountSelectionIndex);
         setResult(AccountsActivity.RESULT_OK,returnIntent);
-
         this.finish();
     }
 
