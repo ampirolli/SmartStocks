@@ -72,6 +72,27 @@ public class ToolsDefinitionsActivity extends AppCompatActivity {
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 lvDefinitions.setAdapter(arrayAdapter);
 
+                lvDefinitions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int index, long l) {
+
+                        Intent i = new Intent(ToolsDefinitionsActivity.this, ToolsDefinitionsActivity.class); //creates intent that launches Definitions
+                        i.putExtra("Session", currentSession.getUser_id());
+
+                        DefinitionsID.get(index);
+
+                        startActivity(i);
+
+                        //launch new event
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        // do nothing
+                    }
+                });
+
 
             }
         }

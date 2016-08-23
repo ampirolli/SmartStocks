@@ -9,6 +9,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +51,7 @@ public class ToolsDefinitionsSelectedActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             //CONNECT TO SQL DATABASE ON SEPERATE THREAD FROM THE MAIN THREAD
-            //Load into definitions list
+
 
             return true;
         }
@@ -57,29 +61,8 @@ public class ToolsDefinitionsSelectedActivity extends AppCompatActivity {
             AuthTask = null;
 
             if(success){
-                //load the spinner with a list of accounts
 
-
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(ToolsDefinitionsSelectedActivity.this, android.R.layout.simple_spinner_item, DefinitionsList);
-                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                lvDefinitions.setAdapter(arrayAdapter);
-
-                lvDefinitions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int index, long l) {
-
-                        Intent i = new Intent(ToolsDefinitionsSelectedActivity.this, ToolsDefinitionsActivity.class); //creates intent that launches Definitions
-                        i.putExtra("Session", currentSession.getUser_id());
-                        startActivity(i);
-
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-                        // do nothing
-                    }
-                });
-
+                //load the text views
 
 
             }
@@ -89,6 +72,46 @@ public class ToolsDefinitionsSelectedActivity extends AppCompatActivity {
         protected void onCancelled() {
             AuthTask = null;
 
+        }
+
+        protected void getDefinition(){
+            LICS loginConnectionString = new LICS();
+            String connectionUrl = loginConnectionString.LoginConnectionString();
+
+            // Declare the JDBC objects.
+            Connection conn = null;
+            Statement stmt = null;
+            ResultSet result = null;
+
+            try {
+                // Establish the connection.
+                Class.forName("net.sourceforge.jtds.jdbc.Driver");
+                conn = DriverManager.getConnection(connectionUrl);
+                // Create and execute an SQL statement that returns some data.
+
+                String SQL = "execute sp_get_definitions_by_id;";
+                stmt = conn.createStatement();
+                result = stmt.executeQuery(SQL);
+                int counter = 0;
+                while (result.next()) {
+                    //DefinitionsTitleList.add(result.getString("title"));
+                    //DefinitionsID.add(result.getInt("definition_id"));
+                }
+
+
+
+            }
+
+            // Handle any errors that may have occurred.
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            finally {
+                if (result != null) try { result.close(); } catch(Exception e) {}
+                if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+                if (conn != null) try { conn.close(); } catch(Exception e) {}
+
+            }
         }
 
 
