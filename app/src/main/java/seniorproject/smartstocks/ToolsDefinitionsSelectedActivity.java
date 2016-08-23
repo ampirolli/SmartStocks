@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.sql.Connection;
@@ -22,7 +23,9 @@ import seniorproject.smartstocks.Classes.User;
 
 public class ToolsDefinitionsSelectedActivity extends AppCompatActivity {
     Session currentSession;
-    ListView lvDefinitions;
+    EditText txtTitle;
+    EditText txtDefinitions;
+    Integer DefinitionID;
 
     private getDefinitionsTask AuthTask = null;
 
@@ -35,14 +38,19 @@ public class ToolsDefinitionsSelectedActivity extends AppCompatActivity {
         currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0));  //loads current session into intent
         currentSession.getUser_id();
 
-        lvDefinitions = (ListView) findViewById(R.id.lvDefinitionsList);
+        DefinitionID = previousIntent.getIntExtra("DefinitionID", 0); //pulls the definition id from previos intent to be loaded into our SP
+
+        txtTitle= (EditText)findViewById(R.id.txtTitle);
+        txtDefinitions =(EditText)findViewById(R.id.txtDefinitions);
+        AuthTask = new getDefinitionsTask();
+        AuthTask.execute();
 
     }
 
 
     public class getDefinitionsTask extends AsyncTask<Void, Void, Boolean> {
-
-        List<String> DefinitionsList= new ArrayList<String>();
+        String Title;
+        String Definition;
 
         public getDefinitionsTask() {
 
@@ -62,7 +70,9 @@ public class ToolsDefinitionsSelectedActivity extends AppCompatActivity {
 
             if(success){
 
-                //load the text views
+                txtTitle.setText(Title);
+                txtDefinitions.setText(Definition);
+
 
 
             }
@@ -89,13 +99,15 @@ public class ToolsDefinitionsSelectedActivity extends AppCompatActivity {
                 conn = DriverManager.getConnection(connectionUrl);
                 // Create and execute an SQL statement that returns some data.
 
-                String SQL = "execute sp_get_definitions_by_id;";
+                String SQL = "execute sp_get_definitions_by_id'"+ DefinitionID +"';";
                 stmt = conn.createStatement();
                 result = stmt.executeQuery(SQL);
                 int counter = 0;
                 while (result.next()) {
-                    //DefinitionsTitleList.add(result.getString("title"));
-                    //DefinitionsID.add(result.getInt("definition_id"));
+                    Title = (result.getString("title"));
+                    Definition = (result.getString("definition"));
+
+
                 }
 
 
@@ -113,6 +125,7 @@ public class ToolsDefinitionsSelectedActivity extends AppCompatActivity {
 
             }
         }
+
 
 
     }
