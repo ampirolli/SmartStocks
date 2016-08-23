@@ -123,6 +123,19 @@ public class AccountsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == AccountsActivity.RESULT_OK){
+                lvAccountActivitiesList.setSelection(data.getIntExtra("result", 0));
+            }
+            if (resultCode == AccountsActivity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }//onActivityResult
+
     public void executeAuthTask(){
         AuthTask = new getAccountsTask(currentSession.getUser_id());
         AuthTask.execute((Void) null);

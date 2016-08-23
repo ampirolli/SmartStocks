@@ -9,7 +9,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,9 +31,13 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
     String accountSelectionValue = new String(); //String to resolve which account was selected
     Integer accountSelectionIndex = new Integer(0); // String to resolve the index oof the selected account
 
-    ListView lvHoldings;
-
     Spinner spAccounts;
+    ListView lvHoldings;
+    TextView txtDaysGainLoss;
+    TextView txtTotalGainLoss;
+    TextView txtCash;
+
+
     private getPortfolioTask AuthTask = null;
 
 
@@ -48,6 +56,9 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
 
         spAccounts = (Spinner) findViewById(R.id.spAccount);
         lvHoldings = (ListView) findViewById(R.id.lvHoldings);
+        txtDaysGainLoss = (TextView) findViewById(R.id.txtTodayGainLoss);
+        txtTotalGainLoss = (TextView) findViewById(R.id.txtTotalGainLoss);
+        txtCash = (TextView) findViewById(R.id.txtCash);
 
         AuthTask = new getPortfolioTask( currentSession.getUser_id());
         AuthTask.execute();
@@ -87,6 +98,9 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
     public class getPortfolioTask extends AsyncTask<Void, Void, Boolean> {
 
         Integer User_ID;
+        BigDecimal HoldingsSum = new BigDecimal(0);
+        BigDecimal DaysGainLoss = new BigDecimal(0);
+        BigDecimal TotalGainLoss = new BigDecimal(0);
         ArrayList<String> HoldingsList = new ArrayList<String>();
 
         public getPortfolioTask(Integer user_id){
@@ -102,9 +116,35 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
             account.setHoldings(Integer.valueOf(account.getAccountNumber()));
 
             HoldingsList.add("");
+
+            BigDecimal daysTotalOpen = new BigDecimal(0);
+            BigDecimal daysTotalGain = new BigDecimal(0);
+
+            BigDecimal allTimePricePaid = new BigDecimal(0);
+            BigDecimal allTimeTotalGain = new BigDecimal(0);
+
+
             for(UserStock userStock: account.getHoldings()){
                 HoldingsList.add(userStock.getStockSymbol());
+
+                HoldingsSum = (userStock.getStock().getQuote().getPrice()).multiply(new BigDecimal(userStock.getQuantity())); // adds up all holdings
+                HoldingsSum = new BigDecimal(account.getBalance()).subtract(HoldingsSum); //subtracts it from total to determine purchasing power
+
+                daysTotalOpen = daysTotalOpen.add(userStock.getStock().getQuote().getOpen().multiply(BigDecimal.valueOf(userStock.getQuantity()))); // sum of all stocks opening price * the quantity
+                daysTotalGain = daysTotalGain.add(userStock.getStock().getQuote().getPrice().multiply(BigDecimal.valueOf(userStock.getQuantity()))); // sum of all stocks prices * the quantity
+
+                DaysGainLoss = daysTotalGain.subtract(daysTotalOpen);
+
+                allTimePricePaid = allTimePricePaid.add(userStock.getPricePaid().multiply(BigDecimal.valueOf(userStock.getQuantity()))); //sum of all prices paid
+
+
+                TotalGainLoss = allTimePricePaid.subtract(daysTotalGain);
+
+
+
             }
+            if(account.getHoldings().size() < 1)
+                HoldingsSum = new BigDecimal(account.getBalance());
 
 
             return true;
@@ -121,11 +161,13 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(AccountsPortfolioActivity.this, android.R.layout.simple_spinner_item, HoldingsList);
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 lvHoldings.setAdapter(arrayAdapter);
+                txtDaysGainLoss.setText(DaysGainLoss.toString());
+                txtTotalGainLoss.setText(TotalGainLoss.toString());
+                txtCash.setText(HoldingsSum.toString());
 
 
             }
         }
-
 
         @Override
         protected void onCancelled() {

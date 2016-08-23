@@ -128,8 +128,8 @@ public class AccountsBalancesActivity extends AppCompatActivity {
 
                 for (UserStock userStock : account.getHoldings()) {
 
-                    HoldingsSum = (userStock.getStock().getQuote().getPrice()).multiply(new BigDecimal(userStock.getQuantity()));
-                    HoldingsSum = new BigDecimal(account.getBalance()).subtract(HoldingsSum);
+                    HoldingsSum = (userStock.getStock().getQuote().getPrice()).multiply(new BigDecimal(userStock.getQuantity())); // adds up all holdings
+                    HoldingsSum = new BigDecimal(account.getBalance()).subtract(HoldingsSum); //subtracts it from total to determine purchasing power
 
                 }
                 if(account.getHoldings().size() < 1)
@@ -151,6 +151,7 @@ public class AccountsBalancesActivity extends AppCompatActivity {
                 //load cash purchasing power
                 txtAccountCashPower.setText(HoldingsSum.toString());
 
+
             }
         }
 
@@ -166,6 +167,11 @@ public class AccountsBalancesActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("result",accountSelectionIndex);
+        setResult(AccountsActivity.RESULT_OK,returnIntent);
+
         this.finish();
     }
 
