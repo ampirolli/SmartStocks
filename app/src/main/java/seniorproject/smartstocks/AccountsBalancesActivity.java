@@ -1,6 +1,7 @@
 package seniorproject.smartstocks;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,8 @@ import java.util.List;
 
 import seniorproject.smartstocks.Classes.Account;
 import seniorproject.smartstocks.Classes.Session;
+import seniorproject.smartstocks.Classes.User;
+import seniorproject.smartstocks.Classes.UserStock;
 
 public class AccountsBalancesActivity extends AppCompatActivity {
 
@@ -30,6 +33,9 @@ public class AccountsBalancesActivity extends AppCompatActivity {
     TextView txtAccountValue;
     TextView txtNetValue;
     TextView txtAccountCashPower;
+
+    private getPortfolioTask AuthTask = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +53,7 @@ public class AccountsBalancesActivity extends AppCompatActivity {
         spAccounts = (Spinner) findViewById(R.id.spAccount);
         txtAccountValue = (TextView) findViewById(R.id.txtAccountValue);
         txtNetValue = (TextView) findViewById(R.id.txtNetAsset);
-        txtAccountCashPower = (TextView) findViewById(R.id.txtCash);
+        txtAccountCashPower = (TextView) findViewById(R.id.txtCashPurchasingPower);
 
         //load the spinner with a list of accounts
         List<String> accountsNickname= new ArrayList<String>();
@@ -75,6 +81,8 @@ public class AccountsBalancesActivity extends AppCompatActivity {
         txtNetValue.setText(netBalance.toString());
 
 
+
+
         spAccounts.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -82,6 +90,9 @@ public class AccountsBalancesActivity extends AppCompatActivity {
                 accountSelectionIndex = i;
                 txtAccountValue.setText(balances.get(accountSelectionIndex).toString());
 
+
+                AuthTask = new getPortfolioTask(currentSession.getUser_id());
+                AuthTask.execute();
 
 
 
@@ -97,11 +108,69 @@ public class AccountsBalancesActivity extends AppCompatActivity {
 
     }
 
+    public class getPortfolioTask extends AsyncTask<Void, Void, Boolean> {
+
+        Integer User_ID;
+        BigDecimal HoldingsSum = new BigDecimal(0);
+        ArrayList<String> HoldingsList = new ArrayList<String>();
+
+        public getPortfolioTask(Integer user_id){
+            User_ID = user_id;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+                User user = new User(User_ID);
+                user.setAccounts();
+                Account account = user.getAccounts().get(accountSelectionIndex);
+                account.setHoldings(Integer.valueOf(account.getAccountNumber()));
+
+                for (UserStock userStock : account.getHoldings()) {
+
+                    HoldingsSum = (userStock.getStock().getQuote().getPrice()).multiply(new BigDecimal(userStock.getQuantity())); // adds up all holdings
+                    HoldingsSum = new BigDecimal(account.getBalance()).subtract(HoldingsSum); //subtracts it from total to determine purchasing power
+
+                }
+                if(account.getHoldings().size() < 1)
+                    HoldingsSum = new BigDecimal(account.getBalance());
+
+            }catch(Exception e) {
+                e.printStackTrace();
+                e.getMessage();
+            }
+
+            return true;
+        }
+
+        protected void onPostExecute(final Boolean success) {
+
+            AuthTask = null;
+
+            if(success){
+                //load cash purchasing power
+                txtAccountCashPower.setText(HoldingsSum.toString());
+
+
+            }
+        }
+
+
+        @Override
+        protected void onCancelled() {
+            AuthTask = null;
+
+        }
+}
 
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("result",accountSelectionIndex);
+        setResult(AccountsActivity.RESULT_OK,returnIntent);
         this.finish();
     }
 

@@ -80,7 +80,7 @@ public class AccountsActivity extends AppCompatActivity {
                     i.putStringArrayListExtra("AccountsNumberList", accountsNumberList);
                     i.putExtra("SelectedAccount", accountSelectionValue);
                     i.putExtra("SelectedIndex", accountSelectionIndex);
-                    startActivity(i);
+                    startActivityForResult(i, 1);
                 }else if(id == 1){
                     Intent i = new Intent(AccountsActivity.this, AccountsOrdersActivity.class); //creates intent that launches Orders
                     i.putExtra("Session", currentSession.getUser_id());
@@ -88,7 +88,7 @@ public class AccountsActivity extends AppCompatActivity {
                     i.putStringArrayListExtra("AccountsNumberList", accountsNumberList);
                     i.putExtra("SelectedAccount", accountSelectionValue);
                     i.putExtra("SelectedIndex", accountSelectionIndex);
-                    startActivity(i);
+                    startActivityForResult(i, 1);
                 }else if(id == 2){
                     Intent i = new Intent(AccountsActivity.this, AccountsPortfolioActivity.class); //creates intent that launches Portfolio
                     i.putExtra("Session", currentSession.getUser_id());
@@ -96,7 +96,7 @@ public class AccountsActivity extends AppCompatActivity {
                     i.putStringArrayListExtra("AccountsNumberList", accountsNumberList);
                     i.putExtra("SelectedAccount", accountSelectionValue);
                     i.putExtra("SelectedIndex", accountSelectionIndex);
-                    startActivity(i);
+                    startActivityForResult(i, 1);
                 }else if(id == 3){
                     Intent i = new Intent(AccountsActivity.this, AccountsTransactionsActivity.class); //creates intent that Transactions
                     i.putExtra("Session", currentSession.getUser_id());
@@ -104,7 +104,7 @@ public class AccountsActivity extends AppCompatActivity {
                     i.putStringArrayListExtra("AccountsNumberList", accountsNumberList);
                     i.putExtra("SelectedAccount", accountSelectionValue);
                     i.putExtra("SelectedIndex", accountSelectionIndex);
-                    startActivity(i);
+                    startActivityForResult(i, 1);
                 }
 
             }
@@ -122,6 +122,20 @@ public class AccountsActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == AccountsActivity.RESULT_OK){
+
+                spAccounts.setSelection(data.getIntExtra("result", 0));
+            }
+            if (resultCode == AccountsActivity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }//onActivityResult
 
     public void executeAuthTask(){
         AuthTask = new getAccountsTask(currentSession.getUser_id());
