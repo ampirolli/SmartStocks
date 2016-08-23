@@ -41,8 +41,7 @@
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/txtAccountValue"
-            android:layout_gravity="center_horizontal" />
+            android:id="@+id/txtAccountValue" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -55,8 +54,7 @@
             android:layout_width="178dp"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/txtCashPurchasingPower"
-            android:layout_gravity="center_horizontal" />
+            android:id="@+id/txtCashPurchasingPower" />
 
         <TextView
             android:layout_width="wrap_content"

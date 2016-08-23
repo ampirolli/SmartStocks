@@ -87,7 +87,7 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
     public class getPortfolioTask extends AsyncTask<Void, Void, Boolean> {
 
         Integer User_ID;
-        ArrayList<String> holdingsList = new ArrayList<String>();
+        ArrayList<String> HoldingsList = new ArrayList<String>();
 
         public getPortfolioTask(Integer user_id){
             User_ID = user_id;
@@ -101,9 +101,9 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
             Account account = user.getAccounts().get(accountSelectionIndex);
             account.setHoldings(Integer.valueOf(account.getAccountNumber()));
 
-            holdingsList.add("");
+            HoldingsList.add("");
             for(UserStock userStock: account.getHoldings()){
-                holdingsList.add(userStock.getStockSymbol());
+                HoldingsList.add(userStock.getStockSymbol());
             }
 
 
@@ -116,9 +116,9 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
 
             if(success){
                 //load the spinner with a list of accounts
-                List<String> holdingList = holdingsList;
+                List<String> holdingList = HoldingsList;
 
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(AccountsPortfolioActivity.this, android.R.layout.simple_spinner_item, holdingList);
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(AccountsPortfolioActivity.this, android.R.layout.simple_spinner_item, HoldingsList);
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 lvHoldings.setAdapter(arrayAdapter);
 
