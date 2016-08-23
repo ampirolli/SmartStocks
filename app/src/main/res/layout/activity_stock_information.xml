@@ -143,22 +143,23 @@
         android:text="52 Week High"
         android:id="@+id/textView37"
         android:layout_below="@+id/textView36"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="22dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/txt52weekhigh"
-        android:layout_below="@+id/txtDayLow"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignTop="@+id/textView37"
+        android:layout_alignEnd="@+id/linearLayout2" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="52 Week Low"
         android:id="@+id/textView38"
-        android:layout_below="@+id/textView37"
+        android:layout_alignTop="@+id/txt52WeekLow"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -166,8 +167,9 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/txt52WeekLow"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/txt52weekhigh"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="wrap_content"
