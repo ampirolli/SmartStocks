@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import seniorproject.smartstocks.Classes.Account;
@@ -57,6 +58,7 @@ public class AccountsActivity extends AppCompatActivity {
         accountActivities.add("Orders");
         accountActivities.add("Portfolio");
         accountActivities.add("Transactions");
+
 
         // This is the array adapter, it takes the context of the activity as a
         // first parameter, the type of list view as a second parameter and your
