@@ -43,25 +43,7 @@ public class ToolsDefinitionsActivity extends AppCompatActivity {
         AuthTask = new getDefinitionsListTask();
         AuthTask.execute();
 
-        lvDefinitions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int index, long l) {
 
-                Intent i = new Intent(ToolsDefinitionsActivity.this, ToolsDefinitionsSelectedActivity.class); //creates intent that launches Definitions
-                i.putExtra("Session", currentSession.getUser_id());
-                i.putExtra("DefinitionID", DefinitionsID.get(index));
-
-                startActivity(i);
-
-                //launch new event
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                // do nothing
-            }
-        });
 
     }
 
@@ -94,6 +76,20 @@ public class ToolsDefinitionsActivity extends AppCompatActivity {
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(ToolsDefinitionsActivity.this, android.R.layout.simple_spinner_item, definitionsList);
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 lvDefinitions.setAdapter(arrayAdapter);
+                lvDefinitions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
+
+                        Intent i = new Intent(ToolsDefinitionsActivity.this, ToolsDefinitionsSelectedActivity.class); //creates intent that launches Definitions
+                        i.putExtra("Session", currentSession.getUser_id());
+                        i.putExtra("DefinitionID", DefinitionsID.get(index));
+
+                        startActivity(i);
+
+                        //launch new event
+
+                    }
+                });
 
             }
         }

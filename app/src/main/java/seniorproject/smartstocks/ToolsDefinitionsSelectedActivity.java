@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,8 +24,8 @@ import seniorproject.smartstocks.Classes.User;
 
 public class ToolsDefinitionsSelectedActivity extends AppCompatActivity {
     Session currentSession;
-    EditText txtTitle;
-    EditText txtDefinitions;
+    TextView txtTitle;
+    TextView txtDefinitions;
     Integer DefinitionID;
 
     private getDefinitionsTask AuthTask = null;
@@ -40,8 +41,8 @@ public class ToolsDefinitionsSelectedActivity extends AppCompatActivity {
 
         DefinitionID = previousIntent.getIntExtra("DefinitionID", 0); //pulls the definition id from previos intent to be loaded into our SP
 
-        txtTitle= (EditText)findViewById(R.id.txtTitle);
-        txtDefinitions =(EditText)findViewById(R.id.txtDefinitions);
+        txtTitle= (TextView)findViewById(R.id.txtTitle);
+        txtDefinitions =(TextView)findViewById(R.id.txtDefinitions);
         AuthTask = new getDefinitionsTask();
         AuthTask.execute();
 
@@ -59,7 +60,7 @@ public class ToolsDefinitionsSelectedActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             //CONNECT TO SQL DATABASE ON SEPERATE THREAD FROM THE MAIN THREAD
-
+            getDefinition();
 
             return true;
         }
