@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class TradingActivity extends AppCompatActivity {
     Button btnPreview;
     TextView tvSymbol;
     TextView tvPrice;
+    Spinner spUserStocks;
 
     String StockSymbol;
 
@@ -68,6 +70,7 @@ public class TradingActivity extends AppCompatActivity {
         btnPreview = (Button) findViewById(R.id.btnPreview);
         tvSymbol = (TextView) findViewById(R.id.tvSymbol);
         tvPrice = (TextView) findViewById(R.id.tvPrice);
+        spUserStocks = (Spinner) findViewById(R.id.spUserStocks);
 
         tvSymbol.setText(previousIntent.getStringExtra("Symbol"));
         StockSymbol = (previousIntent.getStringExtra("Symbol"));
@@ -231,8 +234,7 @@ public class TradingActivity extends AppCompatActivity {
 
         Integer User_ID;
 
-        ArrayList<String> StockList = new ArrayList<String>();
-        ArrayList<Integer> StockId = new ArrayList<Integer>();
+        ArrayList<UserStock> StockList = new ArrayList<UserStock>();
 
         public getPortfolioTask(Integer user_id){
             User_ID = user_id;
@@ -248,8 +250,7 @@ public class TradingActivity extends AppCompatActivity {
 
             for(UserStock userStock: account.getHoldings()){
                 if(StockSymbol.equals(userStock.getStockSymbol())) {
-                    StockList.add(userStock.getStockSymbol());
-                    StockId.add(userStock.getTransactionID());
+                    StockList.add(userStock);
                 }
 
             }
@@ -264,10 +265,10 @@ public class TradingActivity extends AppCompatActivity {
 
             if(success){
                 List<String> orderTypes = new ArrayList<String>();
-                for(String stock : StockList) {
-                    if(stock.equals(StockSymbol)) {
+                for(UserStock stock : StockList) {
+                    if(stock.getStockSymbol().equals(StockSymbol)) {
                         orderTypes.add("Sell");   //populates spinner with array of order types
-                        break;
+
                     }
                 }
                 orderTypes.add("Buy");
