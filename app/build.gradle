@@ -27,4 +27,6 @@ dependencies {
     compile project(':jtds-1.2.7')
     //compile project(':sqljdbc4')
     compile files('libs/YahooFinanceAPI-3.0.0.jar')
+    //compile graphview
+    compile 'com.jjoe64:graphview:4.1.1'
 }
