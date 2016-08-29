@@ -79,13 +79,10 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ViewAnimator
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/viewAnimator"
-        android:layout_below="@+id/linearLayout2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="120dp" />
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:id="@+id/graph" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -93,7 +90,7 @@
         android:text="Open"
         android:id="@+id/textView33"
         android:layout_marginTop="122dp"
-        android:layout_below="@+id/viewAnimator"
+        android:layout_below="@+id/graph"
         android:layout_alignParentStart="true" />
 
     <TextView
