@@ -13,7 +13,6 @@ public class UserStock {
 
     Stock StockSymbol;
     Integer Quantity;
-    BigDecimal PricePaid;
     Integer TransactionID;
     Integer AccountID;
 
@@ -35,14 +34,6 @@ public class UserStock {
 
     public void setQuantity(Integer quantity) {
         Quantity = quantity;
-    }
-
-    public BigDecimal getPricePaid() {
-        return PricePaid;
-    }
-
-    public void setPricePaid(BigDecimal pricePaid) {
-        PricePaid = pricePaid;
     }
 
     public Integer getTransactionID() {

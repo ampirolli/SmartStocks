@@ -34,11 +34,25 @@
             android:text="Symbol"
             android:id="@+id/textView41" />
 
-        <EditText
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txtSymbol"
-            android:layout_gravity="center_horizontal" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/tvSymbol" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Ask Price" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/tvPrice"
+            android:text="ask" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -57,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Small Text"
+                android:text="PriceType"
                 android:id="@+id/textView43"
                 android:layout_weight="1" />
 
@@ -70,7 +84,7 @@
             android:layout_gravity="center_horizontal">
 
             <Spinner
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/spOrderType"
                 android:layout_weight="1" />

@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -43,6 +45,7 @@ public class StockInformationActivity extends AppCompatActivity {
     TextView txtLow;
     TextView txtWeekHigh;
     TextView txtWeekLow;
+    Button btnTrade;
 
     private getStockDataTask AuthTask = null;
 
@@ -71,6 +74,7 @@ public class StockInformationActivity extends AppCompatActivity {
         txtLow = (TextView)findViewById(R.id.txtDayLow);
         txtWeekHigh= (TextView)findViewById(R.id.txt52weekhigh);
         txtWeekLow = (TextView)findViewById(R.id.txt52WeekLow);
+        btnTrade = (Button) findViewById(R.id.btnTrade);
 
         try {
             AuthTask = new getStockDataTask(symbol);
@@ -78,6 +82,19 @@ public class StockInformationActivity extends AppCompatActivity {
         }catch (Exception e) {
             e.printStackTrace();
         }
+        btnTrade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(StockInformationActivity.this, TradingActivity.class);
+                i.putExtra("Session", currentSession.getUser_id());
+                i.putExtra("Symbol", txtSymbol.getText());
+                startActivity(i);
+                finish();
+
+            }
+        });
+
+
 
     }
 

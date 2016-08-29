@@ -109,6 +109,7 @@ public class Account implements Parcelable {
                 transaction.setTransactionDate(result.getDate("transaction_time"));
                 transaction.setStockSymbol(result.getString("stock_symbol"));
                 transaction.setStockQuantity(result.getInt("stock_quantity"));
+                transaction.setPricePaid(result.getBigDecimal("price_paid"));
                 transactionList.add(transaction);
             }
 
@@ -161,6 +162,7 @@ public class Account implements Parcelable {
                 order.setOrderDate(result.getDate("transaction_time"));
                 order.setStockSymbol(result.getString("stock_symbol"));
                 order.setStockQuantity(result.getInt("stock_quantity"));
+                order.setPricePaid(result.getBigDecimal("price_paid"));
                 orderList.add(order);
             }
 
@@ -210,7 +212,6 @@ public class Account implements Parcelable {
                 UserStock userStock = new UserStock();
                 userStock.setStock(result.getString("stock_symbol"));
                 userStock.setQuantity(result.getInt("quantity"));
-                userStock.setPricePaid(result.getBigDecimal("price_paid"));
                 userStock.setTransactionID(result.getInt("transaction_id"));
                 userStock.setAccountID(AccountID);
                 holdingsList.add(userStock);

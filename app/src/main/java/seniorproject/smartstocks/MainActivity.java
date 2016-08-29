@@ -124,8 +124,6 @@ public class MainActivity extends AppCompatActivity
             Intent i = new Intent(MainActivity.this, AccountsActivity.class); //creates intent that launches main menu
             i.putExtra("Session", currentSession.getUser_id());
             startActivity(i);
-        } else if (id == R.id.nav_trading) {
-
         } else if (id == R.id.nav_tools) {
 
             Intent i = new Intent(MainActivity.this, ToolsActivity.class); //creates intent that launches main menu

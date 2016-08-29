@@ -99,6 +99,7 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
 
         Integer User_ID;
         BigDecimal HoldingsSum = new BigDecimal(0);
+        BigDecimal PurchasingPower = new BigDecimal(0);
         BigDecimal DaysGainLoss = new BigDecimal(0);
         BigDecimal TotalGainLoss = new BigDecimal(0);
         ArrayList<String> HoldingsList = new ArrayList<String>();
@@ -128,7 +129,7 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
                 HoldingsList.add(userStock.getStockSymbol());
 
                 HoldingsSum = (userStock.getStock().getQuote().getPrice()).multiply(new BigDecimal(userStock.getQuantity())); // adds up all holdings
-                HoldingsSum = new BigDecimal(account.getBalance()).subtract(HoldingsSum); //subtracts it from total to determine purchasing power
+                PurchasingPower = new BigDecimal(account.getBalance()).subtract(HoldingsSum); //subtracts it from total to determine purchasing power
 
                 daysTotalOpen = daysTotalOpen.add(userStock.getStock().getQuote().getOpen().multiply(BigDecimal.valueOf(userStock.getQuantity()))); // sum of all stocks opening price * the quantity
                 daysTotalGain = daysTotalGain.add(userStock.getStock().getQuote().getPrice().multiply(BigDecimal.valueOf(userStock.getQuantity()))); // sum of all stocks prices * the quantity
@@ -144,7 +145,7 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
 
             }
             if(account.getHoldings().size() < 1)
-                HoldingsSum = new BigDecimal(account.getBalance());
+                PurchasingPower = new BigDecimal(account.getBalance());
 
 
             return true;
@@ -163,7 +164,7 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
                 lvHoldings.setAdapter(arrayAdapter);
                 txtDaysGainLoss.setText(DaysGainLoss.toString());
                 txtTotalGainLoss.setText(TotalGainLoss.toString());
-                txtCash.setText(HoldingsSum.toString());
+                txtCash.setText(PurchasingPower.toString());
 
 
             }
