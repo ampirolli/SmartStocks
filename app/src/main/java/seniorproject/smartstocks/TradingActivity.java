@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import seniorproject.smartstocks.Classes.Account;
 import seniorproject.smartstocks.Classes.Session;
+import seniorproject.smartstocks.Classes.TradingPreviewActivity;
 import seniorproject.smartstocks.Classes.User;
 import seniorproject.smartstocks.Classes.UserStock;
 import yahoofinance.Stock;
@@ -44,6 +46,9 @@ public class TradingActivity extends AppCompatActivity {
 
     String StockSymbol;
 
+    ArrayList<UserStock> userStocksList = new ArrayList<UserStock>();
+
+    ArrayList<Integer> userStocksTransactionIds = new ArrayList<Integer>();
     ArrayList<Account> accountsList = new  ArrayList<Account>() ; //list to save accounts nickname + number
     ArrayList<String> accountsNumberList = new  ArrayList<String>() ; //list to save the selected accounts account number
     String accountSelectionValue = new String(); //String to resolve which account was selected
@@ -121,6 +126,75 @@ public class TradingActivity extends AppCompatActivity {
 
         });
 
+        spOrderType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
+                if(position == 0){
+                    spUserStocks.setVisibility(View.GONE);
+                }else{
+                    spUserStocks.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+        btnPreview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean cancel = false;
+                View focusView = null;
+
+                String quantity = txtShares.getText().toString();
+
+                if (TextUtils.isEmpty(quantity)) {
+                    txtShares.setError(getString(R.string.error_field_required));
+                    focusView = txtShares;
+                    cancel = true;
+                } else if (isHigherThanOwnedShares(Integer.valueOf(quantity))) {
+                    txtShares.setError("Shares must be equal to or less than the amount of owned stock");
+                    focusView = txtShares;
+                    cancel = true;
+                } else if (Integer.valueOf(quantity) <= 0 ) {
+                    txtShares.setError("Shares must be greater than zero");
+                    focusView = txtShares;
+                    cancel = true;
+                }
+                if (cancel == false)
+                {
+                    Intent i = new Intent(TradingActivity.this, TradingPreviewActivity.class);
+                    i.putExtra("Session", currentSession.getUser_id());
+                    i.putExtra("Account_Number", accountSelectionValue);
+                    i.putExtra("Order_Type", spOrderType.getSelectedItem().toString());
+                    i.putExtra("Price_Type", spPriceType.getSelectedItem().toString());
+                    i.putExtra("ShareQuantity", Integer.valueOf(txtShares.getText().toString()));
+                    i.putExtra("Term", spTerm.getSelectedItem().toString());
+                    i.putExtra("Symbol", tvSymbol.getText().toString());
+                    i.putExtra("Asking_Price", new BigDecimal(tvPrice.getText().toString()));
+                    if(spOrderType.getSelectedItem().toString().equals("Sell"))
+                        i.putExtra("Transaction_id", userStocksList.get(spUserStocks.getSelectedItemPosition()).getTransactionID());
+
+                    startActivity(i);
+                }
+
+
+            }
+        });
+
+    }
+
+    public boolean isHigherThanOwnedShares(Integer shares)
+    {
+        if(shares > userStocksList.get(spUserStocks.getSelectedItemPosition()).getQuantity())
+            return true;
+        else
+            return false;
     }
 
     public class getStockDataTask extends AsyncTask<Void, Void, Boolean> {
@@ -208,6 +282,10 @@ public class TradingActivity extends AppCompatActivity {
                         accountSelectionValue = accountsNumberList.get(i);
                         accountSelectionIndex = i;
 
+                        AuthTask3 = new getPortfolioTask(currentSession.getUser_id());
+                        AuthTask3.execute();
+
+
                     }
 
                     @Override
@@ -265,13 +343,34 @@ public class TradingActivity extends AppCompatActivity {
 
             if(success){
                 List<String> orderTypes = new ArrayList<String>();
+                List<String> userStocks = new ArrayList<String>();
+                userStocksList = new ArrayList<UserStock>();
+                boolean hasStock = true;
+                spUserStocks.setVisibility(View.GONE);
+                orderTypes.add("Buy");
                 for(UserStock stock : StockList) {
                     if(stock.getStockSymbol().equals(StockSymbol)) {
-                        orderTypes.add("Sell");   //populates spinner with array of order types
+                        if(hasStock == true){
+                            orderTypes.add("Sell");   //populates spinner with array of order types
+                            hasStock = false; // will set to false to avoid adding sell multiple times
+                        }
+                        userStocksTransactionIds.add(stock.getTransactionID());
+                        userStocks.add(stock.getStockSymbol() + " - Quantity: " + stock.getQuantity());
+                        userStocksList.add(stock);
                         spUserStocks.setVisibility(View.VISIBLE);
+
+                        ArrayAdapter<String> arrayAdapter5 = new ArrayAdapter<String>(
+                                TradingActivity.this,
+                                android.R.layout.simple_list_item_1,
+                                userStocks );
+
+                        spUserStocks.setAdapter(arrayAdapter5);
+
+
                     }
                 }
-                orderTypes.add("Buy");
+
+
 
                 ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(
                         TradingActivity.this,
