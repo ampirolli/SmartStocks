@@ -268,7 +268,7 @@ public class TradingActivity extends AppCompatActivity {
                 for(UserStock stock : StockList) {
                     if(stock.getStockSymbol().equals(StockSymbol)) {
                         orderTypes.add("Sell");   //populates spinner with array of order types
-
+                        spUserStocks.setVisibility(View.VISIBLE);
                     }
                 }
                 orderTypes.add("Buy");
