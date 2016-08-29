@@ -191,7 +191,7 @@ public class TradingActivity extends AppCompatActivity {
 
     public boolean isHigherThanOwnedShares(Integer shares)
     {
-        if(shares > userStocksList.get(spUserStocks.getSelectedItemPosition()).getQuantity())
+        if(shares > userStocksList.get(spUserStocks.getSelectedItemPosition()).getQuantity() && spOrderType.getSelectedItem().toString() == ("Sell"))
             return true;
         else
             return false;
