@@ -236,12 +236,23 @@ public class StockInformationActivity extends AppCompatActivity {
 
                 LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
                 int i = 0;
+                BigDecimal largest = new BigDecimal(0);
+                BigDecimal smallest = new BigDecimal(100000000);
                 for(BigDecimal fiveMinute : Intraday) {
                     series.appendData(new DataPoint(i , fiveMinute.doubleValue()), false, 78);
+                    if(largest.compareTo(fiveMinute) == -1){
+                        largest = fiveMinute;
+                        graph.getViewport().setMaxY(largest.doubleValue()); //does nothing right now
+                    }
+                    if(smallest.compareTo(fiveMinute) == 1){
+                        largest = fiveMinute;
+                        graph.getViewport().setMinY(smallest.doubleValue()); // does nothing right now
+                    }
                     i++;
                 }
-
+                graph.getViewport().setMaxX(78);
                 graph.addSeries(series);
+
 
 
             }
