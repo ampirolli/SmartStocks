@@ -79,12 +79,19 @@
         </LinearLayout>
     </LinearLayout>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trade"
+        android:id="@+id/btnTrade"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
     <com.jjoe64.graphview.GraphView
         android:layout_width="match_parent"
         android:layout_height="200dip"
         android:layout_below="@+id/linearLayout2"
-        android:id="@+id/graph"
-        android:layout_margin="10dip" />
+        android:id="@+id/graph" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -185,13 +192,5 @@
         android:id="@+id/txtClose"
         android:layout_below="@+id/txtOpen"
         android:layout_alignParentEnd="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Trade"
-        android:id="@+id/btnTrade"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

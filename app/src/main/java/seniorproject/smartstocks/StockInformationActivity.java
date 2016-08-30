@@ -24,6 +24,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -51,6 +52,7 @@ public class StockInformationActivity extends AppCompatActivity {
     TextView txtWeekHigh;
     TextView txtWeekLow;
     Button btnTrade;
+    GraphView graph;
 
     private getStockDataTask AuthTask = null;
 
@@ -80,6 +82,8 @@ public class StockInformationActivity extends AppCompatActivity {
         txtWeekHigh= (TextView)findViewById(R.id.txt52weekhigh);
         txtWeekLow = (TextView)findViewById(R.id.txt52WeekLow);
         btnTrade = (Button) findViewById(R.id.btnTrade);
+
+        graph = (GraphView) findViewById(R.id.graph);
 
         try {
             AuthTask = new getStockDataTask(symbol);
@@ -114,13 +118,15 @@ public class StockInformationActivity extends AppCompatActivity {
         Stock Stock;
 
         BigDecimal Price = new BigDecimal(0);
-        BigDecimal GainAndLoss = new BigDecimal(0);;
-        BigDecimal Open = new BigDecimal(0);;
-        BigDecimal Close = new BigDecimal(0);;
-        BigDecimal High = new BigDecimal(0);;
-        BigDecimal Low = new BigDecimal(0);;
-        BigDecimal WeekHigh = new BigDecimal(0);;
-        BigDecimal WeekLow = new BigDecimal(0);;
+        BigDecimal GainAndLoss = new BigDecimal(0);
+        BigDecimal Open = new BigDecimal(0);
+        BigDecimal Close = new BigDecimal(0);
+        BigDecimal High = new BigDecimal(0);
+        BigDecimal Low = new BigDecimal(0);
+        BigDecimal WeekHigh = new BigDecimal(0);
+        BigDecimal WeekLow = new BigDecimal(0);
+
+        List<BigDecimal> Intraday = new ArrayList<BigDecimal>();
 
         ArrayList<String> holdingsList = new ArrayList<String>();
 
@@ -146,14 +152,59 @@ public class StockInformationActivity extends AppCompatActivity {
                 WeekHigh = Stock.getQuote().getYearHigh();
                 WeekLow = Stock.getQuote().getYearLow();
 
-                LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
-                List<HistoricalQuote> intraday = Stock.getHistory();
-                for(HistoricalQuote stock : intraday){
 
-                    stock.toString();
+
+
+                try {
+                    URL url = new URL("http://chartapi.finance.yahoo.com/instrument/1.0/" + Symbol + "/chartdata;type=quote;range=1d/csv");
+                    URLConnection con = url.openConnection();
+                    InputStream is = con.getInputStream();
+                    BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+                    String line = null;
+                    String regex1 = "\\(";
+                    String regex2 = "\\)";
+
+                    int i = 0;
+                    ArrayList<String> rawIntraday = new ArrayList<String>();
+                    // read each line and write to System.out
+                    while ((line = br.readLine()) != null) {
+                        if(i == 17)
+                        {
+
+                            rawIntraday.add(line); // once prices begin in the csv
+
+                        }else
+                            i++;
+                    }
+                    ArrayList<String> minuteInterval = new ArrayList<String>();
+                    for(String raw : rawIntraday){
+                        List<String> items = Arrays.asList(raw.split(",")); // trim by comma
+                        minuteInterval.add(items.get(1)); //adds every one minite data
+
+                    }
+                    i =0;
+                    for(String minute : minuteInterval)
+                    {
+                        i++;
+                        if(i == 1)
+                            Intraday.add(new BigDecimal(minute));   //gets every 5 minute data from every one minute data
+                        if(i == 5)
+                            i = 0;
+
+                    }
+
 
                 }
-
+                catch (IOException e) {
+                    e.printStackTrace();
+                    e.toString();
+                    return false;
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                }
 
 
 
@@ -161,6 +212,8 @@ public class StockInformationActivity extends AppCompatActivity {
                 e.printStackTrace();
                 return false;
             }
+
+
 
             return true;
         }
@@ -179,6 +232,17 @@ public class StockInformationActivity extends AppCompatActivity {
                 txtLow.setText(Low.toString());
                 txtWeekHigh.setText(WeekHigh.toString());
                 txtWeekLow.setText(WeekLow.toString());
+
+
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
+                int i = 0;
+                for(BigDecimal fiveMinute : Intraday) {
+                    series.appendData(new DataPoint(i , fiveMinute.doubleValue()), false, 78);
+                    i++;
+                }
+
+                graph.addSeries(series);
+
 
             }
         }
