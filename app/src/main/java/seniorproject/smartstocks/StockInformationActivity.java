@@ -238,6 +238,9 @@ public class StockInformationActivity extends AppCompatActivity {
                 int i = 0;
                 BigDecimal largest = new BigDecimal(0);
                 BigDecimal smallest = new BigDecimal(100000000);
+                graph.getViewport().setYAxisBoundsManual(true);
+                graph.getViewport().setXAxisBoundsManual(true);
+
                 for(BigDecimal fiveMinute : Intraday) {
                     series.appendData(new DataPoint(i , fiveMinute.doubleValue()), false, 78);
                     if(largest.compareTo(fiveMinute) == -1){
@@ -245,7 +248,7 @@ public class StockInformationActivity extends AppCompatActivity {
                         graph.getViewport().setMaxY(largest.doubleValue()); //does nothing right now
                     }
                     if(smallest.compareTo(fiveMinute) == 1){
-                        largest = fiveMinute;
+                        smallest = fiveMinute;
                         graph.getViewport().setMinY(smallest.doubleValue()); // does nothing right now
                     }
                     i++;

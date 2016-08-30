@@ -79,6 +79,146 @@
         </LinearLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/graph"
+        android:layout_marginTop="15dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Open"
+                android:id="@+id/textView33"
+                android:layout_alignParentStart="true"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Close"
+                android:id="@+id/textView39"
+                android:layout_alignParentStart="true"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Day High"
+                android:id="@+id/textView35"
+                android:layout_alignParentStart="true"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Day Low"
+                android:id="@+id/textView36"
+                android:layout_alignParentStart="true"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="52 Week High"
+                android:id="@+id/textView37"
+                android:layout_alignParentStart="true"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="52 Week Low"
+                android:id="@+id/textView38"
+                android:layout_alignParentStart="true"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txtOpen"
+                android:layout_alignParentEnd="true"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="right" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txtClose"
+                android:layout_below="@+id/txtOpen"
+                android:layout_alignParentEnd="true"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="right" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtDayHigh"
+                android:layout_alignParentEnd="true"
+                android:text="New Text"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="right" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txtDayLow"
+                android:layout_alignEnd="@+id/linearLayout2"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="right" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txt52weekhigh"
+                android:layout_alignEnd="@+id/linearLayout2"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="right" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txt52WeekLow"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="right" />
+
+        </LinearLayout>
+    </LinearLayout>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -92,105 +232,5 @@
         android:layout_height="200dip"
         android:layout_below="@+id/linearLayout2"
         android:id="@+id/graph" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Open"
-        android:id="@+id/textView33"
-        android:layout_marginTop="122dp"
-        android:layout_below="@+id/graph"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/txtOpen"
-        android:layout_above="@+id/textView35"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Day High"
-        android:id="@+id/textView35"
-        android:layout_below="@+id/textView33"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="35dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtDayHigh"
-        android:layout_alignBottom="@+id/textView35"
-        android:layout_alignParentEnd="true"
-        android:text="New Text" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Day Low"
-        android:id="@+id/textView36"
-        android:layout_below="@+id/textView35"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/txtDayLow"
-        android:layout_alignBottom="@+id/textView36"
-        android:layout_alignEnd="@+id/linearLayout2" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="52 Week High"
-        android:id="@+id/textView37"
-        android:layout_below="@+id/textView36"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="22dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/txt52weekhigh"
-        android:layout_alignTop="@+id/textView37"
-        android:layout_alignEnd="@+id/linearLayout2" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="52 Week Low"
-        android:id="@+id/textView38"
-        android:layout_alignTop="@+id/txt52WeekLow"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/txt52WeekLow"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/txt52weekhigh"
-        android:layout_alignParentLeft="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Close"
-        android:id="@+id/textView39"
-        android:layout_below="@+id/textView33"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/txtClose"
-        android:layout_below="@+id/txtOpen"
-        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
