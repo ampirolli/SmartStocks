@@ -225,6 +225,7 @@ public class StockInformationActivity extends AppCompatActivity {
             if(success){
 
                 txtPrice.setText(Price.toString());
+                txtCompany.setText(Stock.getName());
                 txtGainAndLoss.setText(GainAndLoss.toString());
                 txtOpen.setText(Open.toString());
                 txtClose.setText(Close.toString());

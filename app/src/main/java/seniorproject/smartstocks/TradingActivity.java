@@ -191,7 +191,9 @@ public class TradingActivity extends AppCompatActivity {
 
     public boolean isHigherThanOwnedShares(Integer shares)
     {
-        if(shares > userStocksList.get(spUserStocks.getSelectedItemPosition()).getQuantity() && spOrderType.getSelectedItem().toString() == ("Sell"))
+        if(spUserStocks.getSelectedItem() ==null )
+            return false;
+        if(shares > userStocksList.get(spUserStocks.getSelectedItemPosition()).getQuantity() && spOrderType.getSelectedItem().toString().equals("Sell"))
             return true;
         else
             return false;
@@ -311,6 +313,7 @@ public class TradingActivity extends AppCompatActivity {
     public class getPortfolioTask extends AsyncTask<Void, Void, Boolean> {
 
         Integer User_ID;
+        boolean ownsStock = false;
 
         ArrayList<UserStock> StockList = new ArrayList<UserStock>();
 
@@ -329,9 +332,10 @@ public class TradingActivity extends AppCompatActivity {
             for(UserStock userStock: account.getHoldings()){
                 if(StockSymbol.equals(userStock.getStockSymbol())) {
                     StockList.add(userStock);
+                    ownsStock = true;
                 }
-
             }
+
 
 
             return true;
