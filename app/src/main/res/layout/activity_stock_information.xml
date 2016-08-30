@@ -83,7 +83,8 @@
         android:layout_width="match_parent"
         android:layout_height="200dip"
         android:layout_below="@+id/linearLayout2"
-        android:id="@+id/graph" />
+        android:id="@+id/graph"
+        android:layout_margin="10dip" />
 
     <TextView
         android:layout_width="wrap_content"

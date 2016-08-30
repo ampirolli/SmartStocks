@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +33,7 @@ import seniorproject.smartstocks.Classes.User;
 import seniorproject.smartstocks.Classes.UserStock;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
+import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.histquotes.Interval;
 
 public class StockInformationActivity extends AppCompatActivity {
@@ -82,6 +87,11 @@ public class StockInformationActivity extends AppCompatActivity {
         }catch (Exception e) {
             e.printStackTrace();
         }
+
+
+        GraphView graph = (GraphView) findViewById(R.id.graph);
+
+
         btnTrade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,6 +145,17 @@ public class StockInformationActivity extends AppCompatActivity {
                 Low = Stock.getQuote().getDayLow();;
                 WeekHigh = Stock.getQuote().getYearHigh();
                 WeekLow = Stock.getQuote().getYearLow();
+
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
+                List<HistoricalQuote> intraday = Stock.getHistory();
+                for(HistoricalQuote stock : intraday){
+
+                    stock.toString();
+
+                }
+
+
+
 
             } catch (Exception e) {
                 e.printStackTrace();
