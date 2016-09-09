@@ -173,10 +173,9 @@ public class TradingActivity extends AppCompatActivity {
                     i.putExtra("Account_Number", accountSelectionValue);
                     i.putExtra("Order_Type", spOrderType.getSelectedItem().toString());
                     i.putExtra("Price_Type", spPriceType.getSelectedItem().toString());
-                    i.putExtra("ShareQuantity", Integer.valueOf(txtShares.getText().toString()));
+                    i.putExtra("Share_Quantity", Integer.valueOf(txtShares.getText().toString()));
                     i.putExtra("Term", spTerm.getSelectedItem().toString());
                     i.putExtra("Symbol", tvSymbol.getText().toString());
-                    i.putExtra("Asking_Price", tvPrice.getText().toString());
                     if(spOrderType.getSelectedItem().toString().equals("Sell"))
                         i.putExtra("Transaction_id", userStocksList.get(spUserStocks.getSelectedItemPosition()).getTransactionID());
 

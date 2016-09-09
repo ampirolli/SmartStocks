@@ -131,17 +131,24 @@ public class StockInformationActivity extends AppCompatActivity {
         ArrayList<String> holdingsList = new ArrayList<String>();
 
         public getStockDataTask(String symbol) {
-
             Symbol = symbol;
+
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
 
+            try {
+
+                Stock = YahooFinance.get(Symbol);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             //load the Stock Data
             try{
 
-                Stock = YahooFinance.get(Symbol);
+
 
                 Price = Stock.getQuote().getPrice();
                 GainAndLoss =  Stock.getQuote().getChange(); //Price.subtract(Stock.getQuote().getOpen());
@@ -151,8 +158,6 @@ public class StockInformationActivity extends AppCompatActivity {
                 Low = Stock.getQuote().getDayLow();;
                 WeekHigh = Stock.getQuote().getYearHigh();
                 WeekLow = Stock.getQuote().getYearLow();
-
-
 
 
                 try {
@@ -233,7 +238,6 @@ public class StockInformationActivity extends AppCompatActivity {
                 txtLow.setText(Low.toString());
                 txtWeekHigh.setText(WeekHigh.toString());
                 txtWeekLow.setText(WeekLow.toString());
-
 
                 LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
                 int i = 0;

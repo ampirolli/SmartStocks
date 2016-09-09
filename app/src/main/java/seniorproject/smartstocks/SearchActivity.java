@@ -48,6 +48,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         Intent previousIntent = getIntent();
         currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0));  //loads current session into intent
         currentSession.getUser_id();
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
         lvResults = (ListView) findViewById(R.id.lvResults);
         lvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -95,9 +96,10 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     @Override
     public boolean onQueryTextChange(String newText) {
         // User changed the text
+        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
         AuthTask = new searchTask(newText);
         AuthTask.execute();
-
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
         return false;
     }
