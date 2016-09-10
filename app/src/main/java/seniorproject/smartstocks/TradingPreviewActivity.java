@@ -205,8 +205,6 @@ public class TradingPreviewActivity extends AppCompatActivity {
             TransactionTime = sdf.format(date).toString();
 
 
-
-
         }
 
         @Override
@@ -228,14 +226,13 @@ public class TradingPreviewActivity extends AppCompatActivity {
             Integer Order_ID = account.requestOrder(Transactiontype ,PriceType, Price, TransactionTime, Term, Symbol, Quantity, TransactionAmmount);
 
             if ( Order_ID != null) {
-
-                try {
+               try {
                     Socket client;
                     PrintWriter printWriter;
 
-                    client = new Socket("127.0.0.1", 4444);
+                    client = new Socket("10.0.3.2", 4444);
 
-                    printWriter = new PrintWriter(client.getOutputStream());
+                    printWriter = new PrintWriter(client.getOutputStream()); // notifys the server of the order that has just been placed
                     printWriter.write(Order_ID);
                     printWriter.flush();
                     printWriter.close();
@@ -244,15 +241,8 @@ public class TradingPreviewActivity extends AppCompatActivity {
                 catch(Exception e) {
 
                     System.out.print(e.toString());
-                    Context context = getApplicationContext();
-                    CharSequence text = e.toString();
-                    int duration = Toast.LENGTH_SHORT;
-
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
                     return false;
                 }
-
 
             }
             else
