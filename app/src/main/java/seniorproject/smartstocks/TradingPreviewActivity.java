@@ -233,7 +233,7 @@ public class TradingPreviewActivity extends AppCompatActivity {
                     client = new Socket("10.0.3.2", 4444);
 
                     printWriter = new PrintWriter(client.getOutputStream()); // notifys the server of the order that has just been placed
-                    printWriter.write(Order_ID);
+                    printWriter.write(String.valueOf(Order_ID));
                     printWriter.flush();
                     printWriter.close();
                     return true;
