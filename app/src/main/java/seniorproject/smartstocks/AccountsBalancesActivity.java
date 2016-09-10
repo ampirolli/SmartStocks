@@ -59,10 +59,10 @@ public class AccountsBalancesActivity extends AppCompatActivity {
         List<String> accountsNickname= new ArrayList<String>();
         for (Account account: accountsList) {
             if(account.getNickname().equals(""))
-                accountsNickname.add(account.getAccountNumber());
+                accountsNickname.add(account.getAccountNumber().toString());
             else
                 accountsNickname.add(account.getNickname() + "-" + account.getAccountNumber());
-            accountsNumberList.add(account.getAccountNumber());
+            accountsNumberList.add(account.getAccountNumber().toString());
             balances.add(account.getBalance());
 
         }

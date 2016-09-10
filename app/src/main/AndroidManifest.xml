@@ -51,7 +51,6 @@
         <activity android:name=".SearchActivity" />
         <activity android:name=".ToolsDefinitionsActivity" />
         <activity android:name=".ToolsDefinitionsSelectedActivity" />
-        <activity android:name=".Classes.TradingPreviewActivity" />
         <activity android:name=".TradingPreviewActivity"></activity>
     </application>
 

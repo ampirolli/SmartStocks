@@ -3,6 +3,7 @@ package seniorproject.smartstocks.Classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -16,7 +17,7 @@ import seniorproject.smartstocks.LICS;
  */
 public class Account implements Parcelable {
 
-    String AccountNumber;
+    Integer AccountNumber;
     String Type;
     String Balance;
     String Nickname;
@@ -26,7 +27,7 @@ public class Account implements Parcelable {
 
 
     protected Account(Parcel in) {
-        AccountNumber = in.readString();
+        AccountNumber = in.readInt();
         Type = in.readString();
         Balance = in.readString();
         Nickname = in.readString();
@@ -44,11 +45,11 @@ public class Account implements Parcelable {
         }
     };
 
-    public String getAccountNumber() {
+    public Integer getAccountNumber() {
         return AccountNumber;
     }
 
-    public void setAccountNumber(String accountNumber) {
+    public void setAccountNumber(Integer accountNumber) {
         AccountNumber = accountNumber;
     }
 
@@ -233,6 +234,49 @@ public class Account implements Parcelable {
         }
     }
 
+    public Integer requestOrder(String transactionType, String priceType, BigDecimal stockPrice, String transcationTime, String term, String stockSymbol, Integer quantity, BigDecimal transactionAmount){
+
+        LICS loginConnectionString = new LICS();
+        String connectionUrl = loginConnectionString.LoginConnectionString();
+
+        // Declare the JDBC objects.
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet result = null;
+        Integer order_id = 0;
+
+        try {
+            // Establish the connection.
+            Class.forName("net.sourceforge.jtds.jdbc.Driver");
+            conn = DriverManager.getConnection(connectionUrl);
+            // Create and execute an SQL statement that returns some data.
+            String SQL = "execute sp_request_order '" + getAccountNumber() + "', '" + priceType + "', '" + stockPrice + "', " + transactionType + ", '" + transcationTime + "', '" + term + "', '" + stockSymbol + "', '" +quantity + "', " +transactionAmount + ", null ;";
+            stmt = conn.createStatement();
+
+            result = stmt.executeQuery(SQL);
+            while (result.next()) {
+
+
+                order_id = (result.getInt("transaction_id"));
+            }
+            return order_id;
+
+        }
+
+        // Handle any errors that may have occurred.
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        finally {
+            if (result != null) try { result.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (conn != null) try { conn.close(); } catch(Exception e) {}
+        }
+
+
+    }
+
 
     public Account(){
 
@@ -245,7 +289,7 @@ public class Account implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(AccountNumber);
+        dest.writeInt(AccountNumber);
         dest.writeString(Type);
         dest.writeString(Balance);
         dest.writeString(Nickname);

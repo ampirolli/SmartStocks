@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,19 +13,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import seniorproject.smartstocks.Classes.Account;
 import seniorproject.smartstocks.Classes.Session;
-import seniorproject.smartstocks.Classes.TradingPreviewActivity;
 import seniorproject.smartstocks.Classes.User;
 import seniorproject.smartstocks.Classes.UserStock;
-import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 
 public class TradingActivity extends AppCompatActivity {
@@ -267,10 +260,10 @@ public class TradingActivity extends AppCompatActivity {
                 List<String> accountsNickname= new ArrayList<String>();
                 for (Account account: accountsList) {
                     if(account.getNickname().equals(""))
-                        accountsNickname.add(account.getAccountNumber());
+                        accountsNickname.add(account.getAccountNumber().toString());
                     else
                         accountsNickname.add(account.getNickname() + "-" + account.getAccountNumber());
-                    accountsNumberList.add(account.getAccountNumber());
+                    accountsNumberList.add(account.getAccountNumber().toString());
 
                 }
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(TradingActivity.this, android.R.layout.simple_spinner_item, accountsNickname);

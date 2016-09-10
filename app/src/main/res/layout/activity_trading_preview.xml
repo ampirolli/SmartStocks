@@ -38,6 +38,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/txtPrice" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Bid:"
                 android:id="@+id/textView46" />
@@ -86,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="New Text"
-                android:id="@+id/txtOrderType" />
+                android:id="@+id/txtTransactionType" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -118,19 +124,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Stop Price"
-                android:id="@+id/textView51" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtStopPrice"
-                android:text="New Text" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Term"
                 android:id="@+id/textView52" />
 
@@ -139,19 +132,6 @@
                 android:layout_height="wrap_content"
                 android:text="New Text"
                 android:id="@+id/txtTerm" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Estimated Commision"
-                android:id="@+id/textView53" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/txtEstimatedCommision" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -166,6 +146,13 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Medium Text"
                 android:id="@+id/txtEstimatedTotalCost" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirm Order"
+                android:id="@+id/btnConfirm"
+                android:layout_gravity="center_horizontal" />
 
         </LinearLayout>
     </LinearLayout>

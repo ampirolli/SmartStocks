@@ -2,6 +2,7 @@ package seniorproject.smartstocks.Classes;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
 
 import seniorproject.smartstocks.LICS;
@@ -27,6 +28,7 @@ public class AccountSmartStocks extends Account {
         // Declare the JDBC objects.
         Connection conn = null;
         Statement stmt = null;
+
 
         try {
             // Establish the connection.
