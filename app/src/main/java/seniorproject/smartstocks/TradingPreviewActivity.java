@@ -240,7 +240,7 @@ public class TradingPreviewActivity extends AppCompatActivity {
                 }
                 catch(Exception e) {
 
-                    System.out.print(e.toString());
+                    account.deleteOrder(Order_ID);
                     return false;
                 }
 
@@ -271,6 +271,7 @@ public class TradingPreviewActivity extends AppCompatActivity {
 
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
+                finish();
             }
         }
 

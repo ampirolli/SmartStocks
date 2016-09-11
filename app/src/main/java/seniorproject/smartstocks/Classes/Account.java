@@ -277,6 +277,39 @@ public class Account implements Parcelable {
 
     }
 
+    public void deleteOrder(Integer order_id)
+    {
+
+        LICS loginConnectionString = new LICS();
+        String connectionUrl = loginConnectionString.LoginConnectionString();
+
+        // Declare the JDBC objects.
+        Connection conn = null;
+        Statement stmt = null;
+
+        try {
+            // Establish the connection.
+            Class.forName("net.sourceforge.jtds.jdbc.Driver");
+            conn = DriverManager.getConnection(connectionUrl);
+            // Create and execute an SQL statement that returns some data.
+            String SQL = "execute sp_delete_order" + order_id + " ;";
+            stmt = conn.createStatement();
+
+            stmt.executeQuery(SQL);
+
+        }
+
+        // Handle any errors that may have occurred.
+        catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        finally {
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (conn != null) try { conn.close(); } catch(Exception e) {}
+        }
+
+    }
 
     public Account(){
 
