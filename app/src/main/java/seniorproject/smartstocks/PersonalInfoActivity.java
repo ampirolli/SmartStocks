@@ -80,6 +80,9 @@ public class PersonalInfoActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent i = new Intent(PersonalInfoActivity.this, MainActivity.class);
+        i.putExtra("Session", currentSession.getUser_id());
+        startActivity(i);
         this.finish();
     }
 

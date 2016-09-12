@@ -119,6 +119,7 @@ public class AccountsActivity extends AppCompatActivity {
 
                 Intent i = new Intent(AccountsActivity.this, AccountsOpenAccountActivity.class); //creates intent that launches main menu
                 startActivity(i);
+                finish();
             }
         });
     }
@@ -208,6 +209,9 @@ public class AccountsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent i = new Intent(AccountsActivity.this, MainActivity.class);
+        i.putExtra("Session", currentSession.getUser_id());
+        startActivity(i);
         this.finish();
     }
 

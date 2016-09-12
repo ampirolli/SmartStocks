@@ -124,17 +124,20 @@ public class MainActivity extends AppCompatActivity
             Intent i = new Intent(MainActivity.this, AccountsActivity.class); //creates intent that launches main menu
             i.putExtra("Session", currentSession.getUser_id());
             startActivity(i);
+            finish();
         } else if (id == R.id.nav_tools) {
 
             Intent i = new Intent(MainActivity.this, ToolsActivity.class); //creates intent that launches main menu
             i.putExtra("Session", currentSession.getUser_id());
             startActivity(i);
+            finish();
 
         } else if (id == R.id.nav_personal) {
 
             Intent i = new Intent(MainActivity.this, PersonalInfoActivity.class); //creates intent that launches main menu
             i.putExtra("Session", currentSession.getUser_id());
             startActivity(i);
+            finish();
 
         } else if (id == R.id.nav_logout) {
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
@@ -145,6 +148,7 @@ public class MainActivity extends AppCompatActivity
             Intent i = new Intent(MainActivity.this, SearchActivity.class);
             i.putExtra("Session", currentSession.getUser_id());
             startActivity(i);
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

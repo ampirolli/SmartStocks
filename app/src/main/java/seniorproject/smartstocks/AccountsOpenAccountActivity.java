@@ -152,6 +152,9 @@ public class AccountsOpenAccountActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent i = new Intent(AccountsOpenAccountActivity.this, AccountsActivity.class);
+        i.putExtra("Session", currentSession.getUser_id());
+        startActivity(i);
         this.finish();
     }
 

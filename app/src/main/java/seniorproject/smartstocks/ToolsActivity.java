@@ -50,6 +50,9 @@ public class ToolsActivity extends AppCompatActivity {
                                     long id) {
 
                 if(id == 0){
+                    Intent i = new Intent(ToolsActivity.this, ToolsStockAnalyzerActivity.class); //creates intent that launches Portfolio
+                    i.putExtra("Session", currentSession.getUser_id());
+                    startActivity(i);
 
                 }else if(id == 1){
 
@@ -66,6 +69,9 @@ public class ToolsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent i = new Intent(ToolsActivity.this, MainActivity.class);
+        i.putExtra("Session", currentSession.getUser_id());
+        startActivity(i);
         this.finish();
     }
 }

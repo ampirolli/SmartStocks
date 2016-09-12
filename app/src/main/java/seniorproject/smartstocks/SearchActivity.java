@@ -211,6 +211,9 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent i = new Intent(SearchActivity.this, MainActivity.class);
+        i.putExtra("Session", currentSession.getUser_id());
+        startActivity(i);
         this.finish();
     }
 

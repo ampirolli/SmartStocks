@@ -277,8 +277,7 @@ public class Account implements Parcelable {
 
     }
 
-    public void deleteOrder(Integer order_id)
-    {
+    public void deleteOrder(Integer order_id) {
 
         LICS loginConnectionString = new LICS();
         String connectionUrl = loginConnectionString.LoginConnectionString();

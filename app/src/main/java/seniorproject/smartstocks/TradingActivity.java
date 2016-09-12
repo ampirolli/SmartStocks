@@ -1,5 +1,6 @@
 package seniorproject.smartstocks;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class TradingActivity extends AppCompatActivity {
     Spinner spUserStocks;
 
     String StockSymbol;
+    BigDecimal PurchasingPower = new BigDecimal(0);
 
     ArrayList<UserStock> userStocksList = new ArrayList<UserStock>();
 
@@ -145,6 +148,7 @@ public class TradingActivity extends AppCompatActivity {
                 View focusView = null;
 
                 String quantity = txtShares.getText().toString();
+                BigDecimal total = new BigDecimal(quantity).multiply(new BigDecimal(tvPrice.getText().toString()));
 
                 if (TextUtils.isEmpty(quantity)) {
                     txtShares.setError(getString(R.string.error_field_required));
@@ -157,6 +161,15 @@ public class TradingActivity extends AppCompatActivity {
                 } else if (Integer.valueOf(quantity) <= 0 ) {
                     txtShares.setError("Shares must be greater than zero");
                     focusView = txtShares;
+                    cancel = true;
+                }
+                else if (costsMoreThanPurchasingPower(total)){
+                    Context context = getApplicationContext();
+                    CharSequence text = "Not Enough Money to Make This Trade!";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                     cancel = true;
                 }
                 if (cancel == false)
@@ -185,7 +198,17 @@ public class TradingActivity extends AppCompatActivity {
     {
         if(spUserStocks.getSelectedItem() ==null )
             return false;
+        if(userStocksList.isEmpty())
+            return false;
         if(shares > userStocksList.get(spUserStocks.getSelectedItemPosition()).getQuantity() && spOrderType.getSelectedItem().toString().equals("Sell"))
+            return true;
+        else
+            return false;
+    }
+
+    public boolean costsMoreThanPurchasingPower(BigDecimal total)
+    {
+        if(PurchasingPower.compareTo(total) == -1 )
             return true;
         else
             return false;
@@ -307,6 +330,8 @@ public class TradingActivity extends AppCompatActivity {
         Integer User_ID;
         boolean ownsStock = false;
 
+        BigDecimal HoldingsSum = new BigDecimal(0);
+
         ArrayList<UserStock> StockList = new ArrayList<UserStock>();
 
         public getPortfolioTask(Integer user_id){
@@ -320,6 +345,10 @@ public class TradingActivity extends AppCompatActivity {
             user.setAccounts();
             Account account = user.getAccounts().get(accountSelectionIndex);
             account.setHoldings(Integer.valueOf(account.getAccountNumber()));
+            for(UserStock userStock: account.getHoldings()) {
+                HoldingsSum = (userStock.getStock().getQuote().getPrice()).multiply(new BigDecimal(userStock.getQuantity())); // adds up all holdings
+            }
+            PurchasingPower = new BigDecimal(account.getBalance()).subtract(HoldingsSum); //subtracts it from total to determine purchasing power
 
             for(UserStock userStock: account.getHoldings()){
                 if(StockSymbol.equals(userStock.getStockSymbol())) {
@@ -385,6 +414,8 @@ public class TradingActivity extends AppCompatActivity {
 
         }
     }
+
+
 
     @Override
     public void onBackPressed() {

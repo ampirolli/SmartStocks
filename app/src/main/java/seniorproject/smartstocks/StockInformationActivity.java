@@ -22,6 +22,10 @@ import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,9 +56,12 @@ public class StockInformationActivity extends AppCompatActivity {
     TextView txtWeekHigh;
     TextView txtWeekLow;
     Button btnTrade;
+    Button btnFavorite;
     GraphView graph;
 
     private getStockDataTask AuthTask = null;
+    private getFavoritesTask AuthTask2 = null;
+    private isFavoriteTask AuthTask3 = null;
 
 
     @Override
@@ -69,6 +76,7 @@ public class StockInformationActivity extends AppCompatActivity {
         currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0));  //loads current session into intent
         currentSession.getUser_id();
 
+
         txtSymbol = (TextView)findViewById(R.id.txtSymbol);
         txtSymbol.setText(symbol);
         txtCompany =  (TextView)findViewById(R.id.txtCompany);
@@ -82,6 +90,10 @@ public class StockInformationActivity extends AppCompatActivity {
         txtWeekHigh= (TextView)findViewById(R.id.txt52weekhigh);
         txtWeekLow = (TextView)findViewById(R.id.txt52WeekLow);
         btnTrade = (Button) findViewById(R.id.btnTrade);
+        btnFavorite = (Button) findViewById(R.id.btnFavorite);
+
+        AuthTask2 = new getFavoritesTask(currentSession.getUser_id(), txtSymbol.getText().toString());
+        AuthTask2.execute();
 
         graph = (GraphView) findViewById(R.id.graph);
 
@@ -104,6 +116,21 @@ public class StockInformationActivity extends AppCompatActivity {
                 i.putExtra("Symbol", txtSymbol.getText());
                 startActivity(i);
                 finish();
+
+            }
+        });
+
+        btnFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(btnFavorite.getText().equals("add to favorites"))
+                    AuthTask3 = new isFavoriteTask(false, currentSession.getUser_id(), txtSymbol.getText().toString());
+                else if(btnFavorite.getText().equals("remove from favorites"))
+                    AuthTask3 = new isFavoriteTask(true, currentSession.getUser_id(), txtSymbol.getText().toString());
+
+                AuthTask3.execute();
+
 
             }
         });
@@ -274,9 +301,179 @@ public class StockInformationActivity extends AppCompatActivity {
         }
     }
 
+    public class getFavoritesTask extends AsyncTask<Void, Void, Boolean> {
+
+        Integer user_id;
+        String Symbol;
+
+        public getFavoritesTask(Integer user_id, String symbol) {
+
+            this.user_id = user_id;
+            Symbol = symbol;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            return getFavoriteBySymbol();
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+            AuthTask2 = null;
+
+            if (success) {
+                btnFavorite.setText("remove from favorites");
+
+
+            }else{
+                btnFavorite.setText("add to favorites");
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            AuthTask2 = null;
+
+        }
+
+        public boolean getFavoriteBySymbol() {
+            LICS loginConnectionString = new LICS();
+            String connectionUrl = loginConnectionString.LoginConnectionString();
+
+            boolean isFavorite = false;
+
+            // Declare the JDBC objects.
+            Connection conn = null;
+            Statement stmt = null;
+            ResultSet result = null;
+            //Declare email+password
+            ArrayList<Account> accountList = new ArrayList<>();
+
+            try {
+                // Establish the connection.
+                Class.forName("net.sourceforge.jtds.jdbc.Driver");
+                conn = DriverManager.getConnection(connectionUrl);
+                // Create and execute an SQL statement that returns some data.
+
+                String SQL = "SELECT * FROM dbo.UserFavorites WHERE user_id = " + user_id + " and stock_symbol = '" + Symbol + "';";
+                stmt = conn.createStatement();
+                result = stmt.executeQuery(SQL);
+                int counter = 0;
+                if (result.next() == false)
+                    isFavorite = false;
+                else
+                    isFavorite = true;
+
+
+
+            }
+
+            // Handle any errors that may have occurred.
+            catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            finally {
+                if (result != null) try { result.close(); } catch(Exception e) {}
+                if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+                if (conn != null) try { conn.close(); } catch(Exception e) {}
+                return isFavorite;
+            }
+        }
+
+
+    }
+
+    public class isFavoriteTask extends AsyncTask<Void, Void, Boolean> {
+
+        boolean IsFavorite;
+        String StockSymbol;
+        Integer user_id;
+
+        public isFavoriteTask(boolean isFavorite, Integer user_id, String stockSymbol) {
+
+            IsFavorite = isFavorite;
+            this.user_id = user_id;
+            StockSymbol = stockSymbol;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            if (!IsFavorite)
+                updateFavorites("sp_add_favorite " + user_id + ", '"+ StockSymbol +"';");
+            else
+                updateFavorites("sp_remove_favorite " + user_id + ", '"+ StockSymbol +"';");
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+            AuthTask3 = null;
+
+            if (success) {
+                AuthTask2 = new getFavoritesTask(currentSession.getUser_id(), txtSymbol.getText().toString());
+                AuthTask2.execute();
+
+
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            AuthTask3 = null;
+
+        }
+
+        public void updateFavorites(String SQL) {
+            LICS loginConnectionString = new LICS();
+            String connectionUrl = loginConnectionString.LoginConnectionString();
+
+            // Declare the JDBC objects.
+            Connection conn = null;
+            Statement stmt = null;
+            ResultSet result = null;
+            //Declare email+password
+            ArrayList<Account> accountList = new ArrayList<>();
+
+            try {
+                // Establish the connection.
+                Class.forName("net.sourceforge.jtds.jdbc.Driver");
+                conn = DriverManager.getConnection(connectionUrl);
+                // Create and execute an SQL statement that returns some data.
+
+
+                stmt = conn.createStatement();
+                stmt.executeQuery(SQL);
+                int counter = 0;
+
+
+            }
+
+            // Handle any errors that may have occurred.
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            finally {
+                if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+                if (conn != null) try { conn.close(); } catch(Exception e) {}
+
+            }
+        }
+
+
+    }
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent i = new Intent(StockInformationActivity.this, MainActivity.class);
+        i.putExtra("Session", currentSession.getUser_id());
+        startActivity(i);
         this.finish();
     }
 }
