@@ -37,7 +37,6 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
 
     GraphView graph;
     EditText txtSymbol;
-    EditText txtQuantity;
     Button btnAnalyze;
     ListView lvResults;
 
@@ -50,14 +49,13 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
 
         graph = (GraphView) findViewById(R.id.graph);
         txtSymbol = (EditText) findViewById(R.id.txtSymbol);
-        txtQuantity = (EditText) findViewById(R.id.txtQuantity);
         btnAnalyze = (Button) findViewById(R.id.btnAnalyze);
         lvResults = (ListView) findViewById(R.id.lvResults);
 
         btnAnalyze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AuthTask = new AnalyzeStockTask(txtSymbol.getText().toString(), txtQuantity.getText().toString());
+                AuthTask = new AnalyzeStockTask(txtSymbol.getText().toString());
                 AuthTask2 = new getStockDataTask(txtSymbol.getText().toString());
                 AuthTask.execute();
                 AuthTask2.execute();
@@ -69,6 +67,8 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
     public class AnalyzeStockTask extends AsyncTask<Void, Void, Boolean> {
 
         String Symbol;
+        Integer Quantity;
+
         ArrayList<String> Result = new ArrayList<String>();
 
         final BigDecimal transactionPrice = new BigDecimal("9.99");
@@ -95,9 +95,8 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
         boolean hasBrokenLow = false;
 
 
-        public AnalyzeStockTask(String symbol, String quantity) {
+        public AnalyzeStockTask(String symbol) {
             Symbol = symbol;
-            numberOfShares = new BigDecimal(quantity);
         }
 
         @Override
