@@ -37,6 +37,7 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
 
     GraphView graph;
     EditText txtSymbol;
+    EditText txtQuantity;
     Button btnAnalyze;
     ListView lvResults;
 
@@ -49,13 +50,14 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
 
         graph = (GraphView) findViewById(R.id.graph);
         txtSymbol = (EditText) findViewById(R.id.txtSymbol);
+        txtQuantity = (EditText) findViewById(R.id.txtQuantity);
         btnAnalyze = (Button) findViewById(R.id.btnAnalyze);
         lvResults = (ListView) findViewById(R.id.lvResults);
 
         btnAnalyze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AuthTask = new AnalyzeStockTask(txtSymbol.getText().toString());
+                AuthTask = new AnalyzeStockTask(txtSymbol.getText().toString(), txtQuantity.getText().toString());
                 AuthTask2 = new getStockDataTask(txtSymbol.getText().toString());
                 AuthTask.execute();
                 AuthTask2.execute();
@@ -93,8 +95,9 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
         boolean hasBrokenLow = false;
 
 
-        public AnalyzeStockTask(String symbol) {
+        public AnalyzeStockTask(String symbol, String quantity) {
             Symbol = symbol;
+            numberOfShares = new BigDecimal(quantity);
         }
 
         @Override
@@ -205,9 +208,10 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
                 if (openRangeComplete == false)
                     resultStr += "OpenRange: \n";
 
-                resultStr += ("Current Price: " + stockQuote);
-                resultStr +=("\nAmount of shares: " + numberOfShares);
-                resultStr += ("\nTotal: " + (balance.add(assets)));
+                Result.add("Current Price: " + stockQuote);
+                Result.add("\nAmount of shares: " + numberOfShares);
+                Result.add("\nTotal: " + (balance.add(assets)));
+                Result.add("-------------------------------------------------");
                 Result.add(resultStr);
             }
 
