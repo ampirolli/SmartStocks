@@ -59,15 +59,6 @@ public class MainActivity extends AppCompatActivity
         AuthTask2.execute();
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -233,6 +224,22 @@ public class MainActivity extends AppCompatActivity
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, favoriteSymbols);
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 lvFavorites.setAdapter(arrayAdapter);
+
+                lvFavorites.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position,
+                                            long id) {
+
+                        Intent i = new Intent(MainActivity.this, StockInformationActivity.class); //creates intent that launches Balances
+                        i.putExtra("Session", currentSession.getUser_id());
+                        i.putExtra("Symbol", lvFavorites.getItemAtPosition(position).toString());
+
+                        startActivityForResult(i, 1);
+                        finish();
+
+
+                    }
+                });
 
             }
         }

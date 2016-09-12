@@ -71,7 +71,6 @@ public class StockInformationActivity extends AppCompatActivity {
 
         Intent previousIntent = getIntent();
         String symbol = previousIntent.getStringExtra("Symbol");
-        String company = previousIntent.getStringExtra("Company");
 
         currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0));  //loads current session into intent
         currentSession.getUser_id();
@@ -80,7 +79,7 @@ public class StockInformationActivity extends AppCompatActivity {
         txtSymbol = (TextView)findViewById(R.id.txtSymbol);
         txtSymbol.setText(symbol);
         txtCompany =  (TextView)findViewById(R.id.txtCompany);
-        txtCompany.setText(company);
+
         txtPrice = (TextView)findViewById(R.id.txtPrice);
         txtGainAndLoss = (TextView)findViewById(R.id.txtGainLoss);
         txtOpen = (TextView)findViewById(R.id.txtOpen);
@@ -143,6 +142,7 @@ public class StockInformationActivity extends AppCompatActivity {
 
         String Symbol;
         Stock Stock;
+        String Company;
 
         BigDecimal Price = new BigDecimal(0);
         BigDecimal GainAndLoss = new BigDecimal(0);
@@ -178,6 +178,7 @@ public class StockInformationActivity extends AppCompatActivity {
 
 
                 Price = Stock.getQuote().getPrice();
+                Company = Stock.getName();
                 GainAndLoss =  Stock.getQuote().getChange(); //Price.subtract(Stock.getQuote().getOpen());
                 Open = Stock.getQuote().getOpen();
                 Close = Stock.getQuote().getPreviousClose();
@@ -255,6 +256,8 @@ public class StockInformationActivity extends AppCompatActivity {
             AuthTask = null;
 
             if(success){
+
+                txtCompany.setText(Company);
 
                 txtPrice.setText(Price.toString());
                 txtCompany.setText(Stock.getName());

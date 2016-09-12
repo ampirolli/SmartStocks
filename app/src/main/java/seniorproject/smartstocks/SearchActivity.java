@@ -62,7 +62,6 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                 Intent i = new Intent(SearchActivity.this, StockInformationActivity.class); //creates intent that launches Balances
                 i.putExtra("Session", currentSession.getUser_id());
                 i.putExtra("Symbol", symbol);
-                i.putExtra("Company", company);
 
             }
 
