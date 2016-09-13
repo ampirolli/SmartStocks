@@ -449,7 +449,6 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
 
             if(success){
 
-
                 LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
                 int i = 0;
                 BigDecimal largest = new BigDecimal(0);
