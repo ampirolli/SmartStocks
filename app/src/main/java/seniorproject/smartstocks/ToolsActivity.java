@@ -55,6 +55,9 @@ public class ToolsActivity extends AppCompatActivity {
                     startActivity(i);
 
                 }else if(id == 1){
+                    Intent i = new Intent(ToolsActivity.this, ToolsAutoTradeActivity.class); //creates intent that launches Portfolio
+                    i.putExtra("Session", currentSession.getUser_id());
+                    startActivity(i);
 
                 }else if(id == 2){
                     Intent i = new Intent(ToolsActivity.this, ToolsDefinitionsActivity.class); //creates intent that launches Portfolio
