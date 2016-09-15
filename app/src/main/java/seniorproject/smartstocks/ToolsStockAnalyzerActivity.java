@@ -41,7 +41,6 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
     ListView lvResults;
 
     AnalyzeStockTask AuthTask = null;
-    getStockDataTask AuthTask2 = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,9 +55,7 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AuthTask = new AnalyzeStockTask(txtSymbol.getText().toString());
-                AuthTask2 = new getStockDataTask(txtSymbol.getText().toString());
                 AuthTask.execute();
-                AuthTask2.execute();
             }
         });
 
@@ -70,6 +67,7 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
         Integer Quantity;
 
         ArrayList<String> Result = new ArrayList<String>();
+        ArrayList<BigDecimal> testQuotes = new ArrayList<BigDecimal>();
 
         final BigDecimal transactionPrice = new BigDecimal("9.99");
 
@@ -108,7 +106,6 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
             BigDecimal lastQuote =new BigDecimal(0);
             BigDecimal stockHighPoint = new BigDecimal(0);
             BigDecimal stockLowPoint = new BigDecimal(0);
-            BigDecimal buyQuantity = new BigDecimal(7500);;
 
             int depressionCount = 0;
             int increaseCount = 0;
@@ -123,10 +120,7 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
             BigDecimal stopAbovePoint = new BigDecimal(.04);
             BigDecimal stopBelowPoint = new BigDecimal(.02);
 
-            ArrayList<BigDecimal> testQuotes = stocksIntraday(Symbol);
-
-
-
+            testQuotes = stocksIntraday(Symbol);
 
             for(BigDecimal quotes : testQuotes){
                 //begin
@@ -204,8 +198,6 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
 
                 assets = numberOfShares.multiply(stockQuote);
                 String resultStr = "";
-                if (openRangeComplete == false)
-                    resultStr += "OpenRange: \n";
 
                 Result.add("Current Price: " + stockQuote);
                 Result.add("\nAmount of shares: " + numberOfShares);
@@ -228,7 +220,27 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
 
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(ToolsStockAnalyzerActivity.this, android.R.layout.simple_spinner_item, fiveMinuteResults);
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                lvResults.setAdapter(arrayAdapter);
+                lvResults.setAdapter(arrayAdapter);LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
+                int i = 0;
+                BigDecimal largest = new BigDecimal(0);
+                BigDecimal smallest = new BigDecimal(100000000);
+                graph.getViewport().setYAxisBoundsManual(true);
+                graph.getViewport().setXAxisBoundsManual(true);
+
+                for(BigDecimal fiveMinute : testQuotes) {
+                    series.appendData(new DataPoint(i , fiveMinute.doubleValue()), false, 78);
+                    if(largest.compareTo(fiveMinute) == -1){
+                        largest = fiveMinute;
+                        graph.getViewport().setMaxY(largest.doubleValue()); //does nothing right now
+                    }
+                    if(smallest.compareTo(fiveMinute) == 1){
+                        smallest = fiveMinute;
+                        graph.getViewport().setMinY(smallest.doubleValue()); // does nothing right now
+                    }
+                    i++;
+                }
+                graph.getViewport().setMaxX(78);
+                graph.addSeries(series);
 
 
             }
@@ -244,8 +256,7 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
 
         }
 
-        void buy(BigDecimal stockQuote)
-        {
+        void buy(BigDecimal stockQuote) {
             BigDecimal buyQuantity = buyQuantity(stockQuote);
             BigDecimal buyTotal = stockQuote.multiply(buyQuantity) ;
             buyTotal = buyTotal.add(transactionPrice);
@@ -292,6 +303,7 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
             stopAbove = new BigDecimal(0);
 
         }
+
         ArrayList<BigDecimal> stocksIntraday(String symbol){
             ArrayList<BigDecimal> intraday = new ArrayList<BigDecimal>();
             try {
@@ -327,7 +339,7 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
                 {
                     i++;
                     if(i == 1)
-                        intraday.add(new BigDecimal(minute));   //gets every 5 minute data from every one minute data
+                        intraday.add(new BigDecimal(minute).setScale(2, RoundingMode.CEILING));//gets every 5 minute data from every one minute data
                     if(i == 5)
                         i = 0;
 
@@ -351,137 +363,6 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
         }
 
 
-    }
-
-    public class getStockDataTask extends AsyncTask<Void, Void, Boolean> {
-
-        String Symbol;
-        yahoofinance.Stock Stock;
-
-
-        List<BigDecimal> Intraday = new ArrayList<BigDecimal>();
-
-        public getStockDataTask(String symbol) {
-            Symbol = symbol;
-
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-
-            try {
-
-                Stock = YahooFinance.get(Symbol);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            //load the Stock Data
-            try{
-
-
-                try {
-                    URL url = new URL("http://chartapi.finance.yahoo.com/instrument/1.0/" + Symbol + "/chartdata;type=quote;range=1d/csv");
-                    URLConnection con = url.openConnection();
-                    InputStream is = con.getInputStream();
-                    BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-                    String line = null;
-                    String regex1 = "\\(";
-                    String regex2 = "\\)";
-
-                    int i = 0;
-                    ArrayList<String> rawIntraday = new ArrayList<String>();
-                    // read each line and write to System.out
-                    while ((line = br.readLine()) != null) {
-                        if(i == 17)
-                        {
-
-                            rawIntraday.add(line); // once prices begin in the csv
-
-                        }else
-                            i++;
-                    }
-                    ArrayList<String> minuteInterval = new ArrayList<String>();
-                    for(String raw : rawIntraday){
-                        List<String> items = Arrays.asList(raw.split(",")); // trim by comma
-                        minuteInterval.add(items.get(1)); //adds every one minite data
-
-                    }
-                    i =0;
-                    for(String minute : minuteInterval)
-                    {
-                        i++;
-                        if(i == 1)
-                            Intraday.add(new BigDecimal(minute));   //gets every 5 minute data from every one minute data
-                        if(i == 5)
-                            i = 0;
-
-                    }
-
-
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                    e.toString();
-                    return false;
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                    return false;
-                }
-
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-
-
-
-            return true;
-        }
-
-        protected void onPostExecute(final Boolean success) {
-
-            AuthTask2 = null;
-
-            if(success){
-
-                LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>();
-                int i = 0;
-                BigDecimal largest = new BigDecimal(0);
-                BigDecimal smallest = new BigDecimal(100000000);
-                graph.getViewport().setYAxisBoundsManual(true);
-                graph.getViewport().setXAxisBoundsManual(true);
-
-                for(BigDecimal fiveMinute : Intraday) {
-                    series.appendData(new DataPoint(i , fiveMinute.doubleValue()), false, 78);
-                    if(largest.compareTo(fiveMinute) == -1){
-                        largest = fiveMinute;
-                        graph.getViewport().setMaxY(largest.doubleValue()); //does nothing right now
-                    }
-                    if(smallest.compareTo(fiveMinute) == 1){
-                        smallest = fiveMinute;
-                        graph.getViewport().setMinY(smallest.doubleValue()); // does nothing right now
-                    }
-                    i++;
-                }
-                graph.getViewport().setMaxX(78);
-                graph.addSeries(series);
-
-
-
-            }
-        }
-
-
-        @Override
-        protected void onCancelled() {
-            AuthTask2 = null;
-
-        }
     }
 
 }

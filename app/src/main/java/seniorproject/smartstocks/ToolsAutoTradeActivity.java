@@ -53,7 +53,7 @@ public class ToolsAutoTradeActivity extends AppCompatActivity {
         txtQuantity = (EditText) findViewById(R.id.txtQuantity);
         btnAutoTrade = (Button) findViewById(R.id.btnAutoTrade);
         lvAutoTrades = (ListView) findViewById(R.id.lvAutoTrades);
-        spAccounts = (Spinner) findViewById(R.id.spAccount);
+        spAccounts = (Spinner) findViewById(R.id.spAccounts);
         AuthTask2 = new getAccountsTask(currentSession.getUser_id());
         AuthTask2.execute();
 

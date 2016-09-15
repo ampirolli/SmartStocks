@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -213,7 +214,7 @@ public class StockInformationActivity extends AppCompatActivity {
                     ArrayList<String> minuteInterval = new ArrayList<String>();
                     for(String raw : rawIntraday){
                         List<String> items = Arrays.asList(raw.split(",")); // trim by comma
-                        minuteInterval.add(items.get(1)); //adds every one minite data
+                        minuteInterval.add(items.get(4)); //adds every one minite data
 
                     }
                     i =0;
@@ -221,7 +222,7 @@ public class StockInformationActivity extends AppCompatActivity {
                     {
                         i++;
                         if(i == 1)
-                            Intraday.add(new BigDecimal(minute));   //gets every 5 minute data from every one minute data
+                            Intraday.add(new BigDecimal(minute).setScale(2, RoundingMode.CEILING));   //gets every 5 minute data from every one minute data
                         if(i == 5)
                             i = 0;
 
