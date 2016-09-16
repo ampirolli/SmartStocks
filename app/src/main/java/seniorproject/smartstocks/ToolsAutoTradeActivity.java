@@ -49,7 +49,7 @@ public class ToolsAutoTradeActivity extends AppCompatActivity {
         currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0));  //loads current session into intent
         currentSession.getUser_id();
 
-        txtSymbol = (EditText) findViewById(R.id.txtSymbol);
+        txtSymbol = (EditText) findViewById(R.id.txtBalance);
         txtQuantity = (EditText) findViewById(R.id.txtQuantity);
         btnAutoTrade = (Button) findViewById(R.id.btnAutoTrade);
         lvAutoTrades = (ListView) findViewById(R.id.lvAutoTrades);

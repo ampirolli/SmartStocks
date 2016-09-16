@@ -5,9 +5,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
@@ -20,27 +18,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import seniorproject.smartstocks.Classes.Account;
 import seniorproject.smartstocks.Classes.Session;
-import seniorproject.smartstocks.Classes.User;
-import seniorproject.smartstocks.Classes.UserStock;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
-import yahoofinance.histquotes.HistoricalQuote;
-import yahoofinance.histquotes.Interval;
 
 public class StockInformationActivity extends AppCompatActivity {
 
@@ -77,7 +68,7 @@ public class StockInformationActivity extends AppCompatActivity {
         currentSession.getUser_id();
 
 
-        txtSymbol = (TextView)findViewById(R.id.txtSymbol);
+        txtSymbol = (TextView)findViewById(R.id.txtBalance);
         txtSymbol.setText(symbol);
         txtCompany =  (TextView)findViewById(R.id.txtCompany);
 

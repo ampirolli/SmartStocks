@@ -35,7 +35,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/txtSymbol"
+            android:id="@+id/txtBalance"
             android:layout_gravity="center_horizontal" />
 
         <TextView
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:text="AutoTrade"
             android:id="@+id/btnAutoTrade"
-            android:layout_below="@+id/txtSymbol"
+            android:layout_below="@+id/txtBalance"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal" />
         <ListView
