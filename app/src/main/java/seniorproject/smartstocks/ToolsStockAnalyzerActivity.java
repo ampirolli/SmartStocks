@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import seniorproject.smartstocks.Classes.Session;
+
 public class ToolsStockAnalyzerActivity extends AppCompatActivity {
 
 
@@ -14,11 +16,13 @@ public class ToolsStockAnalyzerActivity extends AppCompatActivity {
     EditText txtSymbol;
     EditText txtBalance;
     Button btnAnalyze;
+    Session currentSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tools_stock_analyzer);
+        currentSession = Session.getInstance(0);
 
 
         txtSymbol = (EditText) findViewById(R.id.txtSymbol);

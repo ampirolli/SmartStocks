@@ -64,9 +64,7 @@ public class StockInformationActivity extends AppCompatActivity {
         Intent previousIntent = getIntent();
         String symbol = previousIntent.getStringExtra("Symbol");
 
-        currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0));  //loads current session into intent
-        currentSession.getUser_id();
-
+        currentSession = Session.getInstance(0);
 
         txtSymbol = (TextView)findViewById(R.id.txtBalance);
         txtSymbol.setText(symbol);
@@ -103,7 +101,6 @@ public class StockInformationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(StockInformationActivity.this, TradingActivity.class);
-                i.putExtra("Session", currentSession.getUser_id());
                 i.putExtra("Symbol", txtSymbol.getText());
                 startActivity(i);
                 finish();

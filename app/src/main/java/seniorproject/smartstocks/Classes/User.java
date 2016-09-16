@@ -20,7 +20,7 @@ public class User {
     String UserType;
     ArrayList<Account> Accounts = new ArrayList<Account>();
     ArrayList<StockAnalyzer> Analyzer = new ArrayList<StockAnalyzer>();
-    ArrayList<StockAutoTrade> AutoTrades = new ArrayList<StockAutoTrade>();
+
 
 
     ArrayList<UserStock> Holdings = new ArrayList<UserStock>();
@@ -90,10 +90,6 @@ public class User {
             if (conn != null) try { conn.close(); } catch(Exception e) {}
             this.Accounts = accountList;
         }
-    }
-
-    public ArrayList<StockAutoTrade> getAutoTrades() {
-        return AutoTrades;
     }
 
     public ArrayList<String> getFavorites() {

@@ -24,6 +24,7 @@ public class Account implements Parcelable {
     ArrayList<Order> Orders = new ArrayList<Order>();
     ArrayList<Transaction> Transcations = new ArrayList<Transaction>();
     ArrayList<UserStock> Holdings = new ArrayList<UserStock>();
+    ArrayList<AutoTrade> AutoTrades = new ArrayList<AutoTrade>();
 
 
     protected Account(Parcel in) {
@@ -319,6 +320,61 @@ public class Account implements Parcelable {
 
 
     }
+
+    public void setAutoTradesByAccountID(Integer account_id){
+
+        LICS loginConnectionString = new LICS();
+        String connectionUrl = loginConnectionString.LoginConnectionString();
+
+        // Declare the JDBC objects.
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet result = null;
+        //Declare email+password
+        ArrayList<AutoTrade> autoTradesList = new ArrayList<>();
+
+        try {
+            // Establish the connection.
+            Class.forName("net.sourceforge.jtds.jdbc.Driver");
+            conn = DriverManager.getConnection(connectionUrl);
+            // Create and execute an SQL statement that returns some data.
+
+            String SQL = "sp_get_autotrade_by_account_id '" + this.AccountNumber + "';";
+            stmt = conn.createStatement();
+            result = stmt.executeQuery(SQL);
+            int counter = 0;
+            while (result.next()) {
+                AutoTrade autoTrade = new AutoTrade();
+                autoTrade.setAccount_id(result.getInt("account_id"));
+                autoTrade.setUser_id(result.getInt("user_id"));
+                autoTrade.setStockSymbol(result.getString("stock_symbol"));
+                autoTrade.setStockQuantity(result.getInt("stock_quantity"));
+                autoTrade.setAutoTradeTime(result.getDate("autotrade_time"));
+
+                autoTradesList.add(autoTrade);
+            }
+
+
+
+        }
+
+        // Handle any errors that may have occurred.
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (result != null) try { result.close(); } catch(Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
+            if (conn != null) try { conn.close(); } catch(Exception e) {}
+            this.AutoTrades = autoTradesList;
+        }
+
+    }
+
+    public ArrayList<AutoTrade> getAutoTrades() {
+        return AutoTrades;
+    }
+
 
 
     public void deleteOrder(Integer order_id) {

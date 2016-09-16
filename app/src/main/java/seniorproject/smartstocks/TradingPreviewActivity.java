@@ -96,8 +96,7 @@ public class TradingPreviewActivity extends AppCompatActivity {
         });
 
         Intent previousIntent = getIntent();
-        currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0));  //loads current session into intent
-        currentSession.getUser_id();
+        currentSession = Session.getInstance(0);
 
         Symbol = (previousIntent.getStringExtra("Symbol"));
 

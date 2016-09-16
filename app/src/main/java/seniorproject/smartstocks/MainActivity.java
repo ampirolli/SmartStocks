@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.search) {
             Intent i = new Intent(MainActivity.this, SearchActivity.class);
-            i.putExtra("Session", currentSession.getUser_id());
             startActivity(i);
         }
 
@@ -113,20 +112,20 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_accounts) {
             Intent i = new Intent(MainActivity.this, AccountsActivity.class); //creates intent that launches main menu
-            i.putExtra("Session", currentSession.getUser_id());
+
             startActivity(i);
             finish();
         } else if (id == R.id.nav_tools) {
 
             Intent i = new Intent(MainActivity.this, ToolsActivity.class); //creates intent that launches main menu
-            i.putExtra("Session", currentSession.getUser_id());
+
             startActivity(i);
             finish();
 
         } else if (id == R.id.nav_personal) {
 
             Intent i = new Intent(MainActivity.this, PersonalInfoActivity.class); //creates intent that launches main menu
-            i.putExtra("Session", currentSession.getUser_id());
+
             startActivity(i);
             finish();
 
@@ -137,7 +136,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_search){
             Intent i = new Intent(MainActivity.this, SearchActivity.class);
-            i.putExtra("Session", currentSession.getUser_id());
+
             startActivity(i);
             finish();
         }

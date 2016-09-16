@@ -25,6 +25,7 @@ import seniorproject.smartstocks.Classes.User;
 public class AccountsOpenAccountActivity extends AppCompatActivity {
 
     Session currentSession;
+
     EditText txtNickname;
     EditText txtBalance;
     Button btnCreate;
@@ -37,8 +38,7 @@ public class AccountsOpenAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_accounts_open_account);
 
         Intent previousIntent = getIntent();
-        currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0));  //loads current session into intent
-        currentSession.getUser_id();
+        currentSession = Session.getInstance(0);
 
         txtNickname = (EditText) findViewById(R.id.txtAccountNickname);
         txtBalance = (EditText) findViewById(R.id.txtAccountBalance);
@@ -153,7 +153,6 @@ public class AccountsOpenAccountActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent i = new Intent(AccountsOpenAccountActivity.this, AccountsActivity.class);
-        i.putExtra("Session", currentSession.getUser_id());
         startActivity(i);
         this.finish();
     }

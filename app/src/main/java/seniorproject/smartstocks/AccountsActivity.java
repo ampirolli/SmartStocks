@@ -41,16 +41,13 @@ public class AccountsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent previousIntent = getIntent();
-        currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0));  //loads current session into intent
-        currentSession.getUser_id();
-
+        currentSession = Session.getInstance(0);
 
         lvAccountActivitiesList = (ListView) findViewById(R.id.lvAccountPages);
         spAccounts = (Spinner) findViewById(R.id.spAccount);
 
-        executeAuthTask();
-
+        AuthTask = new getAccountsTask(currentSession.getUser_id());
+        AuthTask.execute();
         // Instanciating an array list (you don't need to do this,
         // you already have yours).
         List<String> accountActivities = new ArrayList<String>();
@@ -77,7 +74,7 @@ public class AccountsActivity extends AppCompatActivity {
 
                 if(id == 0){
                     Intent i = new Intent(AccountsActivity.this, AccountsBalancesActivity.class); //creates intent that launches Balances
-                    i.putExtra("Session", currentSession.getUser_id());
+
                     i.putParcelableArrayListExtra("AccountsList", accountsList);
                     i.putStringArrayListExtra("AccountsNumberList", accountsNumberList);
                     i.putExtra("SelectedAccount", accountSelectionValue);
@@ -85,7 +82,7 @@ public class AccountsActivity extends AppCompatActivity {
                     startActivityForResult(i, 1);
                 }else if(id == 1){
                     Intent i = new Intent(AccountsActivity.this, AccountsOrdersActivity.class); //creates intent that launches Orders
-                    i.putExtra("Session", currentSession.getUser_id());
+
                     i.putParcelableArrayListExtra("AccountsList", accountsList);
                     i.putStringArrayListExtra("AccountsNumberList", accountsNumberList);
                     i.putExtra("SelectedAccount", accountSelectionValue);
@@ -93,7 +90,7 @@ public class AccountsActivity extends AppCompatActivity {
                     startActivityForResult(i, 1);
                 }else if(id == 2){
                     Intent i = new Intent(AccountsActivity.this, AccountsPortfolioActivity.class); //creates intent that launches Portfolio
-                    i.putExtra("Session", currentSession.getUser_id());
+
                     i.putParcelableArrayListExtra("AccountsList", accountsList);
                     i.putStringArrayListExtra("AccountsNumberList", accountsNumberList);
                     i.putExtra("SelectedAccount", accountSelectionValue);
@@ -101,7 +98,7 @@ public class AccountsActivity extends AppCompatActivity {
                     startActivityForResult(i, 1);
                 }else if(id == 3){
                     Intent i = new Intent(AccountsActivity.this, AccountsTransactionsActivity.class); //creates intent that Transactions
-                    i.putExtra("Session", currentSession.getUser_id());
+
                     i.putParcelableArrayListExtra("AccountsList", accountsList);
                     i.putStringArrayListExtra("AccountsNumberList", accountsNumberList);
                     i.putExtra("SelectedAccount", accountSelectionValue);
@@ -137,11 +134,6 @@ public class AccountsActivity extends AppCompatActivity {
             }
         }
     }//onActivityResult
-
-    public void executeAuthTask(){
-        AuthTask = new getAccountsTask(currentSession.getUser_id());
-        AuthTask.execute((Void) null);
-    }
 
     public class getAccountsTask extends AsyncTask<Void, Void, Boolean> {
 

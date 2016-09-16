@@ -43,18 +43,19 @@
             android:name=".AccountsActivity"
             android:label="@string/title_activity_account"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CreateAccountActivity" />
-        <activity android:name=".ConnectAccountActivity" />
         <activity android:name=".StockInformationActivity" />
         <activity android:name=".PinLoginActivity" />
-        <activity android:name=".OpenExternalAccountActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".ToolsDefinitionsActivity" />
         <activity android:name=".ToolsDefinitionsSelectedActivity" />
         <activity android:name=".TradingPreviewActivity" />
         <activity android:name=".ToolsStockAnalyzerActivity" />
-        <activity android:name=".ToolsAutoTradeActivity" />
-        <activity android:name=".ToolsStockAnalyzerRunActivity"></activity>
+        <activity android:name=".ToolsAutoTradeRunActivity" />
+        <activity android:name=".ToolsStockAnalyzerRunActivity" />
+        <activity
+            android:name=".ToolsAutoTradesActivity"
+            android:label="@string/title_activity_tools_auto_trades"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

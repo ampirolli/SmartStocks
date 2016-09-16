@@ -35,8 +35,7 @@ public class ToolsDefinitionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tools_definitions);
 
         Intent previousIntent = getIntent();
-        currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0));  //loads current session into intent
-        currentSession.getUser_id();
+        currentSession = Session.getInstance(0);
 
         lvDefinitions = (ListView) findViewById(R.id.lvDefinitionsList);
 
@@ -81,7 +80,6 @@ public class ToolsDefinitionsActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> adapterView, View view, int index, long l) {
 
                         Intent i = new Intent(ToolsDefinitionsActivity.this, ToolsDefinitionsSelectedActivity.class); //creates intent that launches Definitions
-                        i.putExtra("Session", currentSession.getUser_id());
                         i.putExtra("DefinitionID", DefinitionsID.get(index));
 
                         startActivity(i);

@@ -43,8 +43,9 @@ public class AccountsBalancesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_accounts_balances);
 
         Intent previousIntent = getIntent();
-        currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0)); //loads current session into intent
-        currentSession.getUser_id();
+
+        currentSession = Session.getInstance(0);
+
         accountsList = previousIntent.getParcelableArrayListExtra("AccountsList"); // pulls account list from previous intent for loading the spinner
         accountsNumberList = previousIntent.getStringArrayListExtra("AccountsNumberList"); //pulls account number from the previous intent to call sql statments regarding the account
         accountSelectionValue = previousIntent.getStringExtra("SelectedAccount"); // pulls selected account from previous intent

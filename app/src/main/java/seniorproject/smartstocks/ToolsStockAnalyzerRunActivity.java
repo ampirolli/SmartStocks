@@ -29,18 +29,24 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import seniorproject.smartstocks.Classes.Session;
+
 public class ToolsStockAnalyzerRunActivity extends AppCompatActivity {
 
+    Session currentSession;
     TextView tvTitle;
     GraphView graph;
     ListView lvResults;
 
     AnalyzeStockTask AuthTask = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tools_stock_analyzer_run);
+
+        currentSession = Session.getInstance(0);
 
         tvTitle = (TextView) findViewById(R.id.tvSymbol);
         graph = (GraphView) findViewById(R.id.graph);

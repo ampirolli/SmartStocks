@@ -36,8 +36,7 @@ public class ToolsDefinitionsSelectedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tools_definitions_selected);
 
         Intent previousIntent = getIntent();
-        currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0));  //loads current session into intent
-        currentSession.getUser_id();
+        currentSession = Session.getInstance(0);
 
         DefinitionID = previousIntent.getIntExtra("DefinitionID", 0); //pulls the definition id from previos intent to be loaded into our SP
 

@@ -46,7 +46,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         txtDOB = (TextView)findViewById(R.id.txtDateOfBirth);
 
         Intent previousIntent = getIntent();
-        currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0));  //loads current session into intent
+        currentSession = Session.getInstance(0);
         currentSession.getUser_id();
         AuthTask = new getPersonalInfoTask(currentSession.getUser_id());
         AuthTask.execute();
@@ -81,7 +81,6 @@ public class PersonalInfoActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent i = new Intent(PersonalInfoActivity.this, MainActivity.class);
-        i.putExtra("Session", currentSession.getUser_id());
         startActivity(i);
         this.finish();
     }

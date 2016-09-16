@@ -24,8 +24,7 @@ public class ToolsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tools);
 
         Intent previousIntent = getIntent();
-        currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0));  //loads current session into intent
-        currentSession.getUser_id();
+        currentSession = Session.getInstance(0);
 
         lvToolsActivitiesList = (ListView) findViewById(R.id.lvToolPages);
 
@@ -51,17 +50,14 @@ public class ToolsActivity extends AppCompatActivity {
 
                 if(id == 0){
                     Intent i = new Intent(ToolsActivity.this, ToolsStockAnalyzerActivity.class); //creates intent that launches Portfolio
-                    i.putExtra("Session", currentSession.getUser_id());
                     startActivity(i);
 
                 }else if(id == 1){
-                    Intent i = new Intent(ToolsActivity.this, ToolsAutoTradeActivity.class); //creates intent that launches Portfolio
-                    i.putExtra("Session", currentSession.getUser_id());
+                    Intent i = new Intent(ToolsActivity.this, ToolsAutoTradesActivity.class); //creates intent that launches Portfolio
                     startActivity(i);
 
                 }else if(id == 2){
                     Intent i = new Intent(ToolsActivity.this, ToolsDefinitionsActivity.class); //creates intent that launches Portfolio
-                    i.putExtra("Session", currentSession.getUser_id());
                     startActivity(i);
                 }
 
@@ -73,7 +69,6 @@ public class ToolsActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent i = new Intent(ToolsActivity.this, MainActivity.class);
-        i.putExtra("Session", currentSession.getUser_id());
         startActivity(i);
         this.finish();
     }

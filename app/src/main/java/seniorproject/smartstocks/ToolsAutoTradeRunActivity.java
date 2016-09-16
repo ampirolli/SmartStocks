@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -23,13 +22,13 @@ import seniorproject.smartstocks.Classes.Account;
 import seniorproject.smartstocks.Classes.Session;
 import seniorproject.smartstocks.Classes.User;
 
-public class ToolsAutoTradeActivity extends AppCompatActivity {
+public class ToolsAutoTradeRunActivity extends AppCompatActivity {
 
     Session currentSession;
     EditText txtSymbol;
     EditText txtQuantity;
     Button btnAutoTrade;
-    ListView lvAutoTrades;
+
     Spinner spAccounts;
 
     ArrayList<Account> accountsList = new ArrayList<Account>(); //list to save accounts nickname + number
@@ -43,16 +42,15 @@ public class ToolsAutoTradeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tools_auto_trade);
+        setContentView(R.layout.activity_tools_auto_trade_run);
 
         Intent previousIntent = getIntent();
-        currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0));  //loads current session into intent
-        currentSession.getUser_id();
+        currentSession = Session.getInstance(0);
 
         txtSymbol = (EditText) findViewById(R.id.txtBalance);
         txtQuantity = (EditText) findViewById(R.id.txtQuantity);
         btnAutoTrade = (Button) findViewById(R.id.btnAutoTrade);
-        lvAutoTrades = (ListView) findViewById(R.id.lvAutoTrades);
+
         spAccounts = (Spinner) findViewById(R.id.spAccounts);
         AuthTask2 = new getAccountsTask(currentSession.getUser_id());
         AuthTask2.execute();
@@ -60,7 +58,6 @@ public class ToolsAutoTradeActivity extends AppCompatActivity {
         btnAutoTrade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
                 AuthTask = new requestAutoTradeTask(currentSession.getUser_id(), Integer.valueOf(accountSelectionValue), txtSymbol.getText().toString(), Integer.valueOf(txtQuantity.getText().toString()));
                 AuthTask.execute();
@@ -104,7 +101,7 @@ public class ToolsAutoTradeActivity extends AppCompatActivity {
                     accountsNumberList.add(account.getAccountNumber().toString());
 
                 }
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(ToolsAutoTradeActivity.this, android.R.layout.simple_spinner_item, accountsNickname);
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(ToolsAutoTradeRunActivity.this, android.R.layout.simple_spinner_item, accountsNickname);
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spAccounts.setAdapter(arrayAdapter);
 

@@ -46,8 +46,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         setContentView(R.layout.activity_search);
 
         Intent previousIntent = getIntent();
-        currentSession = Session.getInstance(previousIntent.getIntExtra("Session", 0));  //loads current session into intent
-        currentSession.getUser_id();
+        currentSession = Session.getInstance(0);
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
         lvResults = (ListView) findViewById(R.id.lvResults);
@@ -60,7 +59,6 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                 String symbol = selectedStock[0];
                 String company = selectedStock[1];
                 Intent i = new Intent(SearchActivity.this, StockInformationActivity.class); //creates intent that launches Balances
-                i.putExtra("Session", currentSession.getUser_id());
                 i.putExtra("Symbol", symbol);
 
             }
