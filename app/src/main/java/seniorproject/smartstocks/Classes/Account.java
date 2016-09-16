@@ -26,7 +26,6 @@ public class Account implements Parcelable {
     ArrayList<UserStock> Holdings = new ArrayList<UserStock>();
     ArrayList<AutoTrade> AutoTrades = new ArrayList<AutoTrade>();
 
-
     protected Account(Parcel in) {
         AccountNumber = in.readInt();
         Type = in.readString();
@@ -45,6 +44,10 @@ public class Account implements Parcelable {
             return new Account[size];
         }
     };
+
+    public Account(Integer accountNumber) {
+        AccountNumber = accountNumber;
+    }
 
     public Integer getAccountNumber() {
         return AccountNumber;
@@ -294,7 +297,7 @@ public class Account implements Parcelable {
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
             conn = DriverManager.getConnection(connectionUrl);
             // Create and execute an SQL statement that returns some data.
-            String SQL = "execute sp_request_autotrade " + user_id + ", " + getAccountNumber() + ", '" + symbol + "', " + quantity +  ", null ;";
+            String SQL = "execute sp_request_autotrade " + getAccountNumber() + ", " + user_id + ", '" + symbol + "', " + quantity +  ", null ;";
             stmt = conn.createStatement();
 
             result = stmt.executeQuery(SQL);
@@ -321,7 +324,7 @@ public class Account implements Parcelable {
 
     }
 
-    public void setAutoTradesByAccountID(Integer account_id){
+    public void setAutoTrades(){
 
         LICS loginConnectionString = new LICS();
         String connectionUrl = loginConnectionString.LoginConnectionString();
@@ -345,6 +348,7 @@ public class Account implements Parcelable {
             int counter = 0;
             while (result.next()) {
                 AutoTrade autoTrade = new AutoTrade();
+                autoTrade.setAutoTrade_id(result.getInt("auto_trade_id"));
                 autoTrade.setAccount_id(result.getInt("account_id"));
                 autoTrade.setUser_id(result.getInt("user_id"));
                 autoTrade.setStockSymbol(result.getString("stock_symbol"));
@@ -374,8 +378,6 @@ public class Account implements Parcelable {
     public ArrayList<AutoTrade> getAutoTrades() {
         return AutoTrades;
     }
-
-
 
     public void deleteOrder(Integer order_id) {
 

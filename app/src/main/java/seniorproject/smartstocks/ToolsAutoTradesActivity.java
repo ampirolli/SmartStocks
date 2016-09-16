@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import seniorproject.smartstocks.Classes.Account;
+import seniorproject.smartstocks.Classes.AutoTrade;
 import seniorproject.smartstocks.Classes.Session;
 import seniorproject.smartstocks.Classes.User;
 
@@ -29,10 +30,14 @@ public class ToolsAutoTradesActivity extends AppCompatActivity {
     String accountSelectionValue = new String(); //String to resolve which account was selected
     Integer accountSelectionIndex = new Integer(0); // String to resolve the index oof the selected account
 
+    ArrayList<AutoTrade> autoTradeList = new ArrayList<AutoTrade>(); //list to save autotrades
+
+
     ListView lvAutoTrades;
     Spinner spAccounts;
 
     private getAccountsTask AuthTask = null;
+    private getAutoTradesTask AuthTask2 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,11 +102,15 @@ public class ToolsAutoTradesActivity extends AppCompatActivity {
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spAccounts.setAdapter(arrayAdapter);
 
+
+
                 spAccounts.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         accountSelectionValue = accountsNumberList.get(i);
                         accountSelectionIndex = i;
+                        AuthTask2 = new getAutoTradesTask(Integer.valueOf(accountSelectionValue));
+                        AuthTask2.execute();
                     }
 
                     @Override
@@ -123,6 +132,64 @@ public class ToolsAutoTradesActivity extends AppCompatActivity {
 
 
     }
+
+    public class getAutoTradesTask extends AsyncTask<Void, Void, Boolean> {
+
+        Integer account_id;
+
+        public getAutoTradesTask(Integer account_id) {
+            this.account_id = account_id;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Account account = new Account(account_id);
+            account.setAutoTrades();
+            autoTradeList = account.getAutoTrades();
+
+            return true;
+        }
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+            AuthTask2 = null;
+
+            if(success){
+                //load the spinner with a list of accounts
+                List<String> autoTradesListTitles= new ArrayList<String>();
+                for (AutoTrade autoTrade: autoTradeList) {
+                    autoTradesListTitles.add(autoTrade.getAutoTrade_id() +"- "+ autoTrade.getStockSymbol() + " : " + autoTrade.getStockQuantity() + " @"+ autoTrade.getAutoTradeTime());
+
+                }
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(ToolsAutoTradesActivity.this, android.R.layout.simple_spinner_item, autoTradesListTitles);
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                lvAutoTrades.setAdapter(arrayAdapter);
+
+                lvAutoTrades.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        // do nothing
+                    }
+                });
+
+
+
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            AuthTask2 = null;
+
+        }
+
+
+}
 
     @Override
     public void onBackPressed() {

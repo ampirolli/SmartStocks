@@ -7,7 +7,8 @@ import java.util.Date;
  * Created by Ampirollli on 8/14/2016.
  */
 public class AutoTrade {
-    
+
+    Integer AutoTrade_id;
     Integer User_id;
     Integer Account_id;
     String StockSymbol;
@@ -18,7 +19,8 @@ public class AutoTrade {
         
     }
 
-    public AutoTrade(Integer user_id, Integer account_id, String stockSymbol, Integer stockQuantity, Date autoTradeTime) {
+    public AutoTrade(Integer autoTrade_id, Integer user_id, Integer account_id, String stockSymbol, Integer stockQuantity, Date autoTradeTime) {
+        AutoTrade_id = autoTrade_id;
         User_id = user_id;
         Account_id = account_id;
         StockSymbol = stockSymbol;
@@ -26,6 +28,13 @@ public class AutoTrade {
         AutoTradeTime = autoTradeTime;
     }
 
+    public Integer getAutoTrade_id() {
+        return AutoTrade_id;
+    }
+
+    public void setAutoTrade_id(Integer autoTrade_id) {
+        AutoTrade_id = autoTrade_id;
+    }
 
     public Integer getUser_id() {
         return User_id;

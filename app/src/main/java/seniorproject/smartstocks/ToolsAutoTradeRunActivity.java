@@ -131,7 +131,6 @@ public class ToolsAutoTradeRunActivity extends AppCompatActivity {
 
     }
 
-
     public class requestAutoTradeTask extends AsyncTask<Void, Void, Boolean> {
 
         Integer user_id;
