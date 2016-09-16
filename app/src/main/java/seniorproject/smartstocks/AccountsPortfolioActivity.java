@@ -128,8 +128,7 @@ public class AccountsPortfolioActivity extends AppCompatActivity {
                 HoldingsList.add(userStock.getStockSymbol());
 
                 HoldingsSum = (userStock.getStock().getQuote().getPrice()).multiply(new BigDecimal(userStock.getQuantity())); // adds up all holdings
-                PurchasingPower = new BigDecimal(account.getBalance()).subtract(HoldingsSum); //subtracts it from total to determine purchasing power
-
+                PurchasingPower = new BigDecimal(account.getBalance());
                 daysTotalOpen = daysTotalOpen.add(userStock.getStock().getQuote().getOpen().multiply(BigDecimal.valueOf(userStock.getQuantity()))); // sum of all stocks opening price * the quantity
                 daysTotalGain = daysTotalGain.add(userStock.getStock().getQuote().getPrice().multiply(BigDecimal.valueOf(userStock.getQuantity()))); // sum of all stocks prices * the quantity
 

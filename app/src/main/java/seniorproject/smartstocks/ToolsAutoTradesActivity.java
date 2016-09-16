@@ -102,7 +102,9 @@ public class ToolsAutoTradesActivity extends AppCompatActivity {
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spAccounts.setAdapter(arrayAdapter);
 
-
+                accountSelectionValue = accountsList.get(spAccounts.getSelectedItemPosition()).getAccountNumber().toString();
+                AuthTask2 = new getAutoTradesTask(Integer.valueOf(accountSelectionValue));
+                AuthTask2.execute();
 
                 spAccounts.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -158,7 +160,7 @@ public class ToolsAutoTradesActivity extends AppCompatActivity {
                 //load the spinner with a list of accounts
                 List<String> autoTradesListTitles= new ArrayList<String>();
                 for (AutoTrade autoTrade: autoTradeList) {
-                    autoTradesListTitles.add(autoTrade.getAutoTrade_id() +"- "+ autoTrade.getStockSymbol() + " : " + autoTrade.getStockQuantity() + " @"+ autoTrade.getAutoTradeTime());
+                    autoTradesListTitles.add(autoTrade.getAutoTrade_id() +" - "+ autoTrade.getStockSymbol() + " : " + autoTrade.getStockQuantity() + " @"+ autoTrade.getAutoTradeTime());
 
                 }
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(ToolsAutoTradesActivity.this, android.R.layout.simple_spinner_item, autoTradesListTitles);

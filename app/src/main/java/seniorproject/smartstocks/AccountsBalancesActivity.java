@@ -131,7 +131,7 @@ public class AccountsBalancesActivity extends AppCompatActivity {
                 for (UserStock userStock : account.getHoldings()) {
 
                     HoldingsSum = (userStock.getStock().getQuote().getPrice()).multiply(new BigDecimal(userStock.getQuantity())); // adds up all holdings
-                    PurchasingPower = new BigDecimal(account.getBalance()).subtract(HoldingsSum); //subtracts it from total to determine purchasing power
+                    PurchasingPower = new BigDecimal(account.getBalance());
 
                 }
                 if(account.getHoldings().size() < 1)
@@ -150,9 +150,7 @@ public class AccountsBalancesActivity extends AppCompatActivity {
             AuthTask = null;
 
             if(success){
-                //load cash purchasing power
-                BigDecimal totalBalance = new BigDecimal(balances.get(accountSelectionIndex).toString());
-                totalBalance = totalBalance.add(HoldingsSum);
+                BigDecimal totalBalance = PurchasingPower.add(HoldingsSum);
                 txtAccountValue.setText(totalBalance.toString());
                 txtAccountCashPower.setText(PurchasingPower.toString());
 
