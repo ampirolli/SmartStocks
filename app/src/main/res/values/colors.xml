@@ -5,4 +5,7 @@
     <color name="colorAccent">#388e3c</color>
     <color name="abc_secondary_text_material_light">#8ae8e8e8</color>
     <color name="black">#388e3c</color>
+    <color name="holo_light_primary">#388e3c</color>
+    <color name="holo_light_primary_dark">#388e3c</color>
+    <color name="bright_foreground_holo_light">#388e3c</color>
 </resources>
