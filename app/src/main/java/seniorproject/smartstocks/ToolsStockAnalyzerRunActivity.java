@@ -185,7 +185,6 @@ public class ToolsStockAnalyzerRunActivity extends AppCompatActivity {
                         hasBrokenLow = true;
                         hasBrokenRange = false;
                         resetAlgo();
-                        break;
 
                     }
 
