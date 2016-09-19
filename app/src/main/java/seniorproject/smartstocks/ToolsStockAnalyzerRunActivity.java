@@ -76,8 +76,8 @@ public class ToolsStockAnalyzerRunActivity extends AppCompatActivity {
 
         BigDecimal stopBelow = new BigDecimal(0); 	// .05 below entry point
         BigDecimal stopAbove = new BigDecimal(0); 	// .10 cent target above entry point
-        BigDecimal stopAbovePoint = new BigDecimal(.08);
-        BigDecimal stopBelowPoint = new BigDecimal(.04);			//
+        BigDecimal stopAbovePoint = new BigDecimal(.11);
+        BigDecimal stopBelowPoint = new BigDecimal(.06);			//
         BigDecimal lastQuote = new BigDecimal(0); 			// Stock Data
         BigDecimal stockHighPoint = new BigDecimal(0); 		//
         BigDecimal stockLowPoint = new BigDecimal(0); 		//
@@ -281,6 +281,7 @@ public class ToolsStockAnalyzerRunActivity extends AppCompatActivity {
             if((Balance.subtract(buyTotal)).doubleValue() > 0 && buyQuantity.doubleValue() > 0){
                 Balance = Balance.subtract(buyTotal);
                 numberOfShares = numberOfShares.add(buyQuantity);
+                Result.add("Buy Executed @ $" + stockQuote);
             }
 
         }
@@ -290,7 +291,7 @@ public class ToolsStockAnalyzerRunActivity extends AppCompatActivity {
                 Balance = Balance.add(assets);
                 Balance = Balance.subtract(transactionPrice);
                 numberOfShares = new BigDecimal(0);
-                System.out.println("SOLD");
+                Result.add("Sell Executed @ $" + stockQuote);
                 hasSold = true;
             }
 
