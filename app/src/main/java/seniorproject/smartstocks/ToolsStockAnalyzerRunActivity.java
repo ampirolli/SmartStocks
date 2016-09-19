@@ -76,8 +76,8 @@ public class ToolsStockAnalyzerRunActivity extends AppCompatActivity {
 
         BigDecimal stopBelow = new BigDecimal(0); 	// .05 below entry point
         BigDecimal stopAbove = new BigDecimal(0); 	// .10 cent target above entry point
-        BigDecimal stopAbovePoint = new BigDecimal(.11);
-        BigDecimal stopBelowPoint = new BigDecimal(.06);			//
+        BigDecimal stopAbovePoint = new BigDecimal(.08);
+        BigDecimal stopBelowPoint = new BigDecimal(.04);			//
         BigDecimal lastQuote = new BigDecimal(0); 			// Stock Data
         BigDecimal stockHighPoint = new BigDecimal(0); 		//
         BigDecimal stockLowPoint = new BigDecimal(0); 		//
