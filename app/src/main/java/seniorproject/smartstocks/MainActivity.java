@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity
                 for(UserStock userStock: account.getHoldings()){
                     if(!userStock.getStockSymbol().isEmpty()) {
                         BigDecimal profit = userStock.getStock().getQuote().getPrice().multiply(new BigDecimal(userStock.getQuantity())).subtract(userStock.getPricePaid());
-                        holdingsList.add(userStock.getStockSymbol() + "- " +"Account: " +userStock.getAccountID() + " Price Paid: " +userStock.getPricePaid() +" Profit:" + profit );
+                        holdingsList.add(userStock.getStockSymbol() + "- " +"Account: " +userStock.getAccountID() + "Quantity: " + userStock.getQuantity()+" Price Paid: " +userStock.getPricePaid() +" Profit:" + profit );
                     }
                 }
             }
