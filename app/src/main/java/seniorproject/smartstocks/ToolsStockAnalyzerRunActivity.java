@@ -76,8 +76,8 @@ public class ToolsStockAnalyzerRunActivity extends AppCompatActivity {
 
         BigDecimal stopBelow = new BigDecimal(0); 	// .05 below entry point
         BigDecimal stopAbove = new BigDecimal(0); 	// .10 cent target above entry point
-        BigDecimal stopAbovePoint = new BigDecimal(.07);
-        BigDecimal stopBelowPoint = new BigDecimal(.03);			//
+        BigDecimal stopAbovePoint = new BigDecimal(.08);
+        BigDecimal stopBelowPoint = new BigDecimal(.04);			//
         BigDecimal lastQuote = new BigDecimal(0); 			// Stock Data
         BigDecimal stockHighPoint = new BigDecimal(0); 		//
         BigDecimal stockLowPoint = new BigDecimal(0); 		//
@@ -87,6 +87,7 @@ public class ToolsStockAnalyzerRunActivity extends AppCompatActivity {
         boolean openRangeComplete = false;
         boolean hasBrokenRange = false;
         boolean hasBrokenLow = false;
+        boolean hasSold = false;
 
 
         public AnalyzeStockTask(String symbol, BigDecimal balance) {
@@ -141,7 +142,7 @@ public class ToolsStockAnalyzerRunActivity extends AppCompatActivity {
                     openRangeComplete = false;
                 }
 
-                if(openRangeComplete == true){
+                if(openRangeComplete == true && hasSold == false){
                     if(stockQuote.compareTo(stockHighPoint) == 1){
 
                         if(hasBrokenRange == true){ // checks if range has been broken,
@@ -158,7 +159,6 @@ public class ToolsStockAnalyzerRunActivity extends AppCompatActivity {
                             else if(stockQuote.compareTo(stopBelow) == -1 || stockQuote.compareTo(stopBelow) == 0){
                                 sellAll(stockQuote);
                                 resetAlgo();
-                                break;
                             }
                             else{
                                 if(stockQuote.compareTo(lastQuote) == -1 && stockQuote.compareTo(stopBelow) == 1 && stockQuote.compareTo(stopAbove) == -1){
@@ -291,6 +291,7 @@ public class ToolsStockAnalyzerRunActivity extends AppCompatActivity {
                 Balance = Balance.subtract(transactionPrice);
                 numberOfShares = new BigDecimal(0);
                 System.out.println("SOLD");
+                hasSold = true;
             }
 
         }

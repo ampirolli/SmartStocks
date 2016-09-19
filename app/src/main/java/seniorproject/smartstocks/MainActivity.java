@@ -22,6 +22,7 @@ import android.widget.ListView;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import seniorproject.smartstocks.Classes.Account;
 import seniorproject.smartstocks.Classes.Session;
 import seniorproject.smartstocks.Classes.User;
 import seniorproject.smartstocks.Classes.UserStock;
+import yahoofinance.YahooFinance;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -164,8 +166,10 @@ public class MainActivity extends AppCompatActivity
                 account.setHoldings(Integer.valueOf(account.getAccountNumber()));
 
                 for(UserStock userStock: account.getHoldings()){
-                    if(!userStock.getStockSymbol().isEmpty())
-                        holdingsList.add(userStock.getStockSymbol() + " - " + userStock.getAccountID());
+                    if(!userStock.getStockSymbol().isEmpty()) {
+                        BigDecimal profit = userStock.getPricePaid().subtract(userStock.getStock().getQuote().getPrice().multiply(new BigDecimal(userStock.getQuantity())));
+                        holdingsList.add(userStock.getStockSymbol() + "- " +"Account: " +userStock.getAccountID() + " Price Paid: " +userStock.getPricePaid() +" Profit:" + profit );
+                    }
                 }
             }
 
@@ -183,6 +187,26 @@ public class MainActivity extends AppCompatActivity
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, holdingList);
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 lvHoldings.setAdapter(arrayAdapter);
+
+                lvHoldings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position,
+                                            long id) {
+
+                        String selectedFromList = (String) lvHoldings.getItemAtPosition(position);
+                        String[] selectedStock = selectedFromList.split("-");
+                        String symbol = selectedStock[0];
+
+                        Intent i = new Intent(MainActivity.this, StockInformationActivity.class); //creates intent that launches Balances
+                        i.putExtra("Session", currentSession.getUser_id());
+                        i.putExtra("Symbol", symbol);
+
+                        startActivityForResult(i, 1);
+                        finish();
+
+
+                    }
+                });
 
 
             }
@@ -229,9 +253,13 @@ public class MainActivity extends AppCompatActivity
                     public void onItemClick(AdapterView<?> parent, View view, int position,
                                             long id) {
 
+                        String selectedFromList = (String) lvFavorites.getItemAtPosition(position);
+                        String[] selectedStock = selectedFromList.split("-");
+                        String symbol = selectedStock[0];
+
                         Intent i = new Intent(MainActivity.this, StockInformationActivity.class); //creates intent that launches Balances
                         i.putExtra("Session", currentSession.getUser_id());
-                        i.putExtra("Symbol", lvFavorites.getItemAtPosition(position).toString());
+                        i.putExtra("Symbol", symbol);
 
                         startActivityForResult(i, 1);
                         finish();

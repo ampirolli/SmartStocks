@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import seniorproject.smartstocks.LICS;
+import yahoofinance.Stock;
+import yahoofinance.YahooFinance;
 
 /**
  * Created by Ampirollli on 8/14/2016.
@@ -119,7 +121,9 @@ public class User {
             int counter = 0;
             while (result.next()) {
                 String favorite = new String();
-                favorite = (result.getString("stock_symbol"));
+                String symbol = result.getString("stock_symbol");
+                Stock stock = YahooFinance.get(symbol);
+                favorite = symbol + "- Price: " + stock.getQuote().getPrice().toString() + " Change:" +stock.getQuote().getChange();
                 favorites.add(favorite);
             }
 
