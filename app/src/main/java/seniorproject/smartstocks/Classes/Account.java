@@ -254,7 +254,7 @@ public class Account implements Parcelable {
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
             conn = DriverManager.getConnection(connectionUrl);
             // Create and execute an SQL statement that returns some data.
-            String SQL = "execute sp_request_order '" + getAccountNumber() + "', '" + priceType + "', '" + stockPrice + "', " + transactionType + ", '" + transcationTime + "', '" + term + "', '" + stockSymbol + "', '" +quantity + "', " +transactionAmount + ", null ;";
+            String SQL = "execute sp_request_order '" + getAccountNumber() + "', '" + priceType + "', '" + stockPrice + "', " + transactionType + ", '" + transcationTime + "', '" + term + "', '" + stockSymbol + "', '" +quantity + "', " +transactionAmount + ";";
             stmt = conn.createStatement();
 
             result = stmt.executeQuery(SQL);
@@ -297,7 +297,7 @@ public class Account implements Parcelable {
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
             conn = DriverManager.getConnection(connectionUrl);
             // Create and execute an SQL statement that returns some data.
-            String SQL = "execute sp_request_autotrade " + getAccountNumber() + ", " + user_id + ", '" + symbol + "', " + quantity +  ", null ;";
+            String SQL = "execute sp_request_autotrade " + getAccountNumber() + ", " + user_id + ", '" + symbol + "', " + quantity +  ";";
             stmt = conn.createStatement();
 
             result = stmt.executeQuery(SQL);

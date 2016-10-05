@@ -58,7 +58,7 @@ public class Login {
             conn = DriverManager.getConnection(connectionUrl);
 
             // Create and execute an SQL statement that returns some data.
-            String SQL = "execute sp_login '" + getEmail() +"', '" + getHashedPassword() +  "',NULL ;";
+            String SQL = "execute sp_login '" + getEmail() +"', '" + getHashedPassword() +  "' ;";
             stmt = conn.createStatement();
             result = stmt.executeQuery(SQL);
 
