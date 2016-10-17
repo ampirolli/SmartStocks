@@ -29,4 +29,7 @@ dependencies {
     compile files('libs/YahooFinanceAPI-3.0.0.jar')
     //compile graphview
     compile 'com.jjoe64:graphview:4.1.1'
+
+    //httpcomponents for connecting to phpMysql
+    compile group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
 }

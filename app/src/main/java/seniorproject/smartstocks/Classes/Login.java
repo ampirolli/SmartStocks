@@ -1,9 +1,25 @@
 package seniorproject.smartstocks.Classes;
 
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import seniorproject.smartstocks.LICS;
 
@@ -42,93 +58,61 @@ public class Login {
     }
 
     public boolean attemptLogin(){
-        LICS loginConnectionString = new LICS();
-        String connectionUrl = loginConnectionString.LoginConnectionString();
 
-        // Declare the JDBC objects.
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet result = null;
-        //Declare email+password
-        String dbEmail = null;
-        String dbPassword = null;
+        String dbEmail = "";
+        String dbPassword = "";
+
         try {
-            // Establish the connection.
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            conn = DriverManager.getConnection(connectionUrl);
 
-            // Create and execute an SQL statement that returns some data.
-            String SQL = "execute sp_login '" + getEmail() +"', '" + getHashedPassword() +  "' ;";
-            stmt = conn.createStatement();
-            result = stmt.executeQuery(SQL);
+            String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(getEmail(), "UTF-8");
+            data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(getHashedPassword(), "UTF-8");
 
-            // Iterate through the data in the result set and display it.
-            while (result.next()) {
-                String dbUserID = result.getString("user_id");
-                String SQL1 = "SELECT email_address FROM DBO.[USER] WHERE user_id = '"+ dbUserID.toLowerCase() + "'; ";
-                Statement stmt1 = conn.createStatement();
-                ResultSet result1 = stmt1.executeQuery(SQL1);
-                while (result1.next()) {
-                    dbEmail = result1.getString("email_address");
+            URL url = new URL("http://192.168.0.36:8080/WebService/login.php");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(data);
+
+            writer.flush();
+            writer.close();
+            os.close();
+            int responseCode = conn.getResponseCode();
+            String response = new String();
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader br = new BufferedReader(new
+                        InputStreamReader(conn.getInputStream()));
+                while ((line = br.readLine()) != null) {
+                    response += line;
                 }
+            } else {
+                response = "";
 
-
-                dbPassword = result.getString("password");
+                Log.i("Login", responseCode + "");
             }
+
+            return true;
+        } catch (MalformedURLException e1) {
+            e1.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
 
-        // Handle any errors that may have occurred.
-        catch (Exception e) {
-            e.printStackTrace();
-        }
         finally {
-            if (result != null) try { result.close(); } catch(Exception e) {}
-            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
-            if (conn != null) try { conn.close(); } catch(Exception e) {}
-            if(getEmail().equals(dbEmail) && getHashedPassword().equals(dbPassword)){ return true; } else{ return false; }
+
+           if(getEmail().equals(dbEmail) && getHashedPassword().equals(dbPassword)){ return true; } else{ return false; }
         }
     }
 
-    public boolean isEmailTaken(String email){
-
-        LICS loginConnectionString = new LICS();
-        String connectionUrl = loginConnectionString.LoginConnectionString();
-
-        // Declare the JDBC objects.
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet result = null;
-        //Declare email+password
-        String dbEmail = null;
-
-        try {
-            // Establish the connection.
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            conn = DriverManager.getConnection(connectionUrl);
-            // Create and execute an SQL statement that returns some data.
-            //String SQL = "SELECT * WHERE Email = " + mEmail +" and Password = " + mPassword + "FROM dbo.LOGIN";
-            String SQL = "SELECT * FROM [SE414_Group3].[dbo].[USER] WHERE email_address = '"+ email.toLowerCase() + ";";
-            stmt = conn.createStatement();
-            result = stmt.executeQuery(SQL);
-
-            // Iterate through the data in the result set and display it.
-            while (result.next()) {
-                dbEmail = result.getString("email_address");
-            }
-        }
-
-        // Handle any errors that may have occurred.
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        finally {
-            if (result != null) try { result.close(); } catch(Exception e) {}
-            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
-            if (conn != null) try { conn.close(); } catch(Exception e) {}
-            if(email.equals(dbEmail)){ return true; } else{ return false; }
-        }
-
-    }
 
     public Integer getUserID(){
 

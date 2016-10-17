@@ -1,10 +1,29 @@
 package seniorproject.smartstocks.Classes;
 
+import android.util.Log;
+
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import seniorproject.smartstocks.LICS;
 
@@ -71,7 +90,7 @@ public class Registration {
     }
 
     public Registration() {
-        
+
     }
 
     public Registration(String firstName, String lastName, String email, String phone, String birthDate, String userType) {
@@ -126,35 +145,57 @@ public class Registration {
 
     public boolean attemptRegister(Registration registration, String password){
 
-        LICS loginConnectionString = new LICS();
-        String connectionUrl = loginConnectionString.LoginConnectionString();
-
-        // Declare the JDBC objects.
-        Connection conn = null;
-        Statement stmt = null;
-
         try {
-            // Establish the connection.
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            conn = DriverManager.getConnection(connectionUrl);
-            // Create and execute an SQL statement that returns some data.
-            //execute sp_user_registration 'Owner', 'Anthony', 'PieRoll', 'ampieroll1@gmail.com', '4015555555', '08-08-1700', 'password', NULL
-            String SQL = "execute sp_user_registration '" + registration.getUserType() + "', '" + registration.getFirstName() + "', '" + registration.getLastName() + "', '" + registration.getEmail() + "', '" + registration.getPhone() + "', '" + registration.getBirthDate() + "', '" + password + "', NULL ;";
-            stmt = conn.createStatement();
-            stmt.executeUpdate(SQL);
+
+            String data = URLEncoder.encode("account_type", "UTF-8") + "=" + URLEncoder.encode(registration.getUserType(), "UTF-8");
+            data += "&" + URLEncoder.encode("firstname", "UTF-8") + "=" + URLEncoder.encode(registration.getFirstName(), "UTF-8");
+            data += "&" + URLEncoder.encode("lastname", "UTF-8") + "=" + URLEncoder.encode(registration.getLastName(), "UTF-8");
+            data += "&" + URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(registration.getEmail(), "UTF-8");
+            data += "&" + URLEncoder.encode("phone", "UTF-8") + "=" + URLEncoder.encode(registration.getPhone(), "UTF-8");
+            data += "&" + URLEncoder.encode("DOB", "UTF-8") + "=" + URLEncoder.encode(registration.getBirthDate(), "UTF-8");
+            data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+
+
+            URL url = new URL("http://192.168.0.36:8080/WebService/user_registration.php");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(data);
+
+            writer.flush();
+            writer.close();
+            os.close();
+            int responseCode = conn.getResponseCode();
+            String response = new String();
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader br = new BufferedReader(new
+                        InputStreamReader(conn.getInputStream()));
+                while ((line = br.readLine()) != null) {
+                    response += line;
+                }
+            } else {
+                response = "";
+
+                Log.i("Registration", responseCode + "");
+            }
+
             return true;
-
-        }
-
-        // Handle any errors that may have occurred.
-        catch (Exception e) {
+        } catch (MalformedURLException e1) {
+            e1.printStackTrace();
+            return false;
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        finally {
-            if (stmt != null) try { stmt.close(); } catch(Exception e) {}
-            if (conn != null) try { conn.close(); } catch(Exception e) {}
-        }
+
 
     }
 
