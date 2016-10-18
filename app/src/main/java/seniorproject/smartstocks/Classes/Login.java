@@ -2,6 +2,9 @@ package seniorproject.smartstocks.Classes;
 
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -83,14 +86,19 @@ public class Login {
             writer.flush();
             writer.close();
             os.close();
+
             int responseCode = conn.getResponseCode();
             String response = new String();
+            boolean hasResponse = false;
+
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;
                 BufferedReader br = new BufferedReader(new
                         InputStreamReader(conn.getInputStream()));
                 while ((line = br.readLine()) != null) {
                     response += line;
+                    hasResponse = true;
+
                 }
             } else {
                 response = "";
@@ -98,7 +106,22 @@ public class Login {
                 Log.i("Login", responseCode + "");
             }
 
-            return true;
+            if(hasResponse) {
+                JSONObject jObject = new JSONObject(response); // json
+                //JSONObject source = jObject.getJSONObject("source"); // get data object
+
+                if (jObject.getBoolean("status") == true) {
+
+                    JSONObject results = jObject.getJSONObject("data");
+                    for (int i = 0; i < results.length(); i++) {
+
+                        dbEmail = results.getString("email");
+                        dbPassword = results.getString("password");
+
+                    }
+                }
+            }
+
         } catch (MalformedURLException e1) {
             e1.printStackTrace();
             return false;
@@ -108,8 +131,7 @@ public class Login {
         }
 
         finally {
-
-           if(getEmail().equals(dbEmail) && getHashedPassword().equals(dbPassword)){ return true; } else{ return false; }
+           if(getEmail().equals(dbEmail) && getHashedPassword().equals(dbPassword)){ return true; } else{ return false; } //validates email and password
         }
     }
 
